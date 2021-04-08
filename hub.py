@@ -228,8 +228,10 @@ if(systemStage == 'Forecasting'):
     run_strategy = st.sidebar.button("Run")
 
     if stock_ticker:
-      f1.Web_Arima(stock_ticker).full_build()
-      f1.The_Arima_Model(stock_ticker).arima_model()
+      run_strategy_arima = st.button("Run ARIMA")
+      if run_strategy_arima:
+        f1.Web_Arima(stock_ticker).full_build()
+        f1.The_Arima_Model(stock_ticker).arima_model()
 
 
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -274,11 +276,12 @@ if(systemStage == 'Forecasting'):
     st.write(" * [STATIONARY]")
     st.write(' *'*34)
 
-    run_strategy = st.sidebar.button("Run")
 
     if stock_ticker:
-      f1.sarima(stock_ticker).predict()
-      st.title('Model Render Complete')
+      run_strategy_sarima = st.sidebar.button("Run SARIMA")
+      if run_strategy_sarima:
+        f1.sarima(stock_ticker).predict()
+        st.title('Model Render Complete')
 
 
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -295,8 +298,10 @@ if(systemStage == 'Forecasting'):
     run_strategy = st.sidebar.button("Run")
 
     if stock_ticker:
-      f1.monteCarlo(stock_ticker)
-    st.title('Model Render Complete')      
+      run_strategy_monteCarlo = st.sidebar.button("Run Monte Carlo")
+      if run_strategy_monteCarlo:
+        f1.monteCarlo(stock_ticker)
+        st.title('Model Render Complete')      
 
 
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -317,8 +322,10 @@ if(systemStage == 'Forecasting'):
     else:
       ticker_univariate = st.text_input('Enter Ticker For Univariate Model:')
       if ticker_univariate:
-        f1.univariate(ticker_univariate).runs()
-        st.title('Model Render Complete')
+        run_strategy_univariate = st.sidebar.button("Run Univariate")
+        if run_strategy_univariate:
+          f1.univariate(ticker_univariate).runs()
+          st.title('Model Render Complete')
 
 
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -349,7 +356,9 @@ if(systemStage=='Strategy'):
     st.write('details')
 
     if stock_ticker:
-      f2.backtrader_sma_strategy_run(stock_ticker)
+      run_strategy_backtraderSMA = st.sidebar.button("Run Backtrader SMA Strategy")
+      if run_strategy_backtraderSMA:
+        f2.backtrader_sma_strategy_run(stock_ticker)
       
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -361,7 +370,9 @@ if(systemStage=='Strategy'):
     st.write('details')
 
     if stock_ticker:
-      f2.Web_One(stock_ticker)
+      run_strategy_backtesting1 = st.sidebar.button("Run Backtest 1")
+      if run_strategy_backtesting1:
+        f2.Web_One(stock_ticker)
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -372,25 +383,27 @@ if(systemStage=='Strategy'):
     st.title('Moving Averages - SMA & EMA')
 
     if stock_ticker:
-      f2.MovingAverageCrossStrategy(
-        stock_symbol = stock_ticker, 
-        start_date = '2019-01-01', 
-        end_date = '2021-04-01', 
-        short_window = 20, 
-        long_window = 50, 
-        moving_avg = 'SMA', 
-        display_table = True
-      )
+      run_strategy_movAvg_SMA_EMA = st.sidebar.button("Run Moving Average - SMA & EMA")
+      if run_strategy_movAvg_SMA_EMA:
+        f2.MovingAverageCrossStrategy(
+          stock_symbol = stock_ticker, 
+          start_date = '2019-01-01', 
+          end_date = '2021-04-01', 
+          short_window = 20, 
+          long_window = 50, 
+          moving_avg = 'SMA', 
+          display_table = True
+        )
 
-      f2.MovingAverageCrossStrategy(
-        stock_symbol = stock_ticker, 
-        start_date = '2019-01-01', 
-        end_date = '2021-04-01', 
-        short_window = 20, 
-        long_window = 50, 
-        moving_avg = 'EMA', 
-        display_table = True
-      )      
+        f2.MovingAverageCrossStrategy(
+          stock_symbol = stock_ticker, 
+          start_date = '2019-01-01', 
+          end_date = '2021-04-01', 
+          short_window = 20, 
+          long_window = 50, 
+          moving_avg = 'EMA', 
+          display_table = True
+        )      
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -401,7 +414,9 @@ if(systemStage=='Strategy'):
     st.title('Moving Average 0')
 
     if stock_ticker:
-      f2.ST_Trading_signals(stock_ticker)
+      run_strategy_movAvg_B = st.sidebar.button("Run Moving Average-B (Double)")
+      if run_strategy_movAvg_B:
+        f2.ST_Trading_signals(stock_ticker)
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -412,7 +427,9 @@ if(systemStage=='Strategy'):
     st.title('Support & Resistance Lines')
 
     if stock_ticker:
-      f2.The_Support_Resistance(stock_ticker, '6mo').level()
+      run_strategy_supportResistance = st.sidebar.button("Run Support & Resistance Lines")
+      if run_strategy_supportResistance:
+        f2.The_Support_Resistance(stock_ticker, '6mo').level()
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -423,7 +440,9 @@ if(systemStage=='Strategy'):
     st.title('Over Bought & Over Sold Analysis')
 
     if stock_ticker:
-      f2.The_OverBought_OverSold(stock_ticker, '1y').generate()
+      run_strategy_overBought_overSold = st.sidebar.button("Run Over-Bought & OverSold")
+      if run_strategy_overBought_overSold:
+        f2.The_OverBought_OverSold(stock_ticker, '1y').generate()
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -459,8 +478,8 @@ if(systemStage=='Portfolio'):
       marks0 = ['o', '^', 's', 'p', 'h', '8','*', 'd', '>', 'v', '<', '1', '2', '3', '4']
       mark = marks0[:len(RISKY_ASSETS)+1]
 
-      run_strategy = st.button("Run")
-      if run_strategy:
+      run_strategy_EF = st.button("Run Efficient Frontier")
+      if run_strategy_EF:
         f3.The_Efficient_Frontier(RISKY_ASSETS, mark).final_plot()
 
 
@@ -476,7 +495,9 @@ if(systemStage=='Portfolio'):
     if tickers:
       for idx, num in enumerate(index_ticker_lists_B):
         if num == tickers:
-          f3.The_PCA_Analysis(index_ticker_lists_A[idx])
+          run_strategy_pca = st.button("Run PCA")
+          if run_strategy_pca:
+            f3.The_PCA_Analysis(index_ticker_lists_A[idx])
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
