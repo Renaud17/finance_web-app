@@ -84,7 +84,7 @@ class Web_prophet_kyle(object):
             for x in result['ResultSet']['Result']:
                 if x['symbol'] == symbol:
                     return x['name']
-        self.company = get_symbol(self.stonk)         
+        self.company = get_symbol(self.stonk) 
 
 
       # create a Prophet model from that data
@@ -152,6 +152,15 @@ class Web_prophet_kyle(object):
         
         m = Prophet(daily_seasonality=True, changepoint_prior_scale=0.1, seasonality_prior_scale=10)
         m.fit(df)
+
+        import requests
+        def get_symbol(symbol):
+            url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
+            result = requests.get(url).json()
+            for x in result['ResultSet']['Result']:
+                if x['symbol'] == symbol:
+                    return x['name']
+        self.company = get_symbol(self.stonk2)        
 
 
       # create Cross Validation Model
