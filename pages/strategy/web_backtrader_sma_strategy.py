@@ -14,7 +14,7 @@ import matplotlib as mpl
 matplotlib.use('Agg')
 from matplotlib import style
 from matplotlib import pyplot as plt
-plt.style.use('seaborn-talk')
+# plt.style.use('seaborn-talk')
 # plt.style.use('seaborn-poster')
 # plt.style.use('_classic_test_patch')
 # plt.style.use('fast')
@@ -152,11 +152,10 @@ def backtrader_sma_strategy_run(tick):
     st.text(f'Final Portfolio Value: {cerebro.broker.getvalue():.2f}')
 
     # plot results
-    fig = plt.subplot()
+    fig, ax = plt.subplots()
     ax = cerebro.plot(iplot=False)
+    st.pyplot(plt.show())
     st.pyplot()
-    # st.pyplot(fig)
-    # return fig 
 
 
 #  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

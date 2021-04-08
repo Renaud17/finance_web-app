@@ -350,9 +350,7 @@ if(systemStage=='Strategy'):
 
     if stock_ticker:
       f2.backtrader_sma_strategy_run(stock_ticker)
-      # figger = f2.backtrader_sma_strategy_run(stock_ticker)
-      # st.pyplot(figger)
-
+      
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
