@@ -395,7 +395,7 @@ if(systemStage=='Strategy'):
           long_window = 50, 
           moving_avg = 'EMA', 
           display_table = True
-        )      
+        )       
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
