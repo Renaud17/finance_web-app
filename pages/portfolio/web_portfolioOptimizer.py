@@ -43,6 +43,7 @@ np.random.seed(777)
 
 from pathlib import Path
 from datetime import datetime
+today = str(datetime.now())[:10]
 
 import streamlit as st
 from scipy.stats import spearmanr

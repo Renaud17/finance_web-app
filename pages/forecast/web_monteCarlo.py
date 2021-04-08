@@ -84,8 +84,8 @@ class The_Monte_Carlo(object):
             returns = adj_close.pct_change().dropna()
         # - Split data into the training and test sets:
             train = returns[:'2020-01-01']
-            a = '2020-01-01'
-            b = '2020-12-31'
+            # a = '2020-01-01'
+            # b = '2020-12-31'
             test = returns['2020-01-01':]
         # - Specify the parameters of the simulation:
             dt = 1
@@ -128,9 +128,8 @@ class The_Monte_Carlo(object):
         #     *     *     *     *     *     *     *     *     *     *     *     *     *     >Run the sim
             gbm_simulations = simulate_gbm(S_0, mu, sigma, N_SIM, dt, T, N) #     >create sim date results
             last_train_date = train.index[-1].date()
-            first_test_date = test.index[0].date()
+            # first_test_date = test.index[0].date()
             last_test_date = test.index[-1].date()
-            plot_title = (f'{stock} Monte Carlo Simulation ' f'({a} - {today})')
             selected_indices = adj_close[last_train_date:last_test_date].index
             index = [date.date() for date in selected_indices]
             gbm_simulations_df = pd.DataFrame(np.transpose(gbm_simulations), index=index)
