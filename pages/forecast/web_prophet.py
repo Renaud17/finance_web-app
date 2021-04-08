@@ -134,7 +134,7 @@ class Web_prophet_kyle(object):
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-    def make_forecast2(self, stonk, per, hist='10y'): 
+    def make_forecast2(self, stonk, per, hist='5y'): 
         """forecast the given ticker (stock) period days into the future (from today)
         ---------inputs----------
         > ticker ->> ticker of stock to forecast
