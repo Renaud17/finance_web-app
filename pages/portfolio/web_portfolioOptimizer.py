@@ -1,3 +1,8 @@
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #*     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
 import matplotlib
 import matplotlib as mpl
 matplotlib.use('Agg')
@@ -25,7 +30,6 @@ plt.rc('axes', linewidth=2)       # linewidth of plot lines
 plt.rcParams['figure.figsize'] = [18, 10]
 plt.rcParams['figure.dpi'] = 250
 
-
 import numpy as np
 import pandas as pd
 pd.options.display.max_rows = 999
@@ -39,14 +43,8 @@ np.random.seed(777)
 
 from pathlib import Path
 from datetime import datetime
-today = str(datetime.now())[:10]
-savePlot = Path(f'report/portfolio_{today}/I_wideView')
-if not savePlot.exists():
-    savePlot.mkdir(parents=True)
-saveTickers = Path('files/tickers/')
-saveData = Path('files/raw/')
-destination = Path('files/processed/')
 
+import streamlit as st
 from scipy.stats import spearmanr
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import MinMaxScaler
@@ -69,22 +67,22 @@ else:
     print('Using CPU')
 
 
-
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #*     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
 class The_Portfolio_Optimizer(object):
     def __init__(self, port_tics, saveName0):
-        self.saveName0 = saveName0
         self.port_tics = port_tics
+        self.saveName0 = saveName0
 
     def optimize(self):
         Table = yf.download(self.port_tics, period='1y', parse_dates=True)['Adj Close']
-        Table.to_pickle(saveData / f'{self.saveName0}_ticker_hist_1y.pkl')
-        data=pd.read_pickle(saveData / f'{self.saveName0}_ticker_hist_1y.pkl')
         PT = pd.DataFrame(Table.iloc[1:])
         # PT = PT.fillna(0.0, axis='columns')
-        tickers = list(PT.columns)
 
+        tickers = list(PT.columns)
         returns = PT.pct_change()
         returns.fillna(0.0, inplace=True)
         returns.dropna(inplace=True)
@@ -92,6 +90,10 @@ class The_Portfolio_Optimizer(object):
         cov_matrix = returns.cov()
         num_portfolios = 5000
         risk_free_rate = 0.0178
+
+
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
         def portfolio_annualised_performance(weights, mean_returns, cov_matrix):
@@ -126,34 +128,36 @@ class The_Portfolio_Optimizer(object):
             min_vol_allocation = pd.DataFrame(weights[min_vol_idx],index=PT.columns,columns=['allocation'])
             min_vol_allocation.allocation = [round(i*100,2)for i in min_vol_allocation.allocation]
             min_vol_allocation = min_vol_allocation.T
-            max_sharpe_allocation.to_pickle(destination / f"{self.saveName0}_max_sharpe_ratio_A.pkl")
-            min_vol_allocation.to_pickle(destination / f"{self.saveName0}_min_volatility_A.pkl")
-            print ("-"*80)
-            print (f"{self.saveName0} Maximum Sharpe Ratio Portfolio Allocation\n")
-            print ("Annualised Return:", round(rp,2))
-            print ("Annualised Volatility:", round(sdp,2))
-            print ("\n")
-            print (max_sharpe_allocation)
-            print ("-"*80)
-            print (f"{self.saveName0} Minimum Volatility Portfolio Allocation\n")
-            print ("Annualised Return:", round(rp_min,2))
-            print ("Annualised Volatility:", round(sdp_min,2))
-            print ("\n")
-            print (min_vol_allocation)
+
+            st.write("-"*80)
+            st.subheader(f"{self.saveName0}: Maximum Sharpe Ratio Portfolio Allocation\n")
+            st.write(f"* Annualised Return: {round(rp,2)}")
+            st.write(f"* Annualised Volatility: {round(sdp,2)}")
+            st.dataframe(max_sharpe_allocation.T)
+            st.subheader(f"{self.saveName0}: Minimum Volatility Portfolio Allocation\n")
+            st.write(f"Annualised Return: {round(rp_min,2)}")
+            st.write(f"Annualised Volatility: {round(sdp_min,2)}")
+            st.write("-"*80)
+            st.dataframe(min_vol_allocation.T)
+
         # PLOT * * * 
-            # plt.figure()
-            # plt.scatter(results[0,:],results[1,:],c=results[2,:],cmap='YlGnBu', marker='o', s=10, alpha=0.3)
-            # plt.colorbar()
-            # plt.scatter(sdp,rp,marker='*',color='r',s=500, label='Maximum Sharpe ratio')
-            # plt.scatter(sdp_min,rp_min,marker='*',color='g',s=500, label='Minimum volatility')
-            # plt.title(f'{self.saveName0} - Simulated Portfolio Optimization based on Efficient Frontier')
-            # plt.xlabel('annualised volatility')
-            # plt.ylabel('annualised returns')
-            # plt.legend(labelspacing=0.8)
-            # plt.grid(which="major", color='k', linestyle='-.', linewidth=0.5)
-            # plt.tight_layout()
-            # plt.savefig(savePlot / f"optimized_1_{self.saveName0}.png", dpi=134)
+            fig, ax = plt.subplots()
+            plt.scatter(results[0,:],results[1,:],c=results[2,:],cmap='YlGnBu', marker='o', s=10, alpha=0.3)
+            plt.colorbar()
+            plt.scatter(sdp,rp,marker='*',color='r',s=500, label='Maximum Sharpe ratio')
+            plt.scatter(sdp_min,rp_min,marker='*',color='g',s=500, label='Minimum volatility')
+            plt.title(f'{self.saveName0} - Simulated Portfolio Optimization based on Efficient Frontier')
+            plt.xlabel('annualised volatility')
+            plt.ylabel('annualised returns')
+            plt.legend(labelspacing=0.8, loc='best')
+            plt.grid(which="major", color='k', linestyle='-.', linewidth=0.5)
+            plt.tight_layout()
+            st.pyplot(fig)
             return rp, sdp, rp_min, sdp_min
+
+
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
         def neg_sharpe_ratio(weights, mean_returns, cov_matrix, risk_free_rate):
@@ -206,6 +210,10 @@ class The_Portfolio_Optimizer(object):
             return efficients
 
 
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
         def display_calculated_ef_with_random(mean_returns, cov_matrix, num_portfolios, risk_free_rate):
             results, _ = random_portfolios(num_portfolios,mean_returns, cov_matrix, risk_free_rate)
             max_sharpe = max_sharpe_ratio(mean_returns, cov_matrix, risk_free_rate)
@@ -219,37 +227,39 @@ class The_Portfolio_Optimizer(object):
             min_vol_allocation = pd.DataFrame(min_vol.x,index=PT.columns,columns=['allocation'])
             min_vol_allocation['allocation'] = [round(i*100,2)for i in min_vol_allocation.allocation]
             min_vol_allocation = min_vol_allocation.T
-            max_sharpe_allocation.to_pickle(destination / f"{self.saveName0}_max_sharpe_ratio_B.pkl")
-            min_vol_allocation.to_pickle(destination / f"{self.saveName0}_min_volatility_B.pkl")
-            print ("-"*80)
-            print (f"{self.saveName0} Maximum Sharpe Ratio Portfolio Allocation\n")
-            print ("Annualised Return:", round(rp,2))
-            print ("Annualised Volatility:", round(sdp,2))
-            print ("\n")
-            print (max_sharpe_allocation)
-            print ("-"*80)
-            print (f"{self.saveName0} Minimum Volatility Portfolio Allocation\n")
-            print ("Annualised Return:", round(rp_min,2))
-            print ("Annualised Volatility:", round(sdp_min,2))
-            print ("\n")
-            print (min_vol_allocation)
+
+            st.write("-"*80)
+            st.subheader(f"{self.saveName0}: Maximum Sharpe Ratio Portfolio Allocation\n")
+            st.write(f"* Annualised Return: {round(rp,2)}")
+            st.write(f"* Annualised Volatility: {round(sdp,2)}")
+            st.dataframe(max_sharpe_allocation.T)
+            st.subheader(f"{self.saveName0}: Minimum Volatility Portfolio Allocation\n")
+            st.write(f"* Annualised Return: {round(rp_min,2)}")
+            st.write(f"* Annualised Volatility: {round(sdp_min,2)}")
+            st.write("-"*80)
+            st.dataframe(min_vol_allocation.T)            
+
         # PLOT * * * 
-            # plt.figure()
-            # plt.scatter(results[0,:],results[1,:],c=results[2,:],cmap='YlGnBu', marker='o', s=10, alpha=0.3)
-            # plt.colorbar()
-            # plt.scatter(sdp,rp,marker='*',color='r',s=500, label='Maximum Sharpe ratio')
-            # plt.scatter(sdp_min,rp_min,marker='*',color='g',s=500, label='Minimum volatility')
-            # target = np.linspace(rp_min, 0.32, 50)
-            # efficient_portfolios = efficient_frontier(mean_returns, cov_matrix, target)
-            # plt.plot([p['fun'] for p in efficient_portfolios], target, linestyle='-.', color='black', label='efficient frontier')
-            # plt.title(f'{self.saveName0} - Calculated Portfolio Optimization based on Efficient Frontier')
-            # plt.xlabel('annualised volatility')
-            # plt.ylabel('annualised returns')
-            # plt.legend(labelspacing=0.8)
-            # plt.grid(which="major", color='k', linestyle='-.', linewidth=0.5)
-            # plt.tight_layout()
-            # plt.savefig(savePlot / f"optimized_2_{self.saveName0}.png", dpi=134)
+            fig, ax = plt.subplots()
+            plt.scatter(results[0,:],results[1,:],c=results[2,:],cmap='YlGnBu', marker='o', s=10, alpha=0.3)
+            plt.colorbar()
+            plt.scatter(sdp,rp,marker='*',color='r',s=500, label='Maximum Sharpe ratio')
+            plt.scatter(sdp_min,rp_min,marker='*',color='g',s=500, label='Minimum volatility')
+            target = np.linspace(rp_min, 0.32, 50)
+            efficient_portfolios = efficient_frontier(mean_returns, cov_matrix, target)
+            plt.plot([p['fun'] for p in efficient_portfolios], target, linestyle='-.', color='black', label='efficient frontier')
+            plt.title(f'{self.saveName0} - Calculated Portfolio Optimization based on Efficient Frontier')
+            plt.xlabel('annualised volatility')
+            plt.ylabel('annualised returns')
+            plt.legend(labelspacing=0.8, loc='best')
+            plt.grid(which="major", color='k', linestyle='-.', linewidth=0.5)
+            plt.tight_layout()
+            st.pyplot(fig)
             return rp, sdp, rp_min, sdp_min
+
+
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
         def display_ef_with_selected(mean_returns, cov_matrix, risk_free_rate):
@@ -266,25 +276,22 @@ class The_Portfolio_Optimizer(object):
             min_vol_allocation = min_vol_allocation.T
             an_vol = np.std(PT.pct_change()) * np.sqrt(252)
             an_rt = mean_returns * 252
-            max_sharpe_allocation.to_pickle(destination / f"{self.saveName0}_max_sharpe_ratio_Final.pkl")
-            min_vol_allocation.to_pickle(destination / f"{self.saveName0}_min_volatility_Final.pkl")
-            print ("-"*80)
-            print (f"{self.saveName0} Maximum Sharpe Ratio Portfolio Allocation\n")
-            print ("Annualised Return:", round(rp,2))
-            print ("Annualised Volatility:", round(sdp,2))
-            print ("\n")
-            print (max_sharpe_allocation)
-            print ("-"*80)
-            print (f"{self.saveName0} Minimum Volatility Portfolio Allocation\n")
-            print ("Annualised Return:", round(rp_min,2))
-            print ("Annualised Volatility:", round(sdp_min,2))
-            print ("\n")
-            print (min_vol_allocation)
-            print ("-"*80)
-            print ("Individual Stock Returns and Volatility\n")
+
+            st.write("-"*80)
+            st.subheader(f"{self.saveName0}: Maximum Sharpe Ratio Portfolio Allocation\n")
+            st.write(f"* Annualised Return: {round(rp,2)}")
+            st.write(f"* Annualised Volatility: {round(sdp,2)}")
+            st.dataframe(max_sharpe_allocation.T)
+            st.subheader(f"{self.saveName0}: Minimum Volatility Portfolio Allocation\n")
+            st.write(f"* Annualised Return: {round(rp_min,2)}")
+            st.write(f"* Annualised Volatility: {round(sdp_min,2)}")
+            st.dataframe(min_vol_allocation.T)
+            st.write("-"*80)
+            st.header("Individual Stock Returns and Volatility\n")
             for i, txt in enumerate(PT.columns):
-                print (txt,":","annuaised return",round(an_rt[i],2), ", annualised volatility:",round(an_vol[i],2))
-            print ("-"*80)
+                st.text(f"{txt}: annuaised return {round(an_rt[i],2)} - annualised volatility: {round(an_vol[i],2)}")
+            st.write("-"*80)
+
         # PLOT * * * 
             fig, ax = plt.subplots()
             ax.scatter(an_vol,an_rt,marker='o',s=200)
@@ -298,50 +305,29 @@ class The_Portfolio_Optimizer(object):
             ax.set_title(f'{self.saveName0} - Portfolio Optimization with Individual Stocks')
             ax.set_xlabel('annualised volatility')
             ax.set_ylabel('annualised returns')
-            ax.legend(labelspacing=0.8)
+            ax.legend(labelspacing=0.8, loc='best')
             plt.grid(which="major", color='k', linestyle='-.', linewidth=0.5)
             plt.tight_layout()
-            plt.savefig(savePlot / f"optimized_3_{self.saveName0}.png", dpi=134)
+            st.pyplot(fig)
             return rp, sdp, rp_min, sdp_min
 
 
-        def viz(key):
-            path1 = (destination / f"{self.saveName0}_max_sharpe_ratio_{key}.pkl")
-            path2 = (destination / f"{self.saveName0}_min_volatility_{key}.pkl")
-            df = read_pickle(path1)
-            fd = read_pickle(path2)
-            a = np.where(df.T['allocation'] > 0.0)
-            b = np.where(fd.T['allocation'] > 0.0)
-            return df.T, fd.T, a, b
-
-
         rpA, sdpA, rp_minA, sdp_minA = display_simulated_ef_with_random(mean_returns, cov_matrix, num_portfolios, risk_free_rate)
-        df, fd, a, b = viz('A')
-        print(f'\n- - - {self.saveName0} Maximum Sharpe Ratio - - - \n')
-        print(f'>Annualized Return = {round(rpA,2)}%\n>Annualized Volatility = {round(sdpA,2)}%\n {df.iloc[a]}')
-        print(f'\n\n- - - {self.saveName0} Minimum Volatility Portfolio - - -\n')
-        print(f'>Annualized Return = {round(rp_minA,2)}%\n>Annualized Volatility = {round(sdp_minA,2)}%\n{fd.iloc[b]}')        
-
-
         rpB, sdpB, rp_minB, sdp_minB = display_calculated_ef_with_random(mean_returns, cov_matrix, num_portfolios, risk_free_rate)
-        df, fd, a, b = viz('B')
-        print(f'\n- - - {self.saveName0} Maximum Sharpe Ratio - - - \n')
-        print(f'>Annualized Return = {round(rpB,2)}%\n>Annualized Volatility = {round(sdpB,2)}%\n {df.iloc[a]}')
-        print(f'\n\n- - - {self.saveName0}  Minimum Volatility Portfolio - - -\n')
-        print(f'>Annualized Return = {round(rp_minB,2)}%\n>Annualized Volatility = {round(sdp_minB,2)}%\n{fd.iloc[b]}')
-
-
         rp, sdp, rp_min, sdp_min = display_ef_with_selected(mean_returns, cov_matrix, risk_free_rate)
-        df, fd, a, b = viz('Final')
-        print(f'\n- - - {self.saveName0} Maximum Sharpe Ratio - - - \n')
-        print(f'>Annualized Return = {round(rp,2)}%\n>Annualized Volatility = {round(sdp,2)}%\n {df.iloc[a]}')
-        print(f'\n\n- - - {self.saveName0} Minimum Volatility Portfolio - - -\n')
-        print(f'>Annualized Return = {round(rp_min,2)}%\n>Annualized Volatility = {round(sdp_min,2)}%\n{fd.iloc[b]}')
 
         return
 
 
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
 
 if __name__ == '__main__':
-    my_positions = pd.read_pickle(saveTickers / f'chuck_merged_ticker_lst.pkl')
-    The_Portfolio_Optimizer(my_positions, 'chuck_merged').optimize()
+    my_positions = pd.read_pickle("/home/gordon/gdp/project_active/Forecasting_For_Friends/tickers/jayci_ticker_lst.pkl")
+    The_Portfolio_Optimizer(my_positions, 'my_positions').optimize()
+
+
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #*     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

@@ -103,12 +103,12 @@ my_tickers = my_positions + watch_lst
 
 
 index_ticker_lists_A = [
-  dow, sp100, sp400, sp500, indices_main, my_tickers,
+  dow, sp100, sp400, sp500, indices_main, my_tickers, my_positions, watch_lst,
   indices_dow, indices_sp, indices_nasdaq, indices_nyse, indices_russell, indices_foreign, indices_cboe,
   track_sp500, track_russell, track_total_mkt, track_vanguard
 ]
 index_ticker_lists_B = [
-  'dow', 'sp100', 'sp400', 'sp500', 'indices_main', 'my_tickers',
+  'dow', 'sp100', 'sp400', 'sp500', 'indices_main', 'my_tickers', 'my_positions', 'watch_lst',
   'indices_dow', 'indices_sp', 'indices_nasdaq', 'indices_nyse', 'indices_russell', 'indices_foreign', 'indices_cboe',
   'track_sp500', 'track_russell', 'track_total_mkt', 'track_vanguard'
 ]
@@ -437,12 +437,9 @@ if(systemStage=='Portfolio'):
   st.subheader("Use The Side Bar via the Arrow ('>') on the upper left corner of the screen")
   
   models = [
-    '-Select-Model-','Efficient Frontier', 'Principal Component Analysis'
+    '-Select-Model-','Efficient Frontier', 'Principal Component Analysis', 'Portfolio Optimizer'
   ]
   model = st.sidebar.selectbox('(Action # 2) - Choose A Model', models)
-
-  # stock_ticker = st.sidebar.text_input('(Action # 3) - Type In Stock Ticker To Model: ')
-  # st.sidebar.write(' * example: TSLA ')
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -484,18 +481,39 @@ if(systemStage=='Portfolio'):
           f3.The_PCA_Analysis(index_ticker_lists_A[idx])
 
 
-
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
+  if(model=='Portfolio Optimizer'):
+    st.title('Portfolio Optimizer')
+
+
+    st.sidebar.subheader('Ticker Lists:')
+    pickEm = st.sidebar.checkbox('Pick-Em')
+    pickLISTS = st.sidebar.checkbox('Pick From Ticker Lists')
+    
+    if pickEm:
+      stock_tickers = []
+      how_many = int(st.sidebar.text_input('How Many:'))
+      for i in range(how_many):
+        stock_tickers.append(st.sidebar.text_input(f'Ticker #{i}: '))
+      buttonA = st.sidebar.button('Run Optimizer A')
+      if buttonA:
+        f3.The_Portfolio_Optimizer(stock_tickers, 'Pick_EM_Portfolio').optimize()
+
+
+    elif pickLISTS:
+      stockS = st.sidebar.selectbox('(Action # 2) - Choose Ticker List: ', index_ticker_lists_B)
+      for idx, num in enumerate(index_ticker_lists_B):
+        if num == stockS:
+          buttonB = st.sidebar.button('Run Optimizer B')
+          if buttonB:
+            f3.The_Portfolio_Optimizer(index_ticker_lists_A[idx], num).optimize()
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #*     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
