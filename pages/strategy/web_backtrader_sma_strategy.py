@@ -155,7 +155,7 @@ def backtrader_sma_strategy_run(tick):
     fig, ax = plt.subplots()
     ax = cerebro.plot(iplot=False)
     st.pyplot(plt.show())
-    st.pyplot()
+#     st.pyplot()
 
 
 #  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
