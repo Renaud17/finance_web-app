@@ -166,20 +166,15 @@ class Web_prophet_kyle(object):
       # create Cross Validation Model
         df_cv = cross_validation(m, initial='360 days', period='90 days', horizon = '180 days')
         df_p = performance_metrics(df_cv)
+        
+        cutoffs = pd.to_datetime(['2019-02-15', '2019-08-15', '2020-02-15'])
+        df_cv2 = cross_validation(m, cutoffs=cutoffs, horizon='180 days')
+
       # create plot
         fig = plot_cross_validation_metric(df_cv, metric='mape',figsize=(17,8))
         plt.title(f'Cross Validation Model For {self.company2} ({self.stonk2}) - Prophet Model')
         plt.legend(['MeanAvgError(line)/perdictionCount', 'Avg-MeanError(dots)/perdictionCount'], loc='best')
         st.pyplot(fig)
-
-
-        cutoffs = pd.to_datetime(['2019-02-15', '2019-08-15', '2020-02-15'])
-        df_cv2 = cross_validation(m, cutoffs=cutoffs, horizon='180 days')
-      # create plot
-        fig = plot_cross_validation_metric(df_cv2, metric='mape',figsize=(17,8))
-        plt.title(f'Cross Validation -2 Model For {self.company2} ({self.stonk2}) - Prophet Model')
-        plt.legend(['MeanAvgError(line)/perdictionCount', 'Avg-MeanError(dots)/perdictionCount'], loc='best')
-        st.pyplot(fig)        
 
 
       # connect to the cluster
