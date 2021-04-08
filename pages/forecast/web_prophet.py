@@ -134,7 +134,7 @@ class Web_prophet_kyle(object):
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-    def make_forecast2(self, stonk, per, hist='10y'): 
+    def make_forecast2(self, stonk, per, hist='5y'): 
         """forecast the given ticker (stock) period days into the future (from today)
         ---------inputs----------
         > ticker ->> ticker of stock to forecast
@@ -160,7 +160,7 @@ class Web_prophet_kyle(object):
             for x in result['ResultSet']['Result']:
                 if x['symbol'] == symbol:
                     return x['name']
-        self.company = get_symbol(self.stonk2)        
+        self.company2 = get_symbol(self.stonk2)        
 
 
       # create Cross Validation Model
@@ -168,9 +168,10 @@ class Web_prophet_kyle(object):
         cutoffs = pd.to_datetime(['2019-02-15', '2019-08-15', '2020-02-15'])
         df_cv2 = cross_validation(m, cutoffs=cutoffs, horizon='180 days')
         df_p = performance_metrics(df_cv)
+
       # create plot
         fig = plot_cross_validation_metric(df_cv, metric='mape',figsize=(17,8))
-        plt.title(f'Cross Validation Model For {self.company} ({self.stonk}) - Prophet Model')
+        plt.title(f'Cross Validation Model For {self.company2} ({self.stonk2}) - Prophet Model')
         plt.legend(['MeanAvgError(line)/perdictionCount', 'Avg-MeanError(dots)/perdictionCount'], loc='best')
         st.pyplot(fig)
 
