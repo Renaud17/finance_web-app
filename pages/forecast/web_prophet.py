@@ -177,37 +177,37 @@ class Web_prophet_kyle(object):
         st.pyplot(fig)
 
 
-      # connect to the cluster
-        client = Client()
-        df_cv = cross_validation(m, initial='360 days', period='90 days', horizon='180 days', parallel="dask")
-        param_grid={
-            'changepoint_prior_scale':[.001,.01,.1,.5],
-            'seasonality_prior_scale':[.01,.1,1.0,10.0],
-        }
-      # Generate all combinations of parameters
-        all_params = [dict(zip(param_grid.keys(), v))
-                    for v in itertools.product(*param_grid.values())]
-        rmses = []  # Store the RMSEs for each params here
+      # # connect to the cluster
+      #   client = Client()
+      #   df_cv = cross_validation(m, initial='360 days', period='90 days', horizon='180 days', parallel="dask")
+      #   param_grid={
+      #       'changepoint_prior_scale':[.001,.01,.1,.5],
+      #       'seasonality_prior_scale':[.01,.1,1.0,10.0],
+      #   }
+      # # Generate all combinations of parameters
+      #   all_params = [dict(zip(param_grid.keys(), v))
+      #               for v in itertools.product(*param_grid.values())]
+      #   rmses = []  # Store the RMSEs for each params here
 
 
-      # Use cross validation to evaluate all parameters
-        for params in all_params:
-            m = Prophet(**params).fit(df)  # Fit model with given params
-            df_cv = cross_validation(m, cutoffs=cutoffs, horizon='30 days', parallel="processes")
-            df_p = performance_metrics(df_cv, rolling_window=1)
-            rmses.append(df_p['rmse'].values[0])
+      # # Use cross validation to evaluate all parameters
+      #   for params in all_params:
+      #       m = Prophet(**params).fit(df)  # Fit model with given params
+      #       df_cv = cross_validation(m, cutoffs=cutoffs, horizon='30 days', parallel="processes")
+      #       df_p = performance_metrics(df_cv, rolling_window=1)
+      #       rmses.append(df_p['rmse'].values[0])
 
 
-      # Find the ALL parameters
-        tuning_results = pd.DataFrame(all_params)
-        tuning_results['rmse'] = rmses
-        st.subheader('All Tuning Results:')
-        st.dataframe(tuning_results)
+      # # Find the ALL parameters
+      #   tuning_results = pd.DataFrame(all_params)
+      #   tuning_results['rmse'] = rmses
+      #   st.subheader('All Tuning Results:')
+      #   st.dataframe(tuning_results)
 
-      # Find the best parameters
-        best_params = all_params[np.argmin(rmses)]
-        st.subheader('Best Paramaters:')
-        st.text(best_params)
+      # # Find the best parameters
+      #   best_params = all_params[np.argmin(rmses)]
+      #   st.subheader('Best Paramaters:')
+      #   st.text(best_params)
         return
 
 

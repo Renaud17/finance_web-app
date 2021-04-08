@@ -174,7 +174,7 @@ if(systemStage == 'Forecasting'):
     st.header(' *'*34)
 
     st.sidebar.subheader('Select The Forcast Horizon')
-    forcast_horizon = st.sidebar.radio('Forcast Range Options', [180,360,720])
+    forcast_horizon = st.sidebar.radio('Forcast Range Options', [180,360])
     st.sidebar.write(' *'*25)
 
     st.sidebar.header('WHICH MOD')
@@ -186,8 +186,7 @@ if(systemStage == 'Forecasting'):
       staged_button = st.sidebar.button(f"Configure-{model.capitalize()}-Model")
       st.sidebar.write(' *'*25)
       if staged_button:
-        historical_data='2Y'
-        f1.Web_prophet_kyle(stock_ticker).make_forecast1(stock_ticker,forcast_horizon, historical_data)
+        f1.Web_prophet_kyle(stock_ticker).make_forecast1(stock_ticker,forcast_horizon, '2y')
         st.title('Model Render Complete')
 
     if which_mod == 'full_run':
@@ -196,8 +195,7 @@ if(systemStage == 'Forecasting'):
       staged_button = st.sidebar.button(f"Configure-{model.capitalize()}-Model")
       st.sidebar.write(' *'*25)
       if staged_button:
-        historical_data='2Y'
-        f1.Web_prophet_kyle(stock_ticker).make_forecast1(stock_ticker,forcast_horizon, historical_data)
+        f1.Web_prophet_kyle(stock_ticker).make_forecast1(stock_ticker,forcast_horizon, '2y')
         st.header('Model-A Render Complete')     
         f1.Web_prophet_kyle(stock_ticker).make_forecast2(stock_ticker,forcast_horizon)        
         st.title('Model-B Render Complete')
@@ -210,11 +208,11 @@ if(systemStage == 'Forecasting'):
   if(model=='Stocker Analysis'):
     st.title('STOCKER MODELING')
 
-    run_strategy = st.sidebar.button("Run")
-
     if stock_ticker:
-      f1.web_stocker_run(stock_ticker)
-      st.title('Model Render Complete')
+      run_strategy_stocker = st.sidebar.button("Run Stocker")
+      if run_strategy_stocker:
+        f1.web_stocker_run(stock_ticker)
+        st.title('Model Render Complete')
 
 
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -224,8 +222,6 @@ if(systemStage == 'Forecasting'):
   if(model=='A.R.I.M.A'):
     st.title('(A.R.I.M.A)')
     st.header('Auto Regression Integrated Moving Average')
-
-    run_strategy = st.sidebar.button("Run")
 
     if stock_ticker:
       run_strategy_arima = st.button("Run ARIMA")
@@ -295,8 +291,6 @@ if(systemStage == 'Forecasting'):
     st.markdown(' * This is a process you can execute in Excel but it is not simple to do without some VBA \
       or potentially expensive third party plugins.')
 
-    run_strategy = st.sidebar.button("Run")
-
     if stock_ticker:
       run_strategy_monteCarlo = st.sidebar.button("Run Monte Carlo")
       if run_strategy_monteCarlo:
@@ -314,8 +308,6 @@ if(systemStage == 'Forecasting'):
       exchange rate without taking into account the effect of the other variables such as prices and interest rates.\
         If this is the case, then there is no need to take an explicit account of these variables."
     )
-
-    run_strategy = st.sidebar.button("Run")
 
     if stock_ticker:
       f1.univariate(stock_ticker).runs()
