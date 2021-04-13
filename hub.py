@@ -70,7 +70,7 @@ from pages import portfolio as f3
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-saveTickers = Path('tickers/')
+saveTickers = Path('projects/active/Forecasting_For_Friends/tickers/')
 
 indices_dow = ['^DJI','^DJT','^DJU','^DJA']                  # Industrial, Transportation, Utility, Composite
 indices_sp = ['^GSPC','^OEX','^MID','^SP1000','^SP1500']     # SP500, SP100, SP400, SP400-MID, SP1000, SP1500
@@ -102,15 +102,37 @@ watch_lst = pd.read_pickle(saveTickers / f'watch_merged_ticker_lst.pkl')
 my_tickers = my_positions + watch_lst
 
 
-index_ticker_lists_A = [
-  dow, sp100, sp400, sp500, indices_main, my_tickers, my_positions, watch_lst,
-  indices_dow, indices_sp, indices_nasdaq, indices_nyse, indices_russell, indices_foreign, indices_cboe,
-  track_sp500, track_russell, track_total_mkt, track_vanguard
+
+def clean(listA):
+    lst = list(set(listA))
+    lst.sort()
+    return lst
+
+
+stock_advisor = [
+    'LMND','ZM','TTD','PINS','TEAM','SAM','DIS','ASML','ECL','NYT','LRCX',
+    'NTDOY','PYPL','AMZN','ABNB','ATVI','ZM','SKLZ','SHOP', 'STAA','LULU','WING',
+    'ETSY','BL','RDFN','LOGI','EQIX','U','RGEN','CHGG','PINS','FUBO','W','MRNA','AXON',
+    'SNBR','TDOC','GDRX','PLNT'
 ]
+stock_advisor = clean(stock_advisor)
+
+rule_breakers = [
+  'PLNT','GDRX','RDFN','PINS','LULU','AVAV','FSLY','AXON','BL','ZEN','DDOG','NEE','CRM','TEAM','ZG','Z','TWLO',
+  'RMD','STAA','WING','ETSY','LOGI','EQIX','U','RGEN','CHGG','FUBO','LO','MRNA','SNBR','TDOC'
+]
+rule_breakers = clean(rule_breakers)
+
+
+
+index_ticker_lists_A = [
+  stock_advisor, rule_breakers,
+  dow, sp100, sp400, sp500, my_tickers, my_positions, watch_lst,
+ ]
+
 index_ticker_lists_B = [
-  'dow', 'sp100', 'sp400', 'sp500', 'indices_main', 'my_tickers', 'my_positions', 'watch_lst',
-  'indices_dow', 'indices_sp', 'indices_nasdaq', 'indices_nyse', 'indices_russell', 'indices_foreign', 'indices_cboe',
-  'track_sp500', 'track_russell', 'track_total_mkt', 'track_vanguard'
+  'stock_advisor', 'rule_breakers',
+  'dow', 'sp100', 'sp400', 'sp500', 'my_tickers', 'my_positions', 'watch_lst',
 ]
 
 
@@ -122,16 +144,230 @@ index_ticker_lists_B = [
 st.progress(0)
 st.balloons()
 
-systemStage = st.selectbox(
-  '(Action # 1) - Select The System Stage', 
-  [
-    '-Select-Stage-','Forecasting','Strategy', 'Portfolio'
+systemStage = st.sidebar.selectbox(
+    '(Action # 1) - Select The System To Utalize:', 
+    [
+        '-Select-Stage-','Fundamental-Analysis', 'Technical-Analysis', 'Portfolio', 'Forecasting','Strategy'
     ]
 )
 
 if(systemStage=='-Select-Stage-'):
   st.title('Fun Forecasting For Friends')
   st.subheader('* Select A Stage Then Use the  Side Bar to:')
+
+
+snp500 = pd.read_csv("projects/active/Forecasting_For_Friends/files/SP500.csv")
+symbols = snp500['Symbol'].sort_values().tolist()     
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+ 
+# if(systemStage == 'Coming-Soon'):
+#     TICKER = st.text_input('Enter A Stock Ticker: ')
+#     The_Prophet(TICKER)
+#     st.button('Hit me')
+#     st.checkbox('Check me out')
+#     st.radio('Radio', [1,2,3])
+#     st.selectbox('Select', [1,2,3])
+#     st.multiselect('Multiselect', [1,2,3])
+#     st.slider('Slide me', min_value=0, max_value=10)
+#     st.select_slider('Slide to select', options=[1,'2'])
+#     st.text_input('Enter some text')
+#     st.number_input('Enter a number')
+#     st.text_area('Area for textual entry')
+#     st.date_input('Date input')
+#     st.time_input('Time entry')
+#     st.file_uploader('File uploader')
+#     st.color_picker('Pick a color')
+    
+    
+
+if(systemStage == 'Fundamental-Analysis'):
+    ticker = st.sidebar.selectbox('(3) Choose Stock Ticker',symbols)
+    st.sidebar.markdown('Hit the "RUN" button to start')
+    run_button = False
+    run_button = st.sidebar.button('RUN',True)
+    stock = yf.Ticker(ticker)
+    info = stock.info
+
+    stock = yf.Ticker(ticker)
+    info = stock.info 
+    st.title('Company Profile')
+    st.subheader(info['longName']) 
+    st.markdown('** Sector **: ' + info['sector'])
+    st.markdown('** Industry **: ' + info['industry'])
+    st.markdown('** Phone **: ' + info['phone'])
+    st.markdown('** Address **: ' + info['address1'] + ', ' + info['city'] + ', ' + info['zip'] + ', '  +  info['country'])
+    st.markdown('** Website **: ' + info['website'])
+    st.markdown('** Business Summary **')
+    st.info(info['longBusinessSummary'])
+        
+    fundInfo = {
+            'Enterprise Value (USD)': info['enterpriseValue'],
+            'Enterprise To Revenue Ratio': info['enterpriseToRevenue'],
+            'Enterprise To Ebitda Ratio': info['enterpriseToEbitda'],
+            'Net Income (USD)': info['netIncomeToCommon'],
+            'Profit Margin Ratio': info['profitMargins'],
+            'Forward PE Ratio': info['forwardPE'],
+            'PEG Ratio': info['pegRatio'],
+            'Price to Book Ratio': info['priceToBook'],
+            'Forward EPS (USD)': info['forwardEps'],
+            'Beta ': info['beta'],
+            'Book Value (USD)': info['bookValue'],
+            'Dividend Rate (%)': info['dividendRate'], 
+            'Dividend Yield (%)': info['dividendYield'],
+            'Five year Avg Dividend Yield (%)': info['fiveYearAvgDividendYield'],
+            'Payout Ratio': info['payoutRatio']
+        }
+    fundDF = pd.DataFrame.from_dict(fundInfo, orient='index')
+    fundDF = fundDF.rename(columns={0: 'Value'})
+    st.subheader('Fundamental Info') 
+    st.table(fundDF)
+    
+    st.subheader('General Stock Info') 
+    st.markdown('** Market **: ' + info['market'])
+    st.markdown('** Exchange **: ' + info['exchange'])
+    st.markdown('** Quote Type **: ' + info['quoteType'])
+    
+    start = datetime.today()-timedelta(2 * 365)
+    end = datetime.today()
+    df = yf.download(ticker,start,end)
+    df = df.reset_index()
+    
+    fig = go.Figure(data=go.Scatter(x=df['Date'], y=df['Adj Close']))
+    fig.update_layout(
+        title={
+            'text': "Stock Prices Over Past Two Years",
+            'y':0.9, 
+            'x':0.5,
+            'xanchor': 'center', 
+            'yanchor': 'top'
+        }
+    )
+    st.plotly_chart(fig, use_container_width=True)
+    marketInfo = {
+            "Volume": info['volume'],
+            "Average Volume": info['averageVolume'],
+            "Market Cap": info["marketCap"],
+            "Float Shares": info['floatShares'],
+            "Regular Market Price (USD)": info['regularMarketPrice'],
+            'Bid Size': info['bidSize'],
+            'Ask Size': info['askSize'],
+            "Share Short": info['sharesShort'],
+            'Short Ratio': info['shortRatio'],
+            'Share Outstanding': info['sharesOutstanding']
+        }
+    
+    marketDF = pd.DataFrame(data=marketInfo, index=[0])
+    st.table(marketDF)
+else:
+    def calcMovingAverage(data, size):
+        df = data.copy()
+        df['sma'] = df['Adj Close'].rolling(size).mean()
+        df['ema'] = df['Adj Close'].ewm(span=size, min_periods=size).mean()
+        df.dropna(inplace=True)
+        return df
+    
+    def calc_macd(data):
+        df = data.copy()
+        df['ema12'] = df['Adj Close'].ewm(span=12, min_periods=12).mean()
+        df['ema26'] = df['Adj Close'].ewm(span=26, min_periods=26).mean()
+        df['macd'] = df['ema12'] - df['ema26']
+        df['signal'] = df['macd'].ewm(span=9, min_periods=9).mean()
+        df.dropna(inplace=True)
+        return df
+
+    def calcBollinger(data, size):
+        df = data.copy()
+        df["sma"] = df['Adj Close'].rolling(size).mean()
+        df["bolu"] = df["sma"] + 2*df['Adj Close'].rolling(size).std(ddof=0) 
+        df["bold"] = df["sma"] - 2*df['Adj Close'].rolling(size).std(ddof=0) 
+        df["width"] = df["bolu"] - df["bold"]
+        df.dropna(inplace=True)
+        return df
+
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+ 
+if(systemStage == 'Technical-Analysis'):
+    ticker = st.sidebar.selectbox('(3) Choose Stock Ticker',symbols)
+    st.sidebar.markdown('Hit the "RUN" button to start')
+    run_button = False
+    run_button = st.sidebar.button('RUN',True)
+
+    st.title('Technical Indicators')
+    st.subheader('Moving Average')
+    coMA1, coMA2 = st.beta_columns(2)
+    with coMA1:
+        numYearMA = st.number_input('Insert period (Year): ', min_value=1, max_value=10, value=2, key=0)    
+    with coMA2:
+        windowSizeMA = st.number_input('Window Size (Day): ', min_value=5, max_value=500, value=20, key=1)  
+        
+    start = datetime.today()-timedelta(numYearMA * 365)
+    end = datetime.today()
+    
+    dataMA = yf.download(ticker,start,end)
+    df_ma = calcMovingAverage(dataMA, windowSizeMA)
+    df_ma = df_ma.reset_index()
+    
+    figMA = go.Figure()    
+    figMA.add_trace(go.Scatter(x=df_ma['Date'], y=df_ma['Adj Close'], name="Prices Over Last "+str(numYearMA)+" Year(s)"))    
+    figMA.add_trace(go.Scatter(x=df_ma['Date'], y=df_ma['sma'], name="SMA"+str(windowSizeMA)+" Over Last "+str(numYearMA)+" Year(s)"))
+    figMA.add_trace(go.Scatter(x=df_ma['Date'], y=df_ma['ema'], name="EMA"+str(windowSizeMA)+" Over Last "+str(numYearMA)+" Year(s)"))
+    figMA.update_layout(legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01))
+    figMA.update_layout(legend_title_text='Trend')
+    figMA.update_yaxes(tickprefix="$")
+    st.plotly_chart(figMA, use_container_width=True)  
+    
+    st.subheader('Moving Average Convergence Divergence (MACD)')
+    numYearMACD = st.number_input('Insert period (Year): ', min_value=1, max_value=10, value=2, key=2) 
+    startMACD = datetime.today()-timedelta(numYearMACD * 365)
+    endMACD = datetime.today()
+    dataMACD = yf.download(ticker,startMACD,endMACD)
+    df_macd = calc_macd(dataMACD)
+    df_macd = df_macd.reset_index()
+    
+    figMACD = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.01)
+    figMACD.add_trace(go.Scatter(x = df_macd['Date'], y = df_macd['Adj Close'], name = "Prices Over Last " + str(numYearMACD) + " Year(s)"), row=1, col=1)
+    figMACD.add_trace(go.Scatter(x = df_macd['Date'], y = df_macd['ema12'], name = "EMA 12 Over Last " + str(numYearMACD) + " Year(s)"), row=1, col=1)
+    figMACD.add_trace(go.Scatter(x = df_macd['Date'], y = df_macd['ema26'], name = "EMA 26 Over Last " + str(numYearMACD) + " Year(s)"), row=1, col=1)
+    figMACD.add_trace(go.Scatter(x = df_macd['Date'], y = df_macd['macd'], name = "MACD Line"), row=2, col=1)
+    figMACD.add_trace(go.Scatter(x = df_macd['Date'], y = df_macd['signal'], name = "Signal Line"), row=2, col=1)
+    figMACD.update_layout(legend=dict(orientation="h", yanchor="bottom", y=1, xanchor="left", x=0))
+    figMACD.update_yaxes(tickprefix="$")
+    st.plotly_chart(figMACD, use_container_width=True)
+    
+    st.subheader('Bollinger Band')
+    coBoll1, coBoll2 = st.beta_columns(2)
+    with coBoll1:
+        numYearBoll = st.number_input('Insert period (Year): ', min_value=1, max_value=10, value=2, key=6) 
+    with coBoll2:
+        windowSizeBoll = st.number_input('Window Size (Day): ', min_value=5, max_value=500, value=20, key=7)
+        
+    startBoll= datetime.today()-timedelta(numYearBoll * 365)
+    endBoll = datetime.today()
+    dataBoll = yf.download(ticker,startBoll,endBoll)
+    df_boll = calcBollinger(dataBoll, windowSizeBoll)
+    df_boll = df_boll.reset_index()
+    
+    figBoll = go.Figure()
+    figBoll.add_trace(go.Scatter(x = df_boll['Date'], y = df_boll['bolu'], name = "Upper Band"))
+    figBoll.add_trace(go.Scatter(x=df_boll['Date'], y=df_boll['sma'], name="SMA"+str(windowSizeBoll)+" Over Last "+str(numYearBoll)+" Year(s)"))
+    figBoll.add_trace(go.Scatter(x = df_boll['Date'], y = df_boll['bold'], name = "Lower Band"))
+    figBoll.update_layout(legend=dict(orientation="h", yanchor="bottom", y=1, xanchor="left", x=0))
+    figBoll.update_yaxes(tickprefix="$")
+    st.plotly_chart(figBoll, use_container_width=True)
+
+
+    
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+
 
 
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
