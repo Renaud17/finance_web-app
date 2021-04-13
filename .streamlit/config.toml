@@ -1,0 +1,31 @@
+#[theme]
+#primaryColor="#c3070b"
+#backgroundColor="#054454"
+#secondaryBackgroundColor="#7e959c"
+#textColor="#fafafa"
+#font="monospace"
+
+
+
+[theme]
+primaryColor = "#d33682"
+backgroundColor = "#002b36"
+secondaryBackgroundColor = "#586e75"
+textColor = "#fafafa"
+font = "sans serif"
+
+
+#[theme]
+#primaryColor = "#575fe8"
+#backgroundColor = "#f5f7f3"
+#secondaryBackgroundColor = "#c9eab8"
+#textColor = "#262730"
+#font = "sans serif"
+
+
+#[theme]
+#primaryColor = "#E694FF"
+#backgroundColor = "#00172B"
+#secondaryBackgroundColor = "#0083B8"
+#textColor = "#C6CDD4"
+#font = "sans-serif"
