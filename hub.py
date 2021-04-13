@@ -173,7 +173,6 @@ index_ticker_lists_B = [
 
 
 st.progress(0)
-st.balloons()
 
 systemStage = st.sidebar.selectbox(
     '(Action # 1) - Select The System To Utalize:', 
