@@ -1,18 +1,18 @@
-#[theme]
-#primaryColor="#c3070b"
-#backgroundColor="#054454"
-#secondaryBackgroundColor="#7e959c"
-#textColor="#fafafa"
-#font="monospace"
-
-
-
 [theme]
-primaryColor = "#d33682"
-backgroundColor = "#002b36"
-secondaryBackgroundColor = "#586e75"
-textColor = "#fafafa"
-font = "sans serif"
+primaryColor="#c3070b"
+backgroundColor="#054454"
+secondaryBackgroundColor="#7e959c"
+textColor="#fafafa"
+font="monospace"
+
+
+
+#[theme]
+#primaryColor = "#d33682"
+#backgroundColor = "#002b36"
+#secondaryBackgroundColor = "#586e75"
+#textColor = "#fafafa"
+#font = "sans serif"
 
 
 #[theme]
