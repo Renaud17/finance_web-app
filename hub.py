@@ -70,7 +70,7 @@ from pages import portfolio as f3
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-saveTickers = Path('projects/active/Forecasting_For_Friends/tickers/')
+saveTickers = Path('tickers/')
 
 indices_dow = ['^DJI','^DJT','^DJU','^DJA']                  # Industrial, Transportation, Utility, Composite
 indices_sp = ['^GSPC','^OEX','^MID','^SP1000','^SP1500']     # SP500, SP100, SP400, SP400-MID, SP1000, SP1500
@@ -128,7 +128,8 @@ rule_breakers = clean(rule_breakers)
 index_ticker_lists_A = [
   stock_advisor, rule_breakers,
   dow, sp100, sp400, sp500, my_tickers, my_positions, watch_lst,
- ]
+  `````````````
+]
 
 index_ticker_lists_B = [
   'stock_advisor', 'rule_breakers',
