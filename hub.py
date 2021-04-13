@@ -156,7 +156,7 @@ if(systemStage=='-Select-Stage-'):
   st.subheader('* Select A Stage Then Use the  Side Bar to:')
 
 
-snp500 = pd.read_csv("projects/active/Forecasting_For_Friends/files/SP500.csv")
+snp500 = pd.read_csv("files/SP500.csv")
 symbols = snp500['Symbol'].sort_values().tolist()     
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
