@@ -194,36 +194,17 @@ if(systemStage=='-Select-Stage-'):
   st.title('Fun Forecasting For Friends')
   st.subheader('* Select A Stage Then Use the  Side Bar to:')
 
-
 snp500 = pd.read_csv("files/SP500.csv")
-symbols = snp500['Symbol'].sort_values().tolist()     
+symbols = snp500['Symbol'].sort_values().tolist()
+
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
- 
-# if(systemStage == 'Coming-Soon'):
-#     TICKER = st.text_input('Enter A Stock Ticker: ')
-#     The_Prophet(TICKER)
-#     st.button('Hit me')
-#     st.checkbox('Check me out')
-#     st.radio('Radio', [1,2,3])
-#     st.selectbox('Select', [1,2,3])
-#     st.multiselect('Multiselect', [1,2,3])
-#     st.slider('Slide me', min_value=0, max_value=10)
-#     st.select_slider('Slide to select', options=[1,'2'])
-#     st.text_input('Enter some text')
-#     st.number_input('Enter a number')
-#     st.text_area('Area for textual entry')
-#     st.date_input('Date input')
-#     st.time_input('Time entry')
-#     st.file_uploader('File uploader')
-#     st.color_picker('Pick a color')
-    
-    
 
 if(systemStage == 'Fundamental-Analysis'):
-    ticker = st.sidebar.selectbox('(3) Choose Stock Ticker',symbols)
+    # ticker = st.sidebar.selectbox('(3) Choose Stock Ticker',symbols)
+    ticker = st.sidebar.text_input('Enter Stock Ticker To Search The Company Fundamental Information')
     st.sidebar.markdown('Hit the "RUN" button to start')
     run_button = False
     run_button = st.sidebar.button('RUN',True)
