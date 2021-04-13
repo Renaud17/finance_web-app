@@ -127,13 +127,12 @@ rule_breakers = clean(rule_breakers)
 
 index_ticker_lists_A = [
   stock_advisor, rule_breakers,
-  dow, sp100, sp400, sp500, my_tickers, my_positions, watch_lst,
-  `````````````
+  dow, sp100, sp400, sp500, my_tickers, my_positions, watch_lst
 ]
 
 index_ticker_lists_B = [
   'stock_advisor', 'rule_breakers',
-  'dow', 'sp100', 'sp400', 'sp500', 'my_tickers', 'my_positions', 'watch_lst',
+  'dow', 'sp100', 'sp400', 'sp500', 'my_tickers', 'my_positions', 'watch_lst'
 ]
 
 
