@@ -70,69 +70,108 @@ from pages import portfolio as f3
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-saveTickers = Path('tickers/')
+def clean(listA):
+    lst = list(set(listA))
+    lst.sort()
+    return lst
 
-indices_dow = ['^DJI','^DJT','^DJU','^DJA']                  # Industrial, Transportation, Utility, Composite
-indices_sp = ['^GSPC','^OEX','^MID','^SP1000','^SP1500']     # SP500, SP100, SP400, SP400-MID, SP1000, SP1500
-indices_nasdaq = ['^IXCI','^NDX','^IXCO','^IXHC','^IXF']     # NASDAQ, COMP, NASDAQ-100, Computer, HC, Fin100
-indices_nyse = ['^NYA','^PSE','^XAX','^XMI']                 # NYSEComp, ArcaTech100, AMEXComp, ArcaMajorMkt
-indices_russell = ['^RUA','^RUT','RUI']                      # Russell-3k, Russell-2k, Russell-1k
-indices_foreign = ['^FTSE','^GDAXI']                         # FTSE-100, DAX-Performance
-indices_cboe = ['^VIX','^TNX','TYX']                         # CBOE-Vol, 10-YrT, 30-YrT
-track_sp500 = ['SPY','SPLG','IVV','VOO']                     # SPDR-etf, SPDRPort-etf, iSharesCore, Van-etf
-track_russell = ['IWM','VTWO','URTY']                        # iShareRuss2k, VanRuss2k, ProSharesRuss2k
-track_total_mkt = ['VTSAX', 'FSKAX','SWTSX','IWV']           # VanTtlMkt, FidTtlMkt, SchwabTtlMkt, iShRus3k
-track_vanguard = ['VFINX','VFIAX','VIMAX','VTSAX','VSMAX']   # Inv, Adm500, MID-Adm, TtlMkt-Adm, SmCapAdm  
+saveTickers = Path('tickers/')
 
 dow = pd.read_pickle(saveTickers / f'dow_ticker_lst.pkl')
 sp100 = pd.read_pickle(saveTickers / f'sp100_ticker_lst.pkl')
-sp400 = pd.read_pickle(saveTickers / f'sp400_ticker_lst.pkl')
 sp500 = pd.read_pickle(saveTickers / f'sp500_ticker_lst.pkl')
-sp600 = pd.read_pickle(saveTickers / f'sp600_ticker_lst.pkl')
-sp1000 = pd.read_pickle(saveTickers / f'sp1000_ticker_lst.pkl')
-nasdaq_lst = pd.read_pickle(saveTickers / f'nasdaq_ticker_lst.pkl')
-other_lst = pd.read_pickle(saveTickers / f'other_ticker_lst.pkl')
 
 indices_main = ['^OEX','^MID','^GSPC','^DJI','^NYA','^RUT','^W5000']
 index_names = ['SP100','SP400','SP500','DOW','NYSE','Russ2k','Wilshire5k']
 combined_index_main_names = [list(x) for x in zip(indices_main, index_names)]
 
 my_positions = pd.read_pickle(saveTickers / f'chuck_merged_ticker_lst.pkl')
-watch_lst = pd.read_pickle(saveTickers / f'watch_merged_ticker_lst.pkl')
-my_tickers = my_positions + watch_lst
+watch_lst0 = pd.read_pickle(saveTickers / f'watch_merged_ticker_lst.pkl')
+watch_lst_bulk = my_positions + watch_lst0
 
-
-
-def clean(listA):
-    lst = list(set(listA))
-    lst.sort()
-    return lst
-
-
-stock_advisor = [
+fool_stock_advisor = [
     'LMND','ZM','TTD','PINS','TEAM','SAM','DIS','ASML','ECL','NYT','LRCX',
     'NTDOY','PYPL','AMZN','ABNB','ATVI','ZM','SKLZ','SHOP', 'STAA','LULU','WING',
     'ETSY','BL','RDFN','LOGI','EQIX','U','RGEN','CHGG','PINS','FUBO','W','MRNA','AXON',
     'SNBR','TDOC','GDRX','PLNT'
 ]
-stock_advisor = clean(stock_advisor)
-
-rule_breakers = [
+fool_rule_breakers = [
   'PLNT','GDRX','RDFN','PINS','LULU','AVAV','FSLY','AXON','BL','ZEN','DDOG','NEE','CRM','TEAM','ZG','Z','TWLO',
   'RMD','STAA','WING','ETSY','LOGI','EQIX','U','RGEN','CHGG','FUBO','LO','MRNA','SNBR','TDOC'
 ]
-rule_breakers = clean(rule_breakers)
-
-
-
-index_ticker_lists_A = [
-  stock_advisor, rule_breakers,
-  dow, sp100, sp400, sp500, my_tickers, my_positions, watch_lst
+oxford_dynamicFortunes = [
+  'BZH','CROX','HA','HAS','PFGC','POOL','GDOT','HUYA','GRUB','FSLR','SPWR','GS','BYND','PFGC','VRA'
+]
+oxford_strategicTrends = [
+  'NLOK','NET','BYND','YETI','CURLF','ALB','WMT','DG','BCO','NFE','UBER','RUN','BABA','FAST','CRLBF','LUN-T','TRIP','FCEL'
+]
+oxford_ST_fortuneHunters = [
+  'ALB','BABA','FAST','FCEL','LUN-T','YETI'
+]
+oxford_ST_foundation = [
+  'BCO','DG','DLR','GRMN','WMT'
+]
+oxford_ST_trailblazer = [
+  'LSCC','MU','NVDA','TRIP','UBER'
+]
+oxford_ST_reefer = [
+  'CRLBF','CURLF','IIPR'
+]
+oxford_trading = [
+  'CVS','XLE','IBM','ORCL','VZ','DEM','WIX','ZEN'
+]
+oxford_goneFishin = [
+  'VWEHX, VSMAX','VIPSX','VFSTX','VEMAX','VTSAX','VPADX','VGSLX','VEUSX','GDX'
+]
+oxford_baggers = [
+  'GKOS','MRVL','NEO','NVCR','PFPT'
+]
+oxford_allstars = [
+  'TDF','PSHZF','MKL','IEP','EQR','EMF','BRK-B'
+]
+blockchain = [
+  'AIG','F','PFE','V','WMT','JLL','MCK','RDS-B','BUD','DAL','RIOT','MRNA','AMKBY','BRPHF','ZEST'
+]
+oxford_comminique = [
+  'WIX','PSHZF','ZEN','IBM','VZ','XLE','ORCL','NEO','LBTYA','DRNA'
+]
+oxford_CASH_list = [
+  'EA','EGHT','BZUN','TTWO','EBAY','FTNT','SAIL','BABA',
+  'SAM','COLM','DPZ','EXPE','NUVA','EA','HSY','HAS','NFLX','SIX'
+]
+my_new_kicks = [
+  'AAPL','ASML','BLDP','BA','CRLBF','GWPH','NVDA','PLTR','SNOW','SIVB','TSLA','HRVSF','ARKG','ARKK','GBTC','ECL','NNOX','OKTA','CRM','SOHU',
+  'FVRR','LTCN','OROCF','ETCG','APHA','BILI','CLLS','COUP','CUE','NYT','RIOT','SE','SQ','TECK'
 ]
 
+fool_stock_advisor = clean(fool_stock_advisor)
+fool_rule_breakers = clean(fool_rule_breakers)
+oxford_dynamicFortunes = clean(oxford_dynamicFortunes)
+oxford_strategicTrends = clean(oxford_strategicTrends)
+oxford_ST_fortuneHunters = clean(oxford_ST_fortuneHunters)
+oxford_ST_foundation = clean(oxford_ST_foundation)
+oxford_ST_trailblazer = clean(oxford_ST_trailblazer)
+oxford_ST_reefer = clean(oxford_ST_reefer)
+oxford_trading = clean(oxford_trading)
+oxford_goneFishin = clean(oxford_goneFishin)
+oxford_baggers = clean(oxford_baggers)
+oxford_allstars = clean(oxford_allstars)
+blockchain = clean(blockchain)
+oxford_comminique = clean(oxford_comminique)
+oxford_CASH_list = clean(oxford_CASH_list)
+my_new_kicks = clean(my_new_kicks)
+
+index_ticker_lists_A = [
+  fool_stock_advisor, fool_rule_breakers, oxford_dynamicFortunes, oxford_strategicTrends, oxford_ST_fortuneHunters, 
+  oxford_ST_foundation, oxford_ST_trailblazer, oxford_ST_reefer, oxford_trading, oxford_goneFishin, oxford_baggers, 
+  oxford_allstars, blockchain, oxford_comminique, oxford_CASH_list, my_new_kicks, watch_lst_bulk,
+  dow, sp100, sp500
+]
 index_ticker_lists_B = [
-  'stock_advisor', 'rule_breakers',
-  'dow', 'sp100', 'sp400', 'sp500', 'my_tickers', 'my_positions', 'watch_lst'
+  'fool_stock_advisor', 'fool_rule_breakers', 'oxford_dynamicFortunes', 'oxford_strategicTrends', 'oxford_ST_fortuneHunters', 
+  'oxford_ST_foundation', 'oxford_ST_trailblazer', 'oxford_ST_reefer', 'oxford_trading', 'oxford_goneFishin', 'oxford_baggers', 
+  'oxford_allstars', 'blockchain', 'oxford_comminique', 'oxford_CASH_list', 'my_new_kicks', 'watch_lst_bulk',
+  'dow', 'sp100', 'sp500'
 ]
 
 
