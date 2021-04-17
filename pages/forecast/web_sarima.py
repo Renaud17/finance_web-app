@@ -250,7 +250,7 @@ class The_SARIMA_Model(object):
     def predict(self):
         self.fitModel_to_SARIMAX()
         self.n = len(self.df_settle.index)
-        self.prediction = self.model_results.get_prediction(start=self.n - 30, end=self.n + 6)
+        self.prediction = self.model_results.get_prediction(start=self.n - 12*3, end=self.n + 6)
         self.prediction_ci = self.prediction.conf_int()
 
         fig, ax = plt.subplots()
