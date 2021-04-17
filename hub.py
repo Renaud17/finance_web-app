@@ -292,7 +292,7 @@ if(systemStage == 'Fundamental-Analysis'):
           }
       marketDF = pd.DataFrame(data=marketInfo, index=[0])
       st.table(marketDF)
-
+      st.write(' *'*25)
       st.subheader('- To Work In A Different Analysis Category:')
       st.write('* Go To Step #1')
       st.subheader('- To Use Other Models Within This Same Analysis Category:')
@@ -439,11 +439,11 @@ if(systemStage == 'Technical-Analysis'):
       figBoll.update_layout(legend=dict(orientation="h", yanchor="bottom", y=1, xanchor="left", x=0))
       figBoll.update_yaxes(tickprefix="$")
       st.plotly_chart(figBoll, use_container_width=True)
-
+      st.write(' *'*25)
       st.subheader('- To Work In A Different Analysis Category:')
       st.write('* Go To Step #1')
       st.subheader('- To Use Other Models Within This Same Analysis Category:')
-      st.write('* Go To Step #2')      
+      st.write('* Go To Step #2')
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -634,15 +634,49 @@ if(systemStage == 'Forecasting'):
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-if(systemStage=='Strategy'):
-  st.subheader("Use The Side Bar via the Arrow ('>') on the upper left corner of the screen")
+if(systemStage=='Strategy'): 
+  st.title('Strategy Home Page')
+  st.write(' *'*25)
+  st.header('> Site Navigation:')
+  st.write("\n* Use The Side Bar via the Arrow ('>') on the upper left corner of the screen")
+  st.subheader('~ To Work In A Different Analysis Category:')
+  st.write('* Go To Step #1')
+  st.subheader('~ To Use Other Models Within This Same Analysis Category:')
+  st.write('* Go To Step #2')
+  st.write(' *'*25)
+  
+  st.header('> General Analysis Components')
+  st.subheader('Moving Averages')
+  st.write('* Double Moving Averages')
+  st.write('* Exponential Moving Average (EMA)')
+  st.write('* Simple Moving Average (SMA)')
+  st.write('* Bollinger Bands')
+  st.write('* MOM')
+  st.write('* MACD')
+  st.write('* RSI')
+  st.write('* APO')
+  st.subheader('Regression')
+  st.write('* Linear Regression')
+  st.write('* Quadratic Regression 2 & 3')
+  st.write('* KNN')
+  st.write('* Lasso')      
+  st.write('* Ridge')
+  st.write('* Logistic Regression')
+
+  st.header('Speciality Trading')
+  st.write('* naive momentum')
+  st.write('* Pairs Correlation Trading')
+  st.write('* Support & Resistance')
+  st.write('* Turtle Trading')
+  st.write('* Mean Reversion & Trend Following')          
+  st.write('* Volatility Mean Reversion & Trend Following')
   
   models = [
-    '-Select-Model-','Moving Averages - SMA & EMA','Moving Averages - B','Support & Resistance Lines','overBought_overSold',
-    'Backtrader - SMA Strategy','BackTesting - 1'
+    '-Select-Model-','Moving Averages - SMA & EMA','Moving Averages - B','Support & Resistance Lines',
+    'overBought_overSold','Backtrader - SMA Strategy','BackTesting - 1'
   ]
-  model = st.sidebar.selectbox('(Action # 2) - Choose A Model', models)
 
+  model = st.sidebar.selectbox('(Action # 2) - Choose A Model', models)
   stock_ticker = st.sidebar.text_input('(Action # 3) - Type In Stock Ticker To Model: ')
   st.sidebar.write(' * example: TSLA ')
   run_strategy = st.sidebar.button("Run")
@@ -653,6 +687,7 @@ if(systemStage=='Strategy'):
   
 
   if(model=='Backtrader - SMA Strategy'):
+    fin = False
     st.title('Backtrader For Testing - SMA Strategy')
     st.write('details')
 
@@ -660,6 +695,11 @@ if(systemStage=='Strategy'):
       run_strategy_backtraderSMA = st.sidebar.button("Run Backtrader SMA Strategy")
       if run_strategy_backtraderSMA:
         f2.backtrader_sma_strategy_run(stock_ticker)
+        fin = True
+
+    if fin:
+      st.write(' *'*25)
+      st.title('Model Render Complete')        
       
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -667,6 +707,7 @@ if(systemStage=='Strategy'):
 
 
   if(model=='BackTesting - 1'):
+    fin = False
     st.title('BackTesting - 1')
     st.write('details')
 
@@ -674,6 +715,11 @@ if(systemStage=='Strategy'):
       run_strategy_backtesting1 = st.sidebar.button("Run Backtest 1")
       if run_strategy_backtesting1:
         f2.Web_One(stock_ticker)
+        fin = True
+
+    if fin:
+      st.write(' *'*25)
+      st.title('Model Render Complete')        
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -681,6 +727,7 @@ if(systemStage=='Strategy'):
 
   
   if(model=='Moving Averages - SMA & EMA'):
+    fin = False
     st.title('Moving Averages - SMA & EMA')
 
     if stock_ticker:
@@ -703,7 +750,12 @@ if(systemStage=='Strategy'):
           long_window = 50, 
           moving_avg = 'EMA', 
           display_table = True
-        )       
+        )
+      fin = True
+
+    if fin:
+      st.write(' *'*25)
+      st.title('Model Render Complete')      
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -712,11 +764,17 @@ if(systemStage=='Strategy'):
 
   if(model=='Moving Averages - B'):
     st.title('Moving Average 0')
+    fin = False
 
     if stock_ticker:
       run_strategy_movAvg_B = st.sidebar.button("Run Moving Average-B (Double)")
       if run_strategy_movAvg_B:
         f2.ST_Trading_signals(stock_ticker)
+        fin = True
+
+    if fin:
+      st.write(' *'*25)
+      st.title('Model Render Complete')        
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -725,11 +783,17 @@ if(systemStage=='Strategy'):
 
   if(model=='Support & Resistance Lines'):
     st.title('Support & Resistance Lines')
+    fin = False
 
     if stock_ticker:
       run_strategy_supportResistance = st.sidebar.button("Run Support & Resistance Lines")
       if run_strategy_supportResistance:
         f2.The_Support_Resistance(stock_ticker, '6mo').level()
+        fin = True
+
+    if fin:
+      st.write(' *'*25)
+      st.title('Model Render Complete')        
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -738,11 +802,17 @@ if(systemStage=='Strategy'):
 
   if(model=='overBought_overSold'):
     st.title('Over Bought & Over Sold Analysis')
+    fin = False
 
     if stock_ticker:
       run_strategy_overBought_overSold = st.sidebar.button("Run Over-Bought & OverSold")
       if run_strategy_overBought_overSold:
         f2.The_OverBought_OverSold(stock_ticker, '1y').generate()
+        fin = True
+
+    if fin:
+      st.write(' *'*25)
+      st.title('Model Render Complete')
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -751,11 +821,49 @@ if(systemStage=='Strategy'):
 
 
 if(systemStage=='Portfolio'):
-  st.sidebar.write(' *'*25)
-  st.subheader("Use The Side Bar via the Arrow ('>') on the upper left corner of the screen")
-  models = [
-    '-Select-Model-', 'Principal Component Analysis', 'Efficient Frontier', 'Portfolio Optimizer'
-  ]
+  st.title('Portfolio Allocation & Optimization')
+  st.write(' *'*25)
+
+  st.header('> Site Navigation:')
+  st.write("\n* Use The Side Bar via the Arrow ('>') on the upper left corner of the screen")
+  st.subheader('~ To Work In A Different Analysis Category:')
+  st.write('* Go To Step #1')
+  st.subheader('~ To Use Other Models Within This Same Analysis Category:')
+  st.write('* Go To Step #2')
+  st.write(' *'*25)
+  
+  st.title('> General Analysis Definitions')
+
+  st.header('1) Principal Component Analysis (PCA)')
+  st.write('* Principal Component Analysis, or PCA, is a dimensionality-reduction method that is often used to reduce the dimensionality of \
+    large data sets, by transforming a large set of variables into a smaller one that still contains most of the information in the large set.')
+  st.write('* https://towardsdatascience.com/a-one-stop-shop-for-principal-component-analysis-5582fb7e0a9c')
+  st.write(' *'*25)
+
+  st.header('2) Markowitz Efficient Frontier')
+  st.write("* In modern portfolio theory, the efficient frontier is an investment portfolio which occupies the 'efficient'\
+     part of the risk–return spectrum.\ Formally, it is the set of portfolios which satisfy the condition that no other portfolio \
+       exists with a higher expected return but with the same standard deviation of return.")
+  st.write("* The efficient frontier is the set of optimal portfolios that offer the highest expected return for a \
+      defined level of risk or the lowest risk for a given level of expected return. Portfolios that lie below the \
+        efficient frontier are sub-optimal because they do not provide enough return for the level of risk.")
+  st.write('* https://www.investopedia.com/terms/e/efficientfrontier.asp')
+  st.write(' *'*25)
+
+  st.header('3) Modern Portfolio Theory Portfolio Optimization')
+  st.write('* Portfolio optimization is the process of selecting the best portfolio (asset distribution), out of the set of all portfolios\
+     being considered, according to some objective. The objective typically maximizes factors such as expected return, and minimizes costs like financial risk.')
+  st.write('* Modern portfolio theory (MPT) is a theory on how risk-averse investors can construct portfolios\
+      to maximize expected return based on a given level of market risk. Harry Markowitz pioneered this theory in his \
+        paper "Portfolio Selection," which was published in the Journal of Finance in 1952.')
+  st.subheader('Key Assumptions of Modern Portfolio Theory')
+  st.write('* At the heart of MPT is the idea that risk and return are directly linked. \
+    This means that an investor must take on a higher level of risk to achieve greater expected returns.')
+  st.write('* https://www.investopedia.com/terms/m/modernportfoliotheory.asp')
+  st.write(' *'*25)
+
+
+  models = ['-Select-Model-', 'Principal Component Analysis', 'Efficient Frontier', 'Portfolio Optimizer']
   st.sidebar.subheader('> Step # 2')
   model = st.sidebar.selectbox('Choose A Model', models)
   st.sidebar.write(' *'*25)
@@ -766,13 +874,9 @@ if(systemStage=='Portfolio'):
 
 
   if(model=='Principal Component Analysis'):
-    st.title('Principal Component Analysis (PCA)')
-    st.header('General Model Notes:')
-    st.subheader('Definition:')
-    st.markdown(' Principal Component Analysis, or PCA, \
-      is a dimensionality-reduction method that is often used to reduce the dimensionality of large data sets, \
-        by transforming a large set of variables into a smaller one that still contains most of the information in the large set.')
+    st.title('(1) Principal Component Analysis (PCA)')
     st.header('Model Results Below:')
+    fin = False
 
     st.sidebar.subheader('> Step #3')
     tickers = st.sidebar.selectbox('Choose Stock List', index_ticker_lists_B)
@@ -790,13 +894,11 @@ if(systemStage=='Portfolio'):
       run_strategy_pca = st.sidebar.button("Run PCA")
       if run_strategy_pca:
         f3.The_PCA_Analysis(new_tickers, lst_name)
+        fin = True
 
-        st.subheader('- To Work In A Different Analysis Category:')
-        st.write('* Go To Step #1')
-        st.subheader('- To Use Other Models Within This Same Analysis Category:')
-        st.write('* Go To Step #2')
-        st.subheader('- To Model PCA In A Different Ticker Set:')
-        st.write('* Use Step #3')
+    if fin:
+      st.write(' *'*25)
+      st.title('Model Render Complete')
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -804,20 +906,15 @@ if(systemStage=='Portfolio'):
 
 
   if(model=='Efficient Frontier'):
-    st.title('Efficient Frontier')
-    st.header('General Model Notes:')
-    st.subheader('Definition:')
-    st.markdown("* In modern portfolio theory, the efficient frontier is an investment portfolio which occupies the\
-      efficient parts of the risk–return spectrum. Formally, it is the set of portfolios which satisfy the condition\
-         that no other portfolio exists with a higher expected return but with the same standard deviation of return.")
-    st.markdown("* The efficient frontier is the set of optimal portfolios that offer the highest expected return for a \
-      defined level of risk or the lowest risk for a given level of expected return. Portfolios that lie below the \
-        efficient frontier are sub-optimal because they do not provide enough return for the level of risk.")
+    st.title('(2) Efficient Frontier')
     st.header('Model Results Below:')
+    fin = False
 
+    st.sidebar.subheader('> Step #3A')
     EF_portfolio = st.sidebar.selectbox('Select To Use Pre-Built 10 Security List Or Design Own Portfolio', ['Pre-Built','My-Own-Portfolio'])
     st.sidebar.markdown('This is where you can select Pre-Built and enter in the tickers from the PCA Analysis')
-
+    
+    st.sidebar.subheader('> Step #3B')
     if EF_portfolio == 'Pre-Built':
       RISKY_ASSETS = st.sidebar.text_input('Enter Ticker List Here:')
       RISKY_ASSETS = RISKY_ASSETS.split()
@@ -826,14 +923,12 @@ if(systemStage=='Portfolio'):
         RISKY_ASSETS.sort()
         marks0 = ['o', '^', 's', 'p', 'h', '8','*', 'd', '>', 'v', '<', '1', '2', '3', '4']
         mark = marks0[:len(RISKY_ASSETS)+1]
+        st.sidebar.write(' *'*10)
+        st.sidebar.subheader('> Step #4')
         run_strategy_EF = st.sidebar.button("Run Efficient Frontier")
         if run_strategy_EF:
           f3.The_Efficient_Frontier(RISKY_ASSETS, mark).final_plot()
-          
-          st.subheader('- To Work In A Different Analysis Category:')
-          st.write('* Go To Step #1')
-          st.subheader('- To Use Other Models Within This Same Analysis Category:')
-          st.write('* Go To Step #2')          
+          fin = True
  
     if EF_portfolio == 'My-Own-Portfolio':
       manys = [2,4,6,8,10,12,14]
@@ -849,11 +944,11 @@ if(systemStage=='Portfolio'):
         run_strategy_EF = st.button("Run Efficient Frontier")
         if run_strategy_EF:
           f3.The_Efficient_Frontier(RISKY_ASSETS, mark).final_plot()
+          fin = True
 
-          st.subheader('- To Work In A Different Analysis Category:')
-          st.write('* Go To Step #1')
-          st.subheader('- To Use Other Models Within This Same Analysis Category:')
-          st.write('* Go To Step #2')          
+    if fin:
+      st.write(' *'*25)
+      st.title('Model Render Complete')
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -862,53 +957,41 @@ if(systemStage=='Portfolio'):
 
   if(model=='Portfolio Optimizer'):
     st.title('Portfolio Optimizer')
-    st.header('General Model Notes:')
-    st.subheader('Definition:')    
-    st.markdown('* Portfolio optimization is the process of selecting the best portfolio (asset distribution), \
-      out of the set of all portfolios being considered, according to some objective. The objective typically\
-         maximizes factors such as expected return, and minimizes costs like financial risk.')
-    st.markdown('* Modern portfolio theory (MPT) is a theory on how risk-averse investors can construct portfolios\
-       to maximize expected return based on a given level of market risk. Harry Markowitz pioneered this theory in his \
-         paper "Portfolio Selection," which was published in the Journal of Finance in 1952.')
-    st.subheader('Key Assumptions of Modern Portfolio Theory')
-    st.markdown('At the heart of MPT is the idea that risk and return are directly linked. \
-      This means that an investor must take on a higher level of risk to achieve greater expected returns.')
     st.header('Model Results Below:')
+    fin = False
 
-    st.sidebar.subheader('> Step #3 - Ticker Lists:')
-    pickEm = st.sidebar.checkbox('Pick-Em')
-    pickLISTS = st.sidebar.checkbox('Pick From Ticker Lists')
-    
-    if pickEm:
-      stock_tickers = st.sidebar.text_input('Enter Ticker List Here: (ex. DIS ECL PLNT NYT)')
-      stock_tickers = stock_tickers.split()
-      if type(stock_tickers)==list:
-        st.sidebar.subheader('ticker list entered in good order')
-        st.sidebar.markdown(stock_tickers)
-        st.sidebar.write(' *'*25)
-        st.sidebar.subheader('> Step #4 - Run Optimization')
-        buttonA = st.sidebar.button('Run Optimizer A')
-        if buttonA:
-          f3.The_Portfolio_Optimizer(stock_tickers, 'Pick_EM_Portfolio').optimize()
+    st.sidebar.subheader('> Step #3')
+    Em = str(st.sidebar.selectbox('Pick Ticker Lists:',['Pick-Em','Pick From Ticker Lists']))
 
-          st.subheader('- To Work In A Different Analysis Category:')
-          st.write('* Go To Step #1')
-          st.subheader('- To Use Other Models Within This Same Analysis Category:')
-          st.write('* Go To Step #2')          
+    if Em:
 
-    if pickLISTS:
-      stockS = st.sidebar.selectbox('Choose Ticker List: ', index_ticker_lists_B)
-      for idx, num in enumerate(index_ticker_lists_B):
-        if num == stockS:
+      if Em == 'Pick-Em':
+        stock_tickers = st.sidebar.text_input('Enter Ticker List Here: (ex. DIS ECL PLNT NYT)')
+        stock_tickers = stock_tickers.split()
+        if type(stock_tickers)==list:
+          st.sidebar.subheader('ticker list entered in good order')
+          st.sidebar.markdown(stock_tickers)
+          st.sidebar.write(' *'*25)
           st.sidebar.subheader('> Step #4 - Run Optimization')
-          buttonB = st.sidebar.button('Run Optimizer B')
-          if buttonB:
-            f3.The_Portfolio_Optimizer(index_ticker_lists_A[idx], num).optimize()
+          buttonA = st.sidebar.button('Run Optimizer A')
+          if buttonA:
+            f3.The_Portfolio_Optimizer(stock_tickers, 'Pick_EM_Portfolio').optimize()
+            fin = True
 
-            st.subheader('- To Work In A Different Analysis Category:')
-            st.write('* Go To Step #1')
-            st.subheader('- To Use Other Models Within This Same Analysis Category:')
-            st.write('* Go To Step #2')        
+      if Em == 'Pick From Ticker Lists':
+        stockS = st.sidebar.selectbox('Choose Ticker List: ', index_ticker_lists_B)
+        for idx, num in enumerate(index_ticker_lists_B):
+          if num == stockS:
+            st.sidebar.subheader('> Step #4 - Run Optimization')
+            buttonB = st.sidebar.button('Run Optimizer B')
+            if buttonB:
+              f3.The_Portfolio_Optimizer(index_ticker_lists_A[idx], num).optimize()
+              fin = True
+
+    if fin:
+      st.write(' *'*25)
+      st.title('Model Render Complete')
+       
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
