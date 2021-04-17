@@ -43,7 +43,7 @@ def web_stocker_run(stock_ticker):
     st.write('If we want to feel good about ourselves, we can pretend as if we had the fortune of mind to invest in Microsoft at the beginning with 100 shares. \
         We can then evaluate the potential profit we would have from those shares. You can also change the dates if you feel like trying to lose money!')
     # st.pyplot(microsoft.buy_and_hold(start_date='2000-01-05', nshares=100))
-    # st.pyplot(microsoft.buy_and_hold(start_date='2020-01-05', nshares=100))
+    st.pyplot(microsoft.buy_and_hold(start_date='2021-01-05', nshares=100))
 
    # Trends and Patterns
     st.write("An additive model represents a time series as an overall trend and patterns on different time scales \
