@@ -37,7 +37,7 @@ def web_stocker_run(stock_ticker):
 
    # # Data Exploration
     st.pyplot(microsoft.plot_stock())
-    st.pyplot(microsoft.plot_stock(start_date = '2000-01-03', stats = ['Daily Change', 'Volume'], plot_type='pct'))
+    st.pyplot(microsoft.plot_stock(start_date = '2020-01-03', stats = ['Daily Change', 'Volume'], plot_type='pct'))
 
    # ## Potential Profit
     st.write('If we want to feel good about ourselves, we can pretend as if we had the fortune of mind to invest in Microsoft at the beginning with 100 shares. \
