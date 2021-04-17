@@ -1,10 +1,9 @@
 [theme]
-primaryColor="#c3070b"
-backgroundColor="#054454"
-secondaryBackgroundColor="#7e959c"
-textColor="#fafafa"
-font="monospace"
-
+primaryColor="#767d74"
+backgroundColor="#bbb9b9"
+secondaryBackgroundColor="#506450"
+textColor="#000000"
+font="sans serif"
 
 
 #[theme]
@@ -29,3 +28,11 @@ font="monospace"
 #secondaryBackgroundColor = "#0083B8"
 #textColor = "#C6CDD4"
 #font = "sans-serif"
+
+
+# [theme]
+# primaryColor="#bf210e"
+# backgroundColor="#8e787d"
+# secondaryBackgroundColor="#c1c1ce"
+# textColor="#000000"
+# font="sans serif"

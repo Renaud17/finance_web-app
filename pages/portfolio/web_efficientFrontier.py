@@ -1,8 +1,3 @@
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#*     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
 import warnings
 warnings.filterwarnings('ignore')
 import yfinance as yf
@@ -15,12 +10,6 @@ matplotlib.use('Agg')
 from matplotlib import style
 from matplotlib import pyplot as plt
 plt.style.use('ggplot')
-# [
-#   'Solarize_Light2', '_classic_test_patch', 'bmh', 'classic', 'dark_background', 'fast', 'fivethirtyeight', 
-#   'ggplot', 'grayscale', 'seaborn', 'seaborn-bright', 'seaborn-colorblind', 'seaborn-dark', 'seaborn-dark-palette', 
-#   'seaborn-darkgrid', 'seaborn-deep', 'seaborn-muted', 'seaborn-notebook', 'seaborn-paper', 'seaborn-pastel', 
-#   'seaborn-poster', 'seaborn-talk', 'seaborn-ticks', 'seaborn-white', 'seaborn-whitegrid', 'tableau-colorblind10'
-# ]
 import seaborn as sns
 plt.style.use('seaborn')
 sns.set_palette('cubehelix')
@@ -104,21 +93,21 @@ class The_Efficient_Frontier(object):
         self.max_sharpe_portf = self.portf_results_df.loc[self.max_sharpe_ind]
         self.min_vol_ind = np.argmin(self.portf_results_df.volatility)
         self.min_vol_portf = self.portf_results_df.loc[self.min_vol_ind]
-        st.write('Maximum Sharpe Ratio portfolio ----')
-        st.write('Performance:')
+        st.header('- - - Maximum Sharpe Ratio portfolio - - -')
+        st.subheader('Performance:')
         for index, value in self.max_sharpe_portf.items():
             st.write(f'{index}: {100 * value:.2f}% ', end="", flush=True)
-        st.write('\nWeights')
+        st.subheader('\nWeights')
         for x, y in zip(self.RISKY_ASSETS, self.weights[np.argmax(self.portf_results_df.sharpe_ratio)]):
             st.write(f'{x}: {100*y:.2f}% ', end="", flush=True)
 
     def results_minVolatility(self):
         self.results_maxSharpeRatio()
-        st.write('Minimum Volatility portfolio ----')
-        st.write('Performance:')
+        st.header('- - - Minimum Volatility portfolio - - -')
+        st.subheader('Performance:')
         for index, value in self.min_vol_portf.items():
             st.write(f'{index}: {100 * value:.2f}% ', end="", flush=True)
-        st.write('\nWeights')
+        st.subheader('\nWeights')
         for x, y in zip(self.RISKY_ASSETS, self.weights[np.argmin(self.portf_results_df.volatility)]):
             st.write(f'{x}: {100*y:.2f}% ', end="", flush=True)
 
@@ -168,7 +157,9 @@ class The_Efficient_Frontier(object):
 if __name__ == "__main__":
 
     RISKY_ASSETS = []
-    how_many = int(input('How Many Stocks In Your Portfolio? (up to 14): '))
+    manys = [2,4,6,8,10,12,14]
+    how_many = int(st.sidebar.selectbox('Select Number Of Securities For Portfolio:',manys))
+    # how_many = int(input('How Many Stocks In Your Portfolio? (up to 14): '))
     for i in range(1, how_many+1):
         tic = input(f'Enter Stock {i}: ')
         RISKY_ASSETS.append(tic)

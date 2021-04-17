@@ -1,23 +1,9 @@
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #*     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
 import matplotlib
 import matplotlib as mpl
 matplotlib.use('Agg')
 from matplotlib import style
 from matplotlib import pyplot as plt
-plt.style.use('seaborn-talk')
-# plt.style.use('seaborn-poster')
-# plt.style.use('_classic_test_patch')
-# plt.style.use('fast')
-# plt.style.use('fivethirtyeight')
-# plt.style.use('seaborn-dark-palette')
-# plt.style.use('seaborn-colorblind')
-# plt.style.use('seaborn-deep')
-# plt.style.use('seaborn-muted')
-# plt.style.use('seaborn-notebook')
+plt.style.use('ggplot')
 sm, med, lg = 10, 15, 20
 plt.rc('font', size = sm)         # controls default text sizes
 plt.rc('axes', titlesize = med)   # fontsize of the axes title

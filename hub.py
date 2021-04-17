@@ -1,31 +1,15 @@
-# [theme]
-# primaryColor="#b30205"
-# backgroundColor="#224a4a"
-# secondaryBackgroundColor="#666873"
-# textColor="#fffdfd"
-# font="monospace"
-
 import warnings
 warnings.filterwarnings('ignore')
 from datetime import datetime, date, timedelta
 from pathlib import Path
 today = str(datetime.now())[:10]
+
 import matplotlib
 import matplotlib as mpl
 matplotlib.use('Agg')
 from matplotlib import style
 from matplotlib import pyplot as plt
-plt.style.use('seaborn-talk')
-# plt.style.use('seaborn-poster')
-# plt.style.use('_classic_test_patch')
-# plt.style.use('fast')
-# plt.style.use('fivethirtyeight')
-# plt.style.use('seaborn-dark-palette')
-# plt.style.use('seaborn-colorblind')
-# plt.style.use('seaborn-deep')
-# plt.style.use('seaborn-muted')
-# plt.style.use('seaborn-notebook')
-# plt.style.use('ggplot')
+plt.style.use('ggplot')
 sm, med, lg = 10, 15, 20
 plt.rc('font', size = sm)         # controls default text sizes
 plt.rc('axes', titlesize = med)   # fontsize of the axes title
@@ -37,6 +21,7 @@ plt.rc('figure', titlesize = lg)  # fontsize of the figure title
 plt.rc('axes', linewidth=2)       # linewidth of plot lines
 plt.rcParams['figure.figsize'] = [18, 10]
 plt.rcParams['figure.dpi'] = 150
+
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import pandas as pd
@@ -44,6 +29,7 @@ import numpy as np
 import itertools
 import streamlit as st
 st.set_option('deprecation.showPyplotGlobalUse', False)
+
 from dask.distributed import Client
 from prophet.plot import plot_cross_validation_metric
 from prophet.diagnostics import performance_metrics
@@ -60,7 +46,11 @@ from pages import forecast as f1
 from pages import strategy as f2
 from pages import portfolio as f3
 
+
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
 
 def clean(listA):
     lst = list(set(listA))
@@ -68,15 +58,12 @@ def clean(listA):
     return lst
 
 saveTickers = Path('tickers/')
-
 dow = pd.read_pickle(saveTickers / f'dow_ticker_lst.pkl')
 sp100 = pd.read_pickle(saveTickers / f'sp100_ticker_lst.pkl')
 sp500 = pd.read_pickle(saveTickers / f'sp500_ticker_lst.pkl')
-
 indices_main = ['^OEX','^MID','^GSPC','^DJI','^NYA','^RUT','^W5000']
 index_names = ['SP100','SP400','SP500','DOW','NYSE','Russ2k','Wilshire5k']
 combined_index_main_names = [list(x) for x in zip(indices_main, index_names)]
-
 my_positions = pd.read_pickle(saveTickers / f'chuck_merged_ticker_lst.pkl')
 watch_lst0 = pd.read_pickle(saveTickers / f'watch_merged_ticker_lst.pkl')
 watch_lst_bulk = my_positions + watch_lst0
@@ -172,14 +159,13 @@ index_ticker_lists_B = [
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-st.progress(0)
-
-systemStage = st.sidebar.selectbox(
-    '(Action # 1) - Select The System To Utalize:', 
-    [
-        '-Select-Stage-','Fundamental-Analysis', 'Technical-Analysis', 'Portfolio', 'Forecasting','Strategy'
-    ]
+st.sidebar.subheader('> Step #1')
+systemStage = st.sidebar.selectbox('Select Analysis Category:',
+  [
+    '-Select-Stage-','Fundamental-Analysis', 'Technical-Analysis', 'Portfolio', 'Forecasting','Strategy'
+  ]
 )
+st.sidebar.write(' *'*25)
 if(systemStage=='-Select-Stage-'):
   st.title('Fun Forecasting For Friends')
   st.subheader('* Select A Stage Then Use the  Side Bar to:')
@@ -189,108 +175,154 @@ symbols = snp500['Symbol'].sort_values().tolist()
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
 if(systemStage == 'Fundamental-Analysis'):
-    ticker = st.sidebar.text_input('Enter Stock Ticker To Search The Company Fundamental Information')
-    if ticker:
-      st.sidebar.markdown(f"Hit 'Run' To Source {ticker}'s Fundamentals")
-      run_button = st.sidebar.button("RUN")
-      if run_button:
-        stock = yf.Ticker(ticker)
-        info = stock.info
-        st.title('Company Profile')
-        st.subheader(info['longName']) 
-        st.markdown('** Sector **: ' + info['sector'])
-        st.markdown('** Industry **: ' + info['industry'])
-        st.markdown('** Phone **: ' + info['phone'])
-        st.markdown('** Address **: ' + info['address1'] + ', ' + info['city'] + ', ' + info['zip'] + ', '  +  info['country'])
-        st.markdown('** Website **: ' + info['website'])
-        st.markdown('** Business Summary **')
-        st.info(info['longBusinessSummary'])
-        fundInfo = {
-                'Enterprise Value (USD)': info['enterpriseValue'],
-                'Enterprise To Revenue Ratio': info['enterpriseToRevenue'],
-                'Enterprise To Ebitda Ratio': info['enterpriseToEbitda'],
-                'Net Income (USD)': info['netIncomeToCommon'],
-                'Profit Margin Ratio': info['profitMargins'],
-                'Forward PE Ratio': info['forwardPE'],
-                'PEG Ratio': info['pegRatio'],
-                'Price to Book Ratio': info['priceToBook'],
-                'Forward EPS (USD)': info['forwardEps'],
-                'Beta ': info['beta'],
-                'Book Value (USD)': info['bookValue'],
-                'Dividend Rate (%)': info['dividendRate'], 
-                'Dividend Yield (%)': info['dividendYield'],
-                'Five year Avg Dividend Yield (%)': info['fiveYearAvgDividendYield'],
-                'Payout Ratio': info['payoutRatio']
-            }
-        fundDF = pd.DataFrame.from_dict(fundInfo, orient='index')
-        fundDF = fundDF.rename(columns={0: 'Value'})
-        st.subheader('Fundamental Info') 
-        st.table(fundDF)
-        
-        st.subheader('General Stock Info') 
-        st.markdown('** Market **: ' + info['market'])
-        st.markdown('** Exchange **: ' + info['exchange'])
-        st.markdown('** Quote Type **: ' + info['quoteType'])
-        
-        start = datetime.today()-timedelta(2 * 365)
-        end = datetime.today()
-        df = yf.download(ticker,start,end)
-        df = df.reset_index()
-        
-        fig = go.Figure(data=go.Scatter(x=df['Date'], y=df['Adj Close']))
-        fig.update_layout(
-            title={
-                'text': "Stock Prices Over Past Two Years",
-                'y':0.9, 
-                'x':0.5,
-                'xanchor': 'center', 
-                'yanchor': 'top'
-            }
-        )
-        st.plotly_chart(fig, use_container_width=True)
-        marketInfo = {
-                "Volume": info['volume'],
-                "Average Volume": info['averageVolume'],
-                "Market Cap": info["marketCap"],
-                "Float Shares": info['floatShares'],
-                "Regular Market Price (USD)": info['regularMarketPrice'],
-                'Bid Size': info['bidSize'],
-                'Ask Size': info['askSize'],
-                "Share Short": info['sharesShort'],
-                'Short Ratio': info['shortRatio'],
-                'Share Outstanding': info['sharesOutstanding']
-            }
-        marketDF = pd.DataFrame(data=marketInfo, index=[0])
-        st.table(marketDF)
-else:
-    def calcMovingAverage(data, size):
-        df = data.copy()
-        df['sma'] = df['Adj Close'].rolling(size).mean()
-        df['ema'] = df['Adj Close'].ewm(span=size, min_periods=size).mean()
-        df.dropna(inplace=True)
-        return df
-    
-    def calc_macd(data):
-        df = data.copy()
-        df['ema12'] = df['Adj Close'].ewm(span=12, min_periods=12).mean()
-        df['ema26'] = df['Adj Close'].ewm(span=26, min_periods=26).mean()
-        df['macd'] = df['ema12'] - df['ema26']
-        df['signal'] = df['macd'].ewm(span=9, min_periods=9).mean()
-        df.dropna(inplace=True)
-        return df
+  st.title('Fundamental Analysis Home Page')
+  st.write(' *'*25)
+  st.header('General Analysis Notes')
+  st.write("https://www.investopedia.com/terms/f/fundamentalanalysis.asp")
+  st.write(' *'*25)
+  st.subheader('Definition:')
+  st.write('* Fundamental analysis is a method of evaluating the intrinsic value of an asset and analyzing the factors that could influence its \
+    price in the future. This form of analysis is based on external events and influences, as well as financial statements and industry trends.')
+  st.write("* Fundamental analysts are concerned with the difference between a stock's value, and the price at which it is trading.")
+  st.write(' *'*25)
+  st.subheader('The 6 Segments to perform fundamental analysis on stocks')
+  st.write("1) Use the financial ratios for initial screening")
+  st.write("2) Understand the company")
+  st.write("3) Study the financial reports of the company")
+  st.write("4) Check the debt and red signs")
+  st.write("5) Find the company's competitors")
+  st.write("6) Analyse the future prospects.")
+  st.write(' *'*25)
+  st.subheader("KEY TAKEAWAYS")
+  st.write("* Fundamental analysis is a method of determining a stock's real or 'fair market' value.")
+  st.write("* Fundamental analysts search for stocks that are currently trading at prices that are higher or lower than their real value.")
+  st.write("* If the fair market value is higher than the market price, the stock is deemed to be undervalued and a buy recommendation is given.")
+  st.write("* In contrast, technical analysts ignore the fundamentals in favor of studying the historical price trends of the stock.")
+  st.write(' *'*25)
+  st.header('Model Results Below:')
 
-    def calcBollinger(data, size):
-        df = data.copy()
-        df["sma"] = df['Adj Close'].rolling(size).mean()
-        df["bolu"] = df["sma"] + 2*df['Adj Close'].rolling(size).std(ddof=0) 
-        df["bold"] = df["sma"] - 2*df['Adj Close'].rolling(size).std(ddof=0) 
-        df["width"] = df["bolu"] - df["bold"]
-        df.dropna(inplace=True)
-        return df
+  st.sidebar.subheader('> Step #2')
+  ticker = st.sidebar.text_input('Enter Stock Ticker IN ALL CAPS')
+  if ticker:
+    st.sidebar.subheader('Ticker Input = Good')
+    st.sidebar.write(' *'*25)
+    import requests
+    def get_symbol(symbol):
+        url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
+        result = requests.get(url).json()
+        for x in result['ResultSet']['Result']:
+            if x['symbol'] == symbol:
+                return x['name']
+    fundamental_company = get_symbol(ticker)
+
+    st.sidebar.subheader('> Step #3')
+    st.sidebar.markdown(f"Hit 'Run' For Fundamental Analysis On:\n {fundamental_company} ({ticker})")
+    run_button = st.sidebar.button("RUN")
+    if run_button:
+      stock = yf.Ticker(ticker)
+      info = stock.info
+      st.title('Company Profile')
+      st.subheader(info['longName']) 
+      st.markdown('** Sector **: ' + info['sector'])
+      st.markdown('** Industry **: ' + info['industry'])
+      st.markdown('** Phone **: ' + info['phone'])
+      st.markdown('** Address **: ' + info['address1'] + ', ' + info['city'] + ', ' + info['zip'] + ', '  +  info['country'])
+      st.markdown('** Website **: ' + info['website'])
+      st.markdown('** Business Summary **')
+      st.info(info['longBusinessSummary'])
+      fundInfo = {
+              'Enterprise Value (USD)': info['enterpriseValue'],
+              'Enterprise To Revenue Ratio': info['enterpriseToRevenue'],
+              'Enterprise To Ebitda Ratio': info['enterpriseToEbitda'],
+              'Net Income (USD)': info['netIncomeToCommon'],
+              'Profit Margin Ratio': info['profitMargins'],
+              'Forward PE Ratio': info['forwardPE'],
+              'PEG Ratio': info['pegRatio'],
+              'Price to Book Ratio': info['priceToBook'],
+              'Forward EPS (USD)': info['forwardEps'],
+              'Beta ': info['beta'],
+              'Book Value (USD)': info['bookValue'],
+              'Dividend Rate (%)': info['dividendRate'], 
+              'Dividend Yield (%)': info['dividendYield'],
+              'Five year Avg Dividend Yield (%)': info['fiveYearAvgDividendYield'],
+              'Payout Ratio': info['payoutRatio']
+          }
+      fundDF = pd.DataFrame.from_dict(fundInfo, orient='index')
+      fundDF = fundDF.rename(columns={0: 'Value'})
+      st.subheader('Fundamental Info') 
+      st.table(fundDF)
+      
+      st.subheader('General Stock Info') 
+      st.markdown('** Market **: ' + info['market'])
+      st.markdown('** Exchange **: ' + info['exchange'])
+      st.markdown('** Quote Type **: ' + info['quoteType'])
+      
+      start = datetime.today()-timedelta(2 * 365)
+      end = datetime.today()
+      df = yf.download(ticker,start,end)
+      df = df.reset_index()
+      
+      fig = go.Figure(data=go.Scatter(x=df['Date'], y=df['Adj Close']))
+      fig.update_layout(
+          title={
+              'text': "Stock Prices Over Past Two Years",
+              'y':0.9, 
+              'x':0.5,
+              'xanchor': 'center', 
+              'yanchor': 'top'
+          }
+      )
+      st.plotly_chart(fig, use_container_width=True)
+      marketInfo = {
+              "Volume": info['volume'],
+              "Average Volume": info['averageVolume'],
+              "Market Cap": info["marketCap"],
+              "Float Shares": info['floatShares'],
+              "Regular Market Price (USD)": info['regularMarketPrice'],
+              'Bid Size': info['bidSize'],
+              'Ask Size': info['askSize'],
+              "Share Short": info['sharesShort'],
+              'Short Ratio': info['shortRatio'],
+              'Share Outstanding': info['sharesOutstanding']
+          }
+      marketDF = pd.DataFrame(data=marketInfo, index=[0])
+      st.table(marketDF)
+
+      st.subheader('- To Work In A Different Analysis Category:')
+      st.write('* Go To Step #1')
+      st.subheader('- To Use Other Models Within This Same Analysis Category:')
+      st.write('* Go To Step #2')      
+
+else:
+  def calcMovingAverage(data, size):
+      df = data.copy()
+      df['sma'] = df['Adj Close'].rolling(size).mean()
+      df['ema'] = df['Adj Close'].ewm(span=size, min_periods=size).mean()
+      df.dropna(inplace=True)
+      return df
+  
+  def calc_macd(data):
+      df = data.copy()
+      df['ema12'] = df['Adj Close'].ewm(span=12, min_periods=12).mean()
+      df['ema26'] = df['Adj Close'].ewm(span=26, min_periods=26).mean()
+      df['macd'] = df['ema12'] - df['ema26']
+      df['signal'] = df['macd'].ewm(span=9, min_periods=9).mean()
+      df.dropna(inplace=True)
+      return df
+
+  def calcBollinger(data, size):
+      df = data.copy()
+      df["sma"] = df['Adj Close'].rolling(size).mean()
+      df["bolu"] = df["sma"] + 2*df['Adj Close'].rolling(size).std(ddof=0) 
+      df["bold"] = df["sma"] - 2*df['Adj Close'].rolling(size).std(ddof=0) 
+      df["width"] = df["bolu"] - df["bold"]
+      df.dropna(inplace=True)
+      return df
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -299,11 +331,51 @@ else:
 
  
 if(systemStage == 'Technical-Analysis'):
-  st.title('Technical Indicators')
+  st.title('Technical Analysis Home Page')
+  st.write(' *'*25)
+  st.header('General Analysis Notes')
+  st.write("https://www.investopedia.com/terms/t/technicalanalysis.asp")
+  st.write(' *'*25)
+  st.subheader('Definition:')
+  st.write('* Technical analysis is a trading discipline employed to evaluate investments and identify trading opportunities by analyzing\ statistical \
+    trends gathered from trading activity, such as price movement and volume. ... Technical analysis can be used on any security with historical trading data.')
+  st.write('* In finance, technical analysis is an analysis methodology for forecasting \
+    the direction of prices through the study of past market data, primarily price and volume.')
+  st.write("* Technical analysis is concerned with price action, which gives clues as to the stock's supply and demand dynamics\
+     – which is what ultimately determines the stock price.")
+  st.write(' *'*25)
+  st.subheader('Examples of technical analysis tools include:')
+  st.write('* All of the tools have the same purpose: to make understanding chart movements and identifying trends easier for technical traders.')
+  st.write('* moving averages')
+  st.write('* support and resistance levels')
+  st.write('* Bollinger bands')
+  st.write('* and more')
+  st.write("https://www.investopedia.com/top-7-technical-analysis-tools-4773275")
+  st.write(' *'*25)
+  st.subheader('KEY TAKEAWAYS')
+  st.write("* Technical analysis, or using charts to identify trading signals and price patterns, may seem overwhelming or esoteric at first.")
+  st.write("* Beginners should first understand why technical analysis works as a window into market psychology to identify opportunities to profit.")
+  st.write("* Focus on a particular trading approach and develop a disciplined strategy that you can follow without letting emotions or second-guessing get in the way.")
+  st.write("* Find a broker that can help you execute your plan affordably while also providing a trading platform with the right suite of tools you'll need.")
+  st.write(' *'*25)
+  st.header('Model Results Below:')
 
-  ticker = st.sidebar.text_input('Enter Stock Ticker To Search The Company Fundamental Information')
+  st.sidebar.subheader('> Step #2')
+  ticker = st.sidebar.text_input('Enter Stock Ticker IN ALL CAPS')
   if ticker:
-    st.sidebar.markdown(f"Hit 'Run' To Source {ticker}'s Fundamentals")
+    st.sidebar.subheader('Ticker Input = Good')
+    st.sidebar.write(' *'*25)
+    import requests
+    def get_symbol(symbol):
+        url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
+        result = requests.get(url).json()
+        for x in result['ResultSet']['Result']:
+            if x['symbol'] == symbol:
+                return x['name']
+    technical_company = get_symbol(ticker)
+
+    st.sidebar.subheader('> Step #3')
+    st.sidebar.markdown(f"Hit 'Run' For Technical Analysis On:\n\n {technical_company} ({ticker})")
     run_button = st.sidebar.button("RUN")
     if run_button:
       st.subheader('Moving Average')
@@ -368,18 +440,15 @@ if(systemStage == 'Technical-Analysis'):
       figBoll.update_yaxes(tickprefix="$")
       st.plotly_chart(figBoll, use_container_width=True)
 
-
-    
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
+      st.subheader('- To Work In A Different Analysis Category:')
+      st.write('* Go To Step #1')
+      st.subheader('- To Use Other Models Within This Same Analysis Category:')
+      st.write('* Go To Step #2')      
 
 
-
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#*     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
 if(systemStage == 'Forecasting'):
@@ -389,7 +458,6 @@ if(systemStage == 'Forecasting'):
     '-Select-A-Model-', 'Prophet Model', 'Stocker Analysis', 'A.R.I.M.A', 'S.A.R.I.M.A', 
     'Monte Carlo Simulation', 'Univariate Analysis'
     ]
-    # 'multivariate','linearRegression','quadraticRegression-2','quadraticRegression-3','knn-regression']
   
   st.sidebar.header('[Step # 2]')
   st.sidebar.subheader('Select Model To Run')
@@ -515,7 +583,6 @@ if(systemStage == 'Forecasting'):
     st.write(" * [STATIONARY]")
     st.write(' *'*34)
 
-
     if stock_ticker:
       run_strategy_sarima = st.sidebar.button("Run SARIMA")
       if run_strategy_sarima:
@@ -551,7 +618,6 @@ if(systemStage == 'Forecasting'):
       exchange rate without taking into account the effect of the other variables such as prices and interest rates.\
         If this is the case, then there is no need to take an explicit account of these variables."
     )
-
     if stock_ticker:
       f1.univariate(stock_ticker).runs()
     else:
@@ -563,9 +629,9 @@ if(systemStage == 'Forecasting'):
           st.title('Model Render Complete')
 
 
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#*     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
 if(systemStage=='Strategy'):
@@ -629,7 +695,6 @@ if(systemStage=='Strategy'):
           moving_avg = 'SMA', 
           display_table = True
         )
-
         f2.MovingAverageCrossStrategy(
           stock_symbol = stock_ticker, 
           start_date = '2019-01-01', 
@@ -680,18 +745,58 @@ if(systemStage=='Strategy'):
         f2.The_OverBought_OverSold(stock_ticker, '1y').generate()
 
 
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #*     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
 if(systemStage=='Portfolio'):
+  st.sidebar.write(' *'*25)
   st.subheader("Use The Side Bar via the Arrow ('>') on the upper left corner of the screen")
-  
   models = [
-    '-Select-Model-','Efficient Frontier', 'Principal Component Analysis', 'Portfolio Optimizer'
+    '-Select-Model-', 'Principal Component Analysis', 'Efficient Frontier', 'Portfolio Optimizer'
   ]
-  model = st.sidebar.selectbox('(Action # 2) - Choose A Model', models)
+  st.sidebar.subheader('> Step # 2')
+  model = st.sidebar.selectbox('Choose A Model', models)
+  st.sidebar.write(' *'*25)
+
+
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+  if(model=='Principal Component Analysis'):
+    st.title('Principal Component Analysis (PCA)')
+    st.header('General Model Notes:')
+    st.subheader('Definition:')
+    st.markdown(' Principal Component Analysis, or PCA, \
+      is a dimensionality-reduction method that is often used to reduce the dimensionality of large data sets, \
+        by transforming a large set of variables into a smaller one that still contains most of the information in the large set.')
+    st.header('Model Results Below:')
+
+    st.sidebar.subheader('> Step #3')
+    tickers = st.sidebar.selectbox('Choose Stock List', index_ticker_lists_B)
+    if tickers:
+      for idx, num in enumerate(index_ticker_lists_B):
+        if num == tickers:
+          new_tickers = index_ticker_lists_A[idx]
+          lst_name = num
+      
+      st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
+      st.sidebar.markdown(new_tickers)
+      st.sidebar.write(' *'*25)
+      st.sidebar.subheader('> Step #4')
+      st.sidebar.markdown("Hit The 'Run PCA' Button To Run Model")
+      run_strategy_pca = st.sidebar.button("Run PCA")
+      if run_strategy_pca:
+        f3.The_PCA_Analysis(new_tickers, lst_name)
+
+        st.subheader('- To Work In A Different Analysis Category:')
+        st.write('* Go To Step #1')
+        st.subheader('- To Use Other Models Within This Same Analysis Category:')
+        st.write('* Go To Step #2')
+        st.subheader('- To Model PCA In A Different Ticker Set:')
+        st.write('* Use Step #3')
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -700,39 +805,55 @@ if(systemStage=='Portfolio'):
 
   if(model=='Efficient Frontier'):
     st.title('Efficient Frontier')
+    st.header('General Model Notes:')
+    st.subheader('Definition:')
+    st.markdown("* In modern portfolio theory, the efficient frontier is an investment portfolio which occupies the\
+      efficient parts of the risk–return spectrum. Formally, it is the set of portfolios which satisfy the condition\
+         that no other portfolio exists with a higher expected return but with the same standard deviation of return.")
+    st.markdown("* The efficient frontier is the set of optimal portfolios that offer the highest expected return for a \
+      defined level of risk or the lowest risk for a given level of expected return. Portfolios that lie below the \
+        efficient frontier are sub-optimal because they do not provide enough return for the level of risk.")
+    st.header('Model Results Below:')
 
-    num_stocks = int(st.number_input('Enter a number'))
+    EF_portfolio = st.sidebar.selectbox('Select To Use Pre-Built 10 Security List Or Design Own Portfolio', ['Pre-Built','My-Own-Portfolio'])
+    st.sidebar.markdown('This is where you can select Pre-Built and enter in the tickers from the PCA Analysis')
 
-    if num_stocks:
-      RISKY_ASSETS = []
-      for n in range(1,num_stocks+1):
-        tic = st.text_input(f'Ticker {n}: ')
-        RISKY_ASSETS.append(tic)
-      RISKY_ASSETS.sort()
+    if EF_portfolio == 'Pre-Built':
+      RISKY_ASSETS = st.sidebar.text_input('Enter Ticker List Here:')
+      RISKY_ASSETS = RISKY_ASSETS.split()
+      st.sidebar.text(RISKY_ASSETS)
+      if RISKY_ASSETS:
+        RISKY_ASSETS.sort()
+        marks0 = ['o', '^', 's', 'p', 'h', '8','*', 'd', '>', 'v', '<', '1', '2', '3', '4']
+        mark = marks0[:len(RISKY_ASSETS)+1]
+        run_strategy_EF = st.sidebar.button("Run Efficient Frontier")
+        if run_strategy_EF:
+          f3.The_Efficient_Frontier(RISKY_ASSETS, mark).final_plot()
+          
+          st.subheader('- To Work In A Different Analysis Category:')
+          st.write('* Go To Step #1')
+          st.subheader('- To Use Other Models Within This Same Analysis Category:')
+          st.write('* Go To Step #2')          
+ 
+    if EF_portfolio == 'My-Own-Portfolio':
+      manys = [2,4,6,8,10,12,14]
+      num_stocks = int(st.sidebar.selectbox('Select Number Of Securities For Portfolio:',manys))    
+      if num_stocks:
+        RISKY_ASSETS = []
+        for n in range(1,num_stocks+1):
+          tic = st.text_input(f'Ticker {n}: ')
+          RISKY_ASSETS.append(tic)
+        RISKY_ASSETS.sort()
+        marks0 = ['o', '^', 's', 'p', 'h', '8','*', 'd', '>', 'v', '<', '1', '2', '3', '4']
+        mark = marks0[:len(RISKY_ASSETS)+1]
+        run_strategy_EF = st.button("Run Efficient Frontier")
+        if run_strategy_EF:
+          f3.The_Efficient_Frontier(RISKY_ASSETS, mark).final_plot()
 
-      marks0 = ['o', '^', 's', 'p', 'h', '8','*', 'd', '>', 'v', '<', '1', '2', '3', '4']
-      mark = marks0[:len(RISKY_ASSETS)+1]
-
-      run_strategy_EF = st.button("Run Efficient Frontier")
-      if run_strategy_EF:
-        f3.The_Efficient_Frontier(RISKY_ASSETS, mark).final_plot()
-
-
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-  if(model=='Principal Component Analysis'):
-    st.title('Principal Component Analysis')
-
-    tickers = st.sidebar.selectbox('Choose Stock List', index_ticker_lists_B)
-
-    if tickers:
-      for idx, num in enumerate(index_ticker_lists_B):
-        if num == tickers:
-          run_strategy_pca = st.button("Run PCA")
-          if run_strategy_pca:
-            f3.The_PCA_Analysis(index_ticker_lists_A[idx])
+          st.subheader('- To Work In A Different Analysis Category:')
+          st.write('* Go To Step #1')
+          st.subheader('- To Use Other Models Within This Same Analysis Category:')
+          st.write('* Go To Step #2')          
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -741,35 +862,54 @@ if(systemStage=='Portfolio'):
 
   if(model=='Portfolio Optimizer'):
     st.title('Portfolio Optimizer')
+    st.header('General Model Notes:')
+    st.subheader('Definition:')    
+    st.markdown('* Portfolio optimization is the process of selecting the best portfolio (asset distribution), \
+      out of the set of all portfolios being considered, according to some objective. The objective typically\
+         maximizes factors such as expected return, and minimizes costs like financial risk.')
+    st.markdown('* Modern portfolio theory (MPT) is a theory on how risk-averse investors can construct portfolios\
+       to maximize expected return based on a given level of market risk. Harry Markowitz pioneered this theory in his \
+         paper "Portfolio Selection," which was published in the Journal of Finance in 1952.')
+    st.subheader('Key Assumptions of Modern Portfolio Theory')
+    st.markdown('At the heart of MPT is the idea that risk and return are directly linked. \
+      This means that an investor must take on a higher level of risk to achieve greater expected returns.')
+    st.header('Model Results Below:')
 
-
-    st.sidebar.subheader('Ticker Lists:')
+    st.sidebar.subheader('> Step #3 - Ticker Lists:')
     pickEm = st.sidebar.checkbox('Pick-Em')
     pickLISTS = st.sidebar.checkbox('Pick From Ticker Lists')
     
     if pickEm:
-      stock_tickers = []
-      how_many = int(st.sidebar.text_input('How Many:'))
-      for i in range(how_many):
-        stock_tickers.append(st.sidebar.text_input(f'Ticker #{i}: '))
-      buttonA = st.sidebar.button('Run Optimizer A')
-      if buttonA:
-        f3.The_Portfolio_Optimizer(stock_tickers, 'Pick_EM_Portfolio').optimize()
+      stock_tickers = st.sidebar.text_input('Enter Ticker List Here: (ex. DIS ECL PLNT NYT)')
+      stock_tickers = stock_tickers.split()
+      if type(stock_tickers)==list:
+        st.sidebar.subheader('ticker list entered in good order')
+        st.sidebar.markdown(stock_tickers)
+        st.sidebar.write(' *'*25)
+        st.sidebar.subheader('> Step #4 - Run Optimization')
+        buttonA = st.sidebar.button('Run Optimizer A')
+        if buttonA:
+          f3.The_Portfolio_Optimizer(stock_tickers, 'Pick_EM_Portfolio').optimize()
 
+          st.subheader('- To Work In A Different Analysis Category:')
+          st.write('* Go To Step #1')
+          st.subheader('- To Use Other Models Within This Same Analysis Category:')
+          st.write('* Go To Step #2')          
 
-    elif pickLISTS:
-      stockS = st.sidebar.selectbox('(Action # 2) - Choose Ticker List: ', index_ticker_lists_B)
+    if pickLISTS:
+      stockS = st.sidebar.selectbox('Choose Ticker List: ', index_ticker_lists_B)
       for idx, num in enumerate(index_ticker_lists_B):
         if num == stockS:
+          st.sidebar.subheader('> Step #4 - Run Optimization')
           buttonB = st.sidebar.button('Run Optimizer B')
           if buttonB:
             f3.The_Portfolio_Optimizer(index_ticker_lists_A[idx], num).optimize()
 
+            st.subheader('- To Work In A Different Analysis Category:')
+            st.write('* Go To Step #1')
+            st.subheader('- To Use Other Models Within This Same Analysis Category:')
+            st.write('* Go To Step #2')        
 
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #*     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

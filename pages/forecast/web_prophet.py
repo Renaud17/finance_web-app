@@ -1,8 +1,3 @@
-#  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#*     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
 import warnings
 warnings.filterwarnings('ignore')
 from datetime import datetime, date, timedelta
@@ -15,12 +10,6 @@ matplotlib.use('Agg')
 from matplotlib import style
 from matplotlib import pyplot as plt
 plt.style.use('ggplot')
-# [
-#   'Solarize_Light2', '_classic_test_patch', 'bmh', 'classic', 'dark_background', 'fast', 'fivethirtyeight', 
-#   'ggplot', 'grayscale', 'seaborn', 'seaborn-bright', 'seaborn-colorblind', 'seaborn-dark', 'seaborn-dark-palette', 
-#   'seaborn-darkgrid', 'seaborn-deep', 'seaborn-muted', 'seaborn-notebook', 'seaborn-paper', 'seaborn-pastel', 
-#   'seaborn-poster', 'seaborn-talk', 'seaborn-ticks', 'seaborn-white', 'seaborn-whitegrid', 'tableau-colorblind10'
-# ]
 sm, med, lg = 10, 15, 20
 plt.rc('font', size = sm)         # controls default text sizes
 plt.rc('axes', titlesize = med)   # fontsize of the axes title
