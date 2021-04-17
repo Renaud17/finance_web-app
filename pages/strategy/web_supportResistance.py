@@ -71,11 +71,18 @@ class The_Support_Resistance(object):
         date_format = mpl_dates.DateFormatter('%d %b %Y')
         ax.xaxis.set_major_formatter(date_format)
         fig.autofmt_xdate()
+        self.df['Close'].plot(linestyle='--', color='k', linewidth=1)
         for level in self.levels:
             plt.hlines(level[1],xmin=self.df['Date'][level[0]], xmax=max(self.df['Date']),colors='blue')
-            plt.title(f"{self.company} ({self.ticker}) - Support & Resistance Price Levels")
+            plt.title(f"{self.company} ({self.ticker}) - Support & Resistance Price Levels", fontsize=30, fontweight='bold')
             plt.tight_layout()
             plt.grid(True, linestyle='--')
+        for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	        label.set_fontsize(15)
+        ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        ax.legend(loc='best',prop={"size":16})
+        plt.tight_layout()   
+        
         fig.show()
         st.pyplot(fig)
 

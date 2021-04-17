@@ -30,9 +30,6 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 
 
 def ST_Trading_signals(ticker):
-    # start_date = datetime(2020, 1, 1)
-    # end_date = datetime.now()
-    # df = yf.download(ticker, start=start_date, end=end_date)
     df = yf.download(ticker, period='1y')
 
 
