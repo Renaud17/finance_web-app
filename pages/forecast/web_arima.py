@@ -62,24 +62,28 @@ class Web_Arima(object):
 
       #plot close price
         fig, ax = plt.subplots()
-        plt.xlabel('Dates')
-        plt.ylabel('Close Prices')
+        plt.xlabel('Dates', fontsize=20, fontweight='bold')
+        plt.ylabel('Close Prices', fontsize=20, fontweight='bold')
         plt.plot(self.data['Close'])
-        plt.title(f'{self.company} ({self.ticker}) - closing price')
-        plt.legend(loc='best')
+        plt.title(f'{self.company} ({self.ticker}) - closing price', fontsize=30, fontweight='bold')
+        for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	        label.set_fontsize(15)
+        ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        ax.legend(loc='best',prop={"size":16})
         plt.tight_layout()
-        plt.grid(True)
         st.pyplot(fig)
 
         fig, ax = plt.subplots()
-        plt.xlabel('Dates')
-        plt.ylabel('Close Prices')        
+        plt.xlabel('Dates', fontsize=20, fontweight='bold')
+        plt.ylabel('Close Prices', fontsize=20, fontweight='bold')
         self.df_close = self.data['Close']
         self.df_close.plot(style='k.')
-        plt.title(f'Scatter plot of {self.company} ({self.ticker}) - closing price')
-        plt.legend(loc='best')
+        plt.title(f'Scatter plot of {self.company} ({self.ticker}) - closing price', fontsize=30, fontweight='bold')
+        for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	        label.set_fontsize(15)
+        ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        ax.legend(loc='best',prop={"size":16})
         plt.tight_layout()
-        plt.grid(True)
         st.pyplot(fig)
 
     #Test for staionarity
@@ -89,17 +93,18 @@ class Web_Arima(object):
         rolstd = timeseries.rolling(12).std()
 
       #Plot rolling statistics:
-        fig, ax = plt.subplots()
-        plt.xlabel('Dates')
-        plt.ylabel('Close Prices')        
+        fig, ax = plt.subplots()FF
+        plt.xlabel('Dates', fontsize=20, fontweight='bold')
+        plt.ylabel("ClosePrices", fontsize=20, fontweight='bold')
         plt.plot(timeseries, color='blue',label='Original')
         plt.plot(rolmean, color='red', label='Rolling Mean')
         # plt.plot(rolstd, color='black', label = 'Rolling Std')
-        plt.title(f'Rolling Mean and Standard Deviation Of {self.company} ({self.ticker})')
-        plt.legend(loc='best')
+        plt.title(f'Rolling Mean and Standard Deviation Of {self.company} ({self.ticker})', fontsize=30, fontweight='bold')
+        for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	        label.set_fontsize(15)
+        ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        ax.legend(loc='best',prop={"size":16})
         plt.tight_layout()
-        plt.grid(True)
-        plt.show(block=False)
         st.pyplot(fig)
         
         st.text("Results of dickey fuller test")
@@ -118,9 +123,11 @@ class Web_Arima(object):
         fig, ax = plt.subplots()
         fig = result.plot()
         fig.set_size_inches(16, 9)
-        plt.legend(loc='best')
+        for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	        label.set_fontsize(15)
+        ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        ax.legend(loc='best',prop={"size":16})
         plt.tight_layout()
-        plt.grid(True)
         st.pyplot(fig)
 
         self.df_log = np.log(self.df_close)
@@ -128,28 +135,32 @@ class Web_Arima(object):
         self.std_dev = self.df_log.rolling(12).std()
 
         fig, ax = plt.subplots()
-        plt.xlabel('Dates')
-        plt.ylabel('Close Prices')        
-        plt.title(f'Moving Average For {self.company} ({self.ticker})')
+        plt.xlabel('Dates', fontsize=20, fontweight='bold')
+        plt.ylabel('Close Prices', fontsize=20, fontweight='bold')
+        plt.title(f'Moving Average For {self.company} ({self.ticker})', , fontsize=30, fontweight='bold'))
         plt.plot(self.df_log, color='green',label = 'Log-Price')
         # plt.plot(self.std_dev, color ="black", label = "Standard Deviation")
         plt.plot(self.moving_avg, color="red", label = "Mean")
-        plt.legend(loc='best')
+        for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	        label.set_fontsize(15)
+        ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        ax.legend(loc='best',prop={"size":16})
         plt.tight_layout()
-        plt.grid(True)
         st.pyplot(fig)
 
         #split data into train and training set
         train_data, test_data = self.df_log[3:int(len(self.df_log)*0.8)], self.df_log[int(len(self.df_log)*0.8):]
         fig, ax = plt.subplots()
-        plt.xlabel('Dates')
-        plt.ylabel(f'Closing Prices For {self.company}')
+        plt.xlabel('Dates', fontsize=20, fontweight='bold')
+        plt.ylabel(f'Closing Prices For {self.company}', fontsize=20, fontweight='bold')
         plt.plot(self.df_log, 'green', label='Train data')
         plt.plot(test_data, 'blue', label='Test data')
-        plt.title(f"{self.company} ({self.ticker}) - Train & Testing Model")
-        plt.legend(loc='best')
+        plt.title(f"{self.company} ({self.ticker}) - Train & Testing Model", fontsize=30, fontweight='bold')
+        for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	        label.set_fontsize(15)
+        ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        ax.legend(loc='best',prop={"size":16})
         plt.tight_layout()
-        plt.grid(True)
         st.pyplot(fig)
 
         model_autoARIMA = auto_arima(
@@ -187,12 +198,14 @@ class Web_Arima(object):
         plt.plot(train_data, label='training')
         plt.plot(test_data, color = 'blue', label='Actual Stock Price')
         plt.plot(fc_series, color = 'orange',label='Predicted Stock Price')
-        plt.fill_between(lower_series.index, lower_series, upper_series, color='k', alpha=.10)
+        plt.fill_between(lower_series.index, lower_series, upper_series, color='k', alpha=.10, fontsize=20, fontweight='bold')
         plt.title(f'{self.company} ({self.ticker}) - Stock Price Prediction')
-        plt.xlabel('Time')
-        plt.ylabel('Actual Stock Price')
-        plt.legend(loc='best', fontsize=8)
-        plt.grid(True)
+        plt.xlabel('Time', fontsize=20, fontweight='bold')
+        plt.ylabel('Actual Stock Price', fontsize=20, fontweight='bold')
+        for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	        label.set_fontsize(15)
+        ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        ax.legend(loc='best',prop={"size":16})
         plt.tight_layout()
         st.pyplot(fig)
 

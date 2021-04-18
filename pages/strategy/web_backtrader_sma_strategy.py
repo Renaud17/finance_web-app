@@ -131,9 +131,11 @@ def backtrader_sma_strategy_run(tick):
     cerebro.addobserver(bt.observers.Value)
 
     # run backtest
-    st.text(f'Starting Portfolio Value: {cerebro.broker.getvalue():.2f}')
+    Starting = (f'Starting Portfolio Value: {cerebro.broker.getvalue():.2f}')
     cerebro.run()
-    st.text(f'Final Portfolio Value: {cerebro.broker.getvalue():.2f}')
+
+    st.header(f"Starting Portfolio Value: {Starting}")
+    st.header(f'Final Portfolio Value: {cerebro.broker.getvalue():.2f}')
 
     # plot results
     fig, ax = plt.subplots()

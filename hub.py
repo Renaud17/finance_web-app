@@ -469,6 +469,7 @@ if(systemStage == 'Technical-Analysis'):
 
 
 if(systemStage == 'Forecasting'):
+  st.title('Forecasting Price Points - Home Page')
   st.subheader("Use The Side Bar via the Arrow ('>') on the upper left corner of the screen")
 
   models = [

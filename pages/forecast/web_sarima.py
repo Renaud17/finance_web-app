@@ -159,7 +159,7 @@ class The_SARIMA_Model(object):
 	        label.set_fontsize(15)
         ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
         ax.legend(loc='best',prop={"size":16})
-        plt.tight_layout()        
+        plt.tight_layout()
         st.pyplot(fig)
         st.write(' *'*34)        
 
@@ -188,7 +188,7 @@ class The_SARIMA_Model(object):
 	        label.set_fontsize(15)
         ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
         ax.legend(loc='best',prop={"size":16})
-        plt.tight_layout()     
+        plt.tight_layout()
         st.pyplot(fig)        
 
         self.result = adfuller(self.df_residual.dropna())
