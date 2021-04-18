@@ -123,6 +123,9 @@ my_new_kicks = [
   'FVRR','LTCN','OROCF','ETCG','APHA','BILI','CLLS','COUP','CUE','NYT','RIOT','SE','SQ','TECK'
 ]
 
+snp500 = pd.read_csv("files/SP500.csv")
+symbols = snp500['Symbol'].sort_values().tolist()
+
 fool_stock_advisor = clean(fool_stock_advisor)
 fool_rule_breakers = clean(fool_rule_breakers)
 oxford_dynamicFortunes = clean(oxford_dynamicFortunes)
@@ -167,11 +170,25 @@ systemStage = st.sidebar.selectbox('Select Analysis Category:',
 )
 st.sidebar.write(' *'*25)
 if(systemStage=='-Select-Stage-'):
-  st.title('Fun Forecasting For Friends')
-  st.subheader('* Select A Stage Then Use the  Side Bar to:')
+  st.title("Welcome To The 'Fin-Web-App'")
+  st.write("* A web application designed specifically with the goal to bring the benefit of complex machine learning models & techniques to the average individual.\
+    This program provides a wide range of analytical data analysis tools to uncover what information resides within the underlying data to more acurately interperate the \
+      market.  In doing so and emplorinng the prinicipal concepts at the heart of data science this application attempts to narrow the field of potential investments\
+         from the entire stock market down to a targeted selection of securities with the aim to outperform the broader market index.")
+  st.header("This web application is broken into several Stages:")
+  st.subheader('1) Fundamental Analysis')
+  st.subheader('2) Technical Analysis')
+  st.subheader('3) Portfolio Theory & Construction')
+  st.subheader('4) Forecasting Techniques')
+  st.subheader('5) Trading Strategies & Backtesting')
 
-snp500 = pd.read_csv("files/SP500.csv")
-symbols = snp500['Symbol'].sort_values().tolist()
+  st.title("To begin using the models within this web-app, locate the '>' in the upper LEFT hand corner of the screen")
+  st.write('')
+  st.write('')
+  st.subheader("All Interaction & Inputs will work through the side-pannel that will pop up when you click on the '>'")
+  st.write('')
+  st.write("* Follow the Steps down the side pannel for each model and it will indicate you to hit a 'RUN' button at the bottom")
+  st.write("* When yor are ready to Access, Configure, & Run the models in each stage, Select A Stage in Step #1 on the Side Bar to the left.")
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
