@@ -3,7 +3,7 @@ warnings.filterwarnings('ignore')
 from datetime import datetime, date, timedelta
 from pathlib import Path
 today = str(datetime.now())[:10]
-from datetime import datetime
+
 import matplotlib
 import matplotlib as mpl
 matplotlib.use('Agg')
@@ -165,10 +165,7 @@ index_ticker_lists_B = [
 st.sidebar.subheader('> Step #1')
 systemStage = st.sidebar.selectbox('Select Analysis Category:',
   [
-    '-Select-Stage-',
-    '1-Wide_Market_Scope', '2-Fundamental-Analysis', '3-Technical-Analysis','4-Portfolio_Construction', 
-    '5-Financial_Forecasting','6-Trading_Strategies','7-Backtesting_Returns'
-    # 
+    '-Select-Stage-','Fundamental-Analysis', 'Technical-Analysis', 'Portfolio', 'Forecasting','Strategy','Backtesting'
   ]
 )
 st.sidebar.write(' *'*25)
@@ -198,16 +195,8 @@ if(systemStage=='-Select-Stage-'):
 # *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-if(systemStage == '1-Wide_Market_Scope'):
-  st.title('Wide Market Scope To Observe Macro Scale')
 
-
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-if(systemStage == '2-Fundamental-Analysis'):
+if(systemStage == 'Fundamental-Analysis'):
   st.title('Fundamental Analysis Home Page')
   st.write(' *'*25)
   st.header('General Analysis Notes')
@@ -388,7 +377,7 @@ else:
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
  
-if(systemStage == '3-Technical-Analysis'):
+if(systemStage == 'Technical-Analysis'):
   st.title('Technical Analysis Home Page')
   st.write(' *'*25)
   st.header('General Analysis Notes')
@@ -423,7 +412,6 @@ if(systemStage == '3-Technical-Analysis'):
   if ticker:
     st.sidebar.subheader('Ticker Input = Good')
     st.sidebar.write(' *'*25)
-
     import requests
     def get_symbol(symbol):
         url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
@@ -432,6 +420,8 @@ if(systemStage == '3-Technical-Analysis'):
             if x['symbol'] == symbol:
                 return x['name']
     technical_company = get_symbol(ticker)
+
+  technical_company = fundamental_company
 
   st.sidebar.subheader('> Step #3')
   st.sidebar.markdown(f"Hit 'Run' For Technical Analysis On:\n\n {technical_company} ({ticker})")
@@ -510,188 +500,7 @@ if(systemStage == '3-Technical-Analysis'):
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-if(systemStage=='4-Portfolio_Construction'):
-  st.title('Portfolio Allocation & Optimization')
-  st.write(' *'*25)
-
-  st.header('> Site Navigation:')
-  st.write("\n* Use The Side Bar via the Arrow ('>') on the upper left corner of the screen")
-  st.subheader('~ To Work In A Different Analysis Category:')
-  st.write('* Go To Step #1')
-  st.subheader('~ To Use Other Models Within This Same Analysis Category:')
-  st.write('* Go To Step #2')
-  st.write(' *'*25)
-  
-  st.title('> General Analysis Definitions')
-
-  st.header('1) Principal Component Analysis (PCA)')
-  st.write('* Principal Component Analysis, or PCA, is a dimensionality-reduction method that is often used to reduce the dimensionality of \
-    large data sets, by transforming a large set of variables into a smaller one that still contains most of the information in the large set.')
-  st.write('* https://towardsdatascience.com/a-one-stop-shop-for-principal-component-analysis-5582fb7e0a9c')
-  st.write(' *'*25)
-
-  st.header('2) Markowitz Efficient Frontier')
-  st.write("* In modern portfolio theory, the efficient frontier is an investment portfolio which occupies the 'efficient'\
-     part of the risk–return spectrum.\ Formally, it is the set of portfolios which satisfy the condition that no other portfolio \
-       exists with a higher expected return but with the same standard deviation of return.")
-  st.write("* The efficient frontier is the set of optimal portfolios that offer the highest expected return for a \
-      defined level of risk or the lowest risk for a given level of expected return. Portfolios that lie below the \
-        efficient frontier are sub-optimal because they do not provide enough return for the level of risk.")
-  st.write('* https://www.investopedia.com/terms/e/efficientfrontier.asp')
-  st.write(' *'*25)
-
-  st.header('3) Modern Portfolio Theory Portfolio Optimization')
-  st.write('* Portfolio optimization is the process of selecting the best portfolio (asset distribution), out of the set of all portfolios\
-     being considered, according to some objective. The objective typically maximizes factors such as expected return, and minimizes costs like financial risk.')
-  st.write('* Modern portfolio theory (MPT) is a theory on how risk-averse investors can construct portfolios\
-      to maximize expected return based on a given level of market risk. Harry Markowitz pioneered this theory in his \
-        paper "Portfolio Selection," which was published in the Journal of Finance in 1952.')
-  st.subheader('Key Assumptions of Modern Portfolio Theory')
-  st.write('* At the heart of MPT is the idea that risk and return are directly linked. \
-    This means that an investor must take on a higher level of risk to achieve greater expected returns.')
-  st.write('* https://www.investopedia.com/terms/m/modernportfoliotheory.asp')
-  st.write(' *'*25)
-
-
-  models = ['-Select-Model-', 'Principal Component Analysis', 'Efficient Frontier', 'Portfolio Optimizer']
-  st.sidebar.subheader('> Step # 2')
-  model = st.sidebar.selectbox('Choose A Model', models)
-  st.sidebar.write(' *'*25)
-
-
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-#     '1-Wide_Market_Scope', '2-Financial_Analysis_Methods','3-Portfolio_Construction', 
-    # '4-Financial_Forecasting','5-Trading_Strategies','6-Backtesting_Returns'
-
-  if(model=='Principal Component Analysis'):
-    st.title('(1) Principal Component Analysis (PCA)')
-    st.header('Model Results Below:')
-    fin = False
-
-    st.sidebar.subheader('> Step #3')
-    tickers = st.sidebar.selectbox('Choose Stock List', index_ticker_lists_B)
-    if tickers:
-      for idx, num in enumerate(index_ticker_lists_B):
-        if num == tickers:
-          new_tickers = index_ticker_lists_A[idx]
-          lst_name = num
-      
-      st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
-      st.sidebar.markdown(new_tickers)
-      st.sidebar.write(' *'*25)
-      st.sidebar.subheader('> Step #4')
-      st.sidebar.markdown("Hit The 'Run PCA' Button To Run Model")
-      run_strategy_pca = st.sidebar.button("Run PCA")
-      if run_strategy_pca:
-        f3.The_PCA_Analysis(new_tickers, lst_name)
-        fin = True
-
-    if fin:
-      st.write(' *'*25)
-      st.title('Model Render Complete')
-
-
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-  if(model=='Efficient Frontier'):
-    st.title('(2) Efficient Frontier')
-    st.header('Model Results Below:')
-    fin = False
-
-    st.sidebar.subheader('> Step #3A')
-    EF_portfolio = st.sidebar.selectbox('Select To Use Pre-Built 10 Security List Or Design Own Portfolio', ['Pre-Built','My-Own-Portfolio'])
-    st.sidebar.markdown('This is where you can select Pre-Built and enter in the tickers from the PCA Analysis')
-    
-    st.sidebar.subheader('> Step #3B')
-    if EF_portfolio == 'Pre-Built':
-      RISKY_ASSETS = st.sidebar.text_input('Enter Ticker List Here:')
-      RISKY_ASSETS = RISKY_ASSETS.split()
-      st.sidebar.text(RISKY_ASSETS)
-      if RISKY_ASSETS:
-        RISKY_ASSETS.sort()
-        marks0 = ['o', '^', 's', 'p', 'h', '8','*', 'd', '>', 'v', '<', '1', '2', '3', '4']
-        mark = marks0[:len(RISKY_ASSETS)+1]
-        st.sidebar.write(' *'*10)
-        st.sidebar.subheader('> Step #4')
-        run_strategy_EF = st.sidebar.button("Run Efficient Frontier")
-        if run_strategy_EF:
-          f3.The_Efficient_Frontier(RISKY_ASSETS, mark).final_plot()
-          fin = True
- 
-    if EF_portfolio == 'My-Own-Portfolio':
-      manys = [2,4,6,8,10,12,14]
-      num_stocks = int(st.sidebar.selectbox('Select Number Of Securities For Portfolio:',manys))    
-      if num_stocks:
-        RISKY_ASSETS = []
-        for n in range(1,num_stocks+1):
-          tic = st.text_input(f'Ticker {n}: ')
-          RISKY_ASSETS.append(tic)
-        RISKY_ASSETS.sort()
-        marks0 = ['o', '^', 's', 'p', 'h', '8','*', 'd', '>', 'v', '<', '1', '2', '3', '4']
-        mark = marks0[:len(RISKY_ASSETS)+1]
-        run_strategy_EF = st.button("Run Efficient Frontier")
-        if run_strategy_EF:
-          f3.The_Efficient_Frontier(RISKY_ASSETS, mark).final_plot()
-          fin = True
-
-    if fin:
-      st.write(' *'*25)
-      st.title('Model Render Complete')
-
-
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-  if(model=='Portfolio Optimizer'):
-    st.title('Portfolio Optimizer')
-    st.header('Model Results Below:')
-    fin = False
-
-    st.sidebar.subheader('> Step #3')
-    Em = str(st.sidebar.selectbox('Pick Ticker Lists:',['Pick-Em','Pick From Ticker Lists']))
-
-    if Em:
-
-      if Em == 'Pick-Em':
-        stock_tickers = st.sidebar.text_input('Enter Ticker List Here: (ex. DIS ECL PLNT NYT)')
-        stock_tickers = stock_tickers.split()
-        if type(stock_tickers)==list:
-          st.sidebar.subheader('ticker list entered in good order')
-          st.sidebar.markdown(stock_tickers)
-          st.sidebar.write(' *'*25)
-          st.sidebar.subheader('> Step #4 - Run Optimization')
-          buttonA = st.sidebar.button('Run Optimizer A')
-          if buttonA:
-            f3.The_Portfolio_Optimizer(stock_tickers, 'Pick_EM_Portfolio').optimize()
-            fin = True
-
-      if Em == 'Pick From Ticker Lists':
-        stockS = st.sidebar.selectbox('Choose Ticker List: ', index_ticker_lists_B)
-        for idx, num in enumerate(index_ticker_lists_B):
-          if num == stockS:
-            st.sidebar.subheader('> Step #4 - Run Optimization')
-            buttonB = st.sidebar.button('Run Optimizer B')
-            if buttonB:
-              f3.The_Portfolio_Optimizer(index_ticker_lists_A[idx], num).optimize()
-              fin = True
-
-    if fin:
-      st.write(' *'*25)
-      st.title('Model Render Complete')
-
-
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-if(systemStage == '5-Financial_Forecasting'):
+if(systemStage == 'Forecasting'):
   st.title('Forecasting Price Points - Home Page')
   st.subheader("Use The Side Bar via the Arrow ('>') on the upper left corner of the screen")
 
@@ -875,7 +684,7 @@ if(systemStage == '5-Financial_Forecasting'):
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-if(systemStage=='6-Trading_Strategies'): 
+if(systemStage=='Strategy'): 
   st.title('Strategy Home Page')
   st.write(' *'*25)
   st.header('> Site Navigation:')
@@ -920,7 +729,8 @@ if(systemStage=='6-Trading_Strategies'):
   st.write('* backtrader backtesting')
   
   models = [
-    '-Select-Model-','Moving Averages - SMA & EMA','Moving Averages - B','Support & Resistance Lines', 'overBought_overSold'
+    '-Select-Model-','Moving Averages - SMA & EMA','Moving Averages - B','Support & Resistance Lines',
+    'overBought_overSold','Backtrader - SMA Strategy','BackTesting - 1'
   ]
 
   st.sidebar.subheader('> Step #2')
@@ -1050,51 +860,8 @@ if(systemStage=='6-Trading_Strategies'):
       st.title('Model Render Complete')      
 
 
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-if(systemStage=='7-Backtesting_Returns'):
-  st.title('Backtesting Home Page')
-  st.write(' *'*25)
-
-  st.header('> Site Navigation:')
-  st.write("\n* Use The Side Bar via the Arrow ('>') on the upper left corner of the screen")
-  st.subheader('~ To Work In A Different Analysis Category:')
-  st.write('* Go To Step #1')
-  st.subheader('~ To Use Other Models Within This Same Analysis Category:')
-  st.write('* Go To Step #2')
-  st.write(' *'*25)
-  
-  st.title('> General Analysis Definitions')
-
-  
-
-
-  models = ['-Select-Model-', 'Backtrader - SMA Strategy', 'BackTesting-LongTerm']
-
-  st.sidebar.subheader('> Step #2')
-  model = st.sidebar.selectbox('Choose A Model', models)
-  st.sidebar.write(' *'*25)
-
-  st.sidebar.subheader('> Step #3')
-  stock_ticker = st.sidebar.text_input('Type In Stock Ticker To Model (ALL CAPS): ')
-  st.sidebar.write(' *'*25)
-
-  import requests
-  def get_symbol(symbol):
-      url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
-      result = requests.get(url).json()
-      for x in result['ResultSet']['Result']:
-          if x['symbol'] == symbol:
-              return x['name']
-  backtest_company = get_symbol(stock_ticker)
-
-
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 
   if(model=='Backtrader - SMA Strategy'):
     fin = False
@@ -1116,7 +883,7 @@ if(systemStage=='7-Backtesting_Returns'):
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-  if(model=='BackTesting-LongTerm'):
+  if(model=='BackTesting - 1'):
     fin = False
     st.title('BackTesting - 1')
     st.write('details')
@@ -1129,8 +896,186 @@ if(systemStage=='7-Backtesting_Returns'):
 
     if fin:
       st.write(' *'*25)
+      st.title('Model Render Complete')        
+
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+if(systemStage=='Portfolio'):
+  st.title('Portfolio Allocation & Optimization')
+  st.write(' *'*25)
+
+  st.header('> Site Navigation:')
+  st.write("\n* Use The Side Bar via the Arrow ('>') on the upper left corner of the screen")
+  st.subheader('~ To Work In A Different Analysis Category:')
+  st.write('* Go To Step #1')
+  st.subheader('~ To Use Other Models Within This Same Analysis Category:')
+  st.write('* Go To Step #2')
+  st.write(' *'*25)
+  
+  st.title('> General Analysis Definitions')
+
+  st.header('1) Principal Component Analysis (PCA)')
+  st.write('* Principal Component Analysis, or PCA, is a dimensionality-reduction method that is often used to reduce the dimensionality of \
+    large data sets, by transforming a large set of variables into a smaller one that still contains most of the information in the large set.')
+  st.write('* https://towardsdatascience.com/a-one-stop-shop-for-principal-component-analysis-5582fb7e0a9c')
+  st.write(' *'*25)
+
+  st.header('2) Markowitz Efficient Frontier')
+  st.write("* In modern portfolio theory, the efficient frontier is an investment portfolio which occupies the 'efficient'\
+     part of the risk–return spectrum.\ Formally, it is the set of portfolios which satisfy the condition that no other portfolio \
+       exists with a higher expected return but with the same standard deviation of return.")
+  st.write("* The efficient frontier is the set of optimal portfolios that offer the highest expected return for a \
+      defined level of risk or the lowest risk for a given level of expected return. Portfolios that lie below the \
+        efficient frontier are sub-optimal because they do not provide enough return for the level of risk.")
+  st.write('* https://www.investopedia.com/terms/e/efficientfrontier.asp')
+  st.write(' *'*25)
+
+  st.header('3) Modern Portfolio Theory Portfolio Optimization')
+  st.write('* Portfolio optimization is the process of selecting the best portfolio (asset distribution), out of the set of all portfolios\
+     being considered, according to some objective. The objective typically maximizes factors such as expected return, and minimizes costs like financial risk.')
+  st.write('* Modern portfolio theory (MPT) is a theory on how risk-averse investors can construct portfolios\
+      to maximize expected return based on a given level of market risk. Harry Markowitz pioneered this theory in his \
+        paper "Portfolio Selection," which was published in the Journal of Finance in 1952.')
+  st.subheader('Key Assumptions of Modern Portfolio Theory')
+  st.write('* At the heart of MPT is the idea that risk and return are directly linked. \
+    This means that an investor must take on a higher level of risk to achieve greater expected returns.')
+  st.write('* https://www.investopedia.com/terms/m/modernportfoliotheory.asp')
+  st.write(' *'*25)
+
+
+  models = ['-Select-Model-', 'Principal Component Analysis', 'Efficient Frontier', 'Portfolio Optimizer']
+  st.sidebar.subheader('> Step # 2')
+  model = st.sidebar.selectbox('Choose A Model', models)
+  st.sidebar.write(' *'*25)
+
+
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+  if(model=='Principal Component Analysis'):
+    st.title('(1) Principal Component Analysis (PCA)')
+    st.header('Model Results Below:')
+    fin = False
+
+    st.sidebar.subheader('> Step #3')
+    tickers = st.sidebar.selectbox('Choose Stock List', index_ticker_lists_B)
+    if tickers:
+      for idx, num in enumerate(index_ticker_lists_B):
+        if num == tickers:
+          new_tickers = index_ticker_lists_A[idx]
+          lst_name = num
+      
+      st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
+      st.sidebar.markdown(new_tickers)
+      st.sidebar.write(' *'*25)
+      st.sidebar.subheader('> Step #4')
+      st.sidebar.markdown("Hit The 'Run PCA' Button To Run Model")
+      run_strategy_pca = st.sidebar.button("Run PCA")
+      if run_strategy_pca:
+        f3.The_PCA_Analysis(new_tickers, lst_name)
+        fin = True
+
+    if fin:
+      st.write(' *'*25)
       st.title('Model Render Complete')
 
+
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+  if(model=='Efficient Frontier'):
+    st.title('(2) Efficient Frontier')
+    st.header('Model Results Below:')
+    fin = False
+
+    st.sidebar.subheader('> Step #3A')
+    EF_portfolio = st.sidebar.selectbox('Select To Use Pre-Built 10 Security List Or Design Own Portfolio', ['Pre-Built','My-Own-Portfolio'])
+    st.sidebar.markdown('This is where you can select Pre-Built and enter in the tickers from the PCA Analysis')
+    
+    st.sidebar.subheader('> Step #3B')
+    if EF_portfolio == 'Pre-Built':
+      RISKY_ASSETS = st.sidebar.text_input('Enter Ticker List Here:')
+      RISKY_ASSETS = RISKY_ASSETS.split()
+      st.sidebar.text(RISKY_ASSETS)
+      if RISKY_ASSETS:
+        RISKY_ASSETS.sort()
+        marks0 = ['o', '^', 's', 'p', 'h', '8','*', 'd', '>', 'v', '<', '1', '2', '3', '4']
+        mark = marks0[:len(RISKY_ASSETS)+1]
+        st.sidebar.write(' *'*10)
+        st.sidebar.subheader('> Step #4')
+        run_strategy_EF = st.sidebar.button("Run Efficient Frontier")
+        if run_strategy_EF:
+          f3.The_Efficient_Frontier(RISKY_ASSETS, mark).final_plot()
+          fin = True
+ 
+    if EF_portfolio == 'My-Own-Portfolio':
+      manys = [2,4,6,8,10,12,14]
+      num_stocks = int(st.sidebar.selectbox('Select Number Of Securities For Portfolio:',manys))    
+      if num_stocks:
+        RISKY_ASSETS = []
+        for n in range(1,num_stocks+1):
+          tic = st.text_input(f'Ticker {n}: ')
+          RISKY_ASSETS.append(tic)
+        RISKY_ASSETS.sort()
+        marks0 = ['o', '^', 's', 'p', 'h', '8','*', 'd', '>', 'v', '<', '1', '2', '3', '4']
+        mark = marks0[:len(RISKY_ASSETS)+1]
+        run_strategy_EF = st.button("Run Efficient Frontier")
+        if run_strategy_EF:
+          f3.The_Efficient_Frontier(RISKY_ASSETS, mark).final_plot()
+          fin = True
+
+    if fin:
+      st.write(' *'*25)
+      st.title('Model Render Complete')
+
+
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+  if(model=='Portfolio Optimizer'):
+    st.title('Portfolio Optimizer')
+    st.header('Model Results Below:')
+    fin = False
+
+    st.sidebar.subheader('> Step #3')
+    Em = str(st.sidebar.selectbox('Pick Ticker Lists:',['Pick-Em','Pick From Ticker Lists']))
+
+    if Em:
+
+      if Em == 'Pick-Em':
+        stock_tickers = st.sidebar.text_input('Enter Ticker List Here: (ex. DIS ECL PLNT NYT)')
+        stock_tickers = stock_tickers.split()
+        if type(stock_tickers)==list:
+          st.sidebar.subheader('ticker list entered in good order')
+          st.sidebar.markdown(stock_tickers)
+          st.sidebar.write(' *'*25)
+          st.sidebar.subheader('> Step #4 - Run Optimization')
+          buttonA = st.sidebar.button('Run Optimizer A')
+          if buttonA:
+            f3.The_Portfolio_Optimizer(stock_tickers, 'Pick_EM_Portfolio').optimize()
+            fin = True
+
+      if Em == 'Pick From Ticker Lists':
+        stockS = st.sidebar.selectbox('Choose Ticker List: ', index_ticker_lists_B)
+        for idx, num in enumerate(index_ticker_lists_B):
+          if num == stockS:
+            st.sidebar.subheader('> Step #4 - Run Optimization')
+            buttonB = st.sidebar.button('Run Optimizer B')
+            if buttonB:
+              f3.The_Portfolio_Optimizer(index_ticker_lists_A[idx], num).optimize()
+              fin = True
+
+    if fin:
+      st.write(' *'*25)
+      st.title('Model Render Complete')
+       
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *

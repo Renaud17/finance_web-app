@@ -93,7 +93,7 @@ class Web_Arima(object):
         rolstd = timeseries.rolling(12).std()
 
       #Plot rolling statistics:
-        fig, ax = plt.subplots()FF
+        fig, ax = plt.subplots()
         plt.xlabel('Dates', fontsize=20, fontweight='bold')
         plt.ylabel("ClosePrices", fontsize=20, fontweight='bold')
         plt.plot(timeseries, color='blue',label='Original')
@@ -137,7 +137,7 @@ class Web_Arima(object):
         fig, ax = plt.subplots()
         plt.xlabel('Dates', fontsize=20, fontweight='bold')
         plt.ylabel('Close Prices', fontsize=20, fontweight='bold')
-        plt.title(f'Moving Average For {self.company} ({self.ticker})', , fontsize=30, fontweight='bold'))
+        plt.title(f'Moving Average For {self.company} ({self.ticker})',fontsize=30, fontweight='bold')
         plt.plot(self.df_log, color='green',label = 'Log-Price')
         # plt.plot(self.std_dev, color ="black", label = "Standard Deviation")
         plt.plot(self.moving_avg, color="red", label = "Mean")

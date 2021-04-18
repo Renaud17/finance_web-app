@@ -1,4 +1,4 @@
-Fimport warnings
+import warnings
 warnings.filterwarnings('ignore')
 from datetime import datetime, date, timedelta
 from pathlib import Path
