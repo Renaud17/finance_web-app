@@ -481,7 +481,7 @@ if(systemStage == 'Forecasting'):
   model = st.sidebar.selectbox('Model List:', models)
   st.sidebar.write(' *'*25)  
 
-  st.sidebar.header('[Setp # 3]')
+  st.sidebar.header('[Step # 3]')
   st.sidebar.subheader(f'Pick A Stock For {model} & Review')
   stock_ticker = st.sidebar.text_input('Enter A Stock Ticker By Typing All Caps Into The Below Box')
   st.sidebar.write(' * example: TSLA ')
