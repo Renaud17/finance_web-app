@@ -142,9 +142,11 @@ class The_Efficient_Frontier(object):
                 label=self.RISKY_ASSETS[asset_index]
                 )
         ax.set(
-            xlabel='Volatility', ylabel='Expected Returns', title=f'Efficient Frontier {self.string}' 
-            )
-        ax.legend(loc='best')
+            xlabel='Volatility', ylabel='Expected Returns', title=f'Efficient Frontier {self.string}')
+        for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	        label.set_fontsize(15)
+        ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        ax.legend(loc='best',prop={"size":16})
         plt.tight_layout()
         st.pyplot(fig)
 

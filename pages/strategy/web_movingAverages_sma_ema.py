@@ -98,7 +98,7 @@ def MovingAverageCrossStrategy(
 
   # plot close price, short-term and long-term moving averages
     fig, ax = plt.subplots()
-    plt.tick_params(axis = 'both', labelsize = 14)
+    plt.tick_params(axis = 'both', labelsize = 15)
     stock_df['Close Price'].plot(color = 'k', lw = 1, label = 'Close Price')  
     stock_df[short_window_col].plot(color = 'b', lw = 1, label = short_window_col)
     stock_df[long_window_col].plot(color = 'g', lw = 1, label = long_window_col) 
@@ -110,11 +110,11 @@ def MovingAverageCrossStrategy(
     plt.plot(stock_df[stock_df['Position'] == -1].index, 
             stock_df[short_window_col][stock_df['Position'] == -1], 
             'v', markersize = 15, color = 'r', alpha = 0.7, label = 'sell')
-    plt.ylabel('Price in $', fontsize = 16 )
-    plt.xlabel('Date', fontsize = 16 )
-    plt.title(f"{company} ({stock_symbol}) - {str(moving_avg)} Crossover", fontsize = 20)
-    plt.legend(loc='best')
-    plt.grid(True)
+    plt.ylabel('Price in $', fontsize=20, fontweight='bold')
+    plt.xlabel('Date', fontsize=20, fontweight='bold')
+    plt.title(f"{company} ({stock_symbol}) - {str(moving_avg)} Crossover", fontsize=30, fontweight='bold')
+    plt.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+    ax.legend(loc='best',prop={"size":16})
     plt.tight_layout()
     plt.show()
     st.pyplot(fig)

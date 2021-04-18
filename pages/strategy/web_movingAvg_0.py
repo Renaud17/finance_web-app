@@ -85,9 +85,11 @@ def ST_Trading_signals(ticker):
         signals.loc[signals.positions == -1.0].index, 
         signals.short_mavg[signals.positions == -1.0],'v', markersize=15, color='r'
         )
-    ax1.set_title(f"{company} ({ticker}) - Moving Average Trade Signals SHORT-TERM")
-    plt.legend(loc='best')
-    plt.grid(which="major", color='k', linestyle='-.', linewidth=0.5)
+    ax1.set_title(f"{company} ({ticker}) - Moving Average Trade Signals SHORT-TERM", fontsize=30, fontweight='bold')
+    for label in (ax1.get_xticklabels() + ax1.get_yticklabels()):
+        label.set_fontsize(15)    
+    plt.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+    plt.legend(loc='best',prop={"size":16})
     plt.tight_layout()
     st.pyplot(fig)
 

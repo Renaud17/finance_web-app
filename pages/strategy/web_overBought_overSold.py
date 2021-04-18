@@ -99,8 +99,8 @@ class The_OverBought_OverSold(object):
 
         fig = plt.figure()
         ax1 = plt.subplot2grid((3, 1), (0, 0), rowspan=2)
-        plt.title(f'Analysis of OverBought vs OverSold For {self.company} ({self.ticker})')
-        ax1.set_ylabel('Quote ($)', size=20)
+        plt.title(f'Analysis of OverBought vs OverSold For {self.company} ({self.ticker})', fontsize=30, fontweight='bold')
+        ax1.set_ylabel('Quote ($)', fontsize=20, fontweight='bold')
         dates = [x[0] for x in candlesticks]
         dates = np.asarray(dates)
         volume = [x[5] for x in candlesticks]
@@ -109,7 +109,10 @@ class The_OverBought_OverSold(object):
         pad = 0.25
         yl = ax1.get_ylim()
         ax1.set_ylim(yl[0]-(yl[1]-yl[0])*pad,yl[1])
-        plt.grid(True)
+        for label in (ax1.get_xticklabels() + ax1.get_yticklabels()):
+	        label.set_fontsize(15)        
+        ax1.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        ax1.legend(loc='best',prop={"size":16})
         plt.tight_layout()
         
         ax2 = ax1.twinx()
@@ -121,11 +124,11 @@ class The_OverBought_OverSold(object):
         yticks = ax2.get_yticks()
         ax2.set_yticks(yticks[::3])
         ax2.yaxis.set_label_position("right")
-        ax2.set_ylabel('Volume', size=20)
+        ax2.set_ylabel('Volume', fontsize=20, fontweight='bold')
         ax1.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
         ax1.xaxis.set_major_locator(mticker.MaxNLocator(10))
         ax2 = plt.subplot2grid((3, 1), (2, 0))
-        ax2.set_ylabel('Quote ($)', size=20)
+        ax2.set_ylabel('Quote ($)', fontsize=20, fontweight='bold')
         candlestick_ohlc(ax2, noise_candlesticks, width=1, colorup='g', colordown='r')
         ax2.plot(
             dates, 
@@ -141,8 +144,10 @@ class The_OverBought_OverSold(object):
             )
         ax2.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
         ax2.xaxis.set_major_locator(mticker.MaxNLocator(10))
-        plt.legend()
-        plt.grid(True)
+        for label in (ax2.get_xticklabels() + ax2.get_yticklabels()):
+	        label.set_fontsize(15)        
+        ax2.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        ax2.legend(loc='best',prop={"size":16})
         plt.tight_layout()
         st.pyplot(fig)
 
