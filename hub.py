@@ -198,7 +198,7 @@ index_ticker_lists_A = [
   oxford_allstars, blockchain, oxford_comminique, oxford_CASH_list, my_new_kicks, watch_lst_bulk, dow, sp100, sp500
 ]
 index_ticker_lists_B = [
-  'get_undervalued_large_caps',
+  'get_undervalued_large_caps', 
     'tickers_dow', 'tickers_ftse100', 'tickers_ftse250', 'tickers_ibovespa', 'tickers_nasdaq', 'tickers_nifty50', 'tickers_niftybank',
     'tickers_sp500', 'get_day_gainers', 'get_day_losers', 'get_day_most_active', 'fool_stock_advisor', 'fool_rule_breakers',
    'oxford_dynamicFortunes', 'oxford_strategicTrends', 'oxford_ST_fortuneHunters', 'oxford_ST_foundation', 'oxford_ST_trailblazer',
@@ -244,6 +244,12 @@ if(systemStage=='-Select-Stage-'):
   st.write('')
   st.write("* Follow the Steps down the side pannel for each model and it will indicate you to hit a 'RUN' button at the bottom")
   st.write("* When your are ready to Access, Configure, & Run the models in each stage, Select A Stage in Step #1 on the Side Bar to the left.")
+
+  st.header('Financial Disclosure:')
+  st.write("NO INVESTMENT ADVICE Nothing in the Site constitutes professional and/or financial advice, \
+    nor does any information on the Site constitute a comprehensive or complete statement of the matters \
+      discussed or the law relating thereto. HII is not a fiduciary by virtue of any person's use of or \
+        access to the Site or Content.")
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
