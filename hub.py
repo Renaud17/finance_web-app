@@ -160,36 +160,6 @@ get_day_gainers = si.get_day_gainers()
 get_day_losers = si.get_day_losers()
 get_day_most_active = si.get_day_most_active()
 
-fin_yahoo_ticker_lists = [
-    get_undervalued_large_caps,
-    tickers_dow,
-    tickers_ftse100,
-    tickers_ftse250,
-    tickers_ibovespa,
-    tickers_nasdaq,
-    tickers_nifty50,
-    tickers_niftybank,
-    tickers_sp500,
-    get_day_gainers,
-    get_day_losers,
-    get_day_most_active
-]
-
-fin_yahoo_ticker_list_names = [
-    'get_undervalued_large_caps',
-    'tickers_dow',
-    'tickers_ftse100',
-    'tickers_ftse250',
-    'tickers_ibovespa',
-    'tickers_nasdaq',
-    'tickers_nifty50',
-    'tickers_niftybank',
-    'tickers_sp500',
-    'get_day_gainers',
-    'get_day_losers',
-    'get_day_most_active'
-]
-
 index_ticker_lists_A = [
   get_undervalued_large_caps, tickers_dow, tickers_ftse100, tickers_ftse250, tickers_ibovespa, tickers_nasdaq, 
   tickers_nifty50, tickers_niftybank, tickers_sp500, get_day_gainers, get_day_losers, get_day_most_active, 
@@ -215,10 +185,8 @@ index_ticker_lists_B = [
 st.sidebar.subheader('> Step #1')
 systemStage = st.sidebar.selectbox('Select Analysis Category:',
   [
-    '-Select-Stage-',
-    '1-Wide_Market_Scope', '2-Fundamental-Analysis', '3-Technical-Analysis','4-Portfolio_Construction', 
-    '5-Financial_Forecasting','6-Trading_Strategies','7-Backtesting_Returns'
-    # 
+    '-Select-Stage-','1-Wide_Market_Scope', '2-Fundamental-Analysis', '3-Technical-Analysis',
+    '4-Portfolio_Construction','5-Financial_Forecasting','6-Trading_Strategies','7-Backtesting_Returns'
   ]
 )
 st.sidebar.write(' *'*25)
@@ -238,8 +206,7 @@ if(systemStage=='-Select-Stage-'):
   st.subheader('7) Backtesting Methods')
 
   st.title("To begin using the models within this web-app, locate the '>' in the upper LEFT hand corner of the screen")
-  st.write('')
-  st.write('')
+  st.write('\n\n')
   st.subheader("All Interaction & Inputs will work through the side-pannel that will pop up when you click on the '>'")
   st.write('')
   st.write("* Follow the Steps down the side pannel for each model and it will indicate you to hit a 'RUN' button at the bottom")
@@ -270,15 +237,6 @@ if(systemStage == '1-Wide_Market_Scope'):
   st.header("Current Undervalued Large Cap Stocks")
   st.dataframe(si.get_undervalued_large_caps().set_index('Symbol'))
 
-  # st.dataframe(si.tickers_ftse100())
-  # st.dataframe(si.tickers_ftse250())
-  # st.dataframe(si.tickers_ibovespa())
-  # st.dataframe(si.tickers_nifty50().set_index('Symbol'))
-  # st.dataframe(si.tickers_niftybank().set_index('Symbol'))
-  # st.dataframe(si.tickers_sp500().set_index('Symbol'))
-  # st.dataframe(si.tickers_nasdaq().set_index('Symbol'))
-  
-
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
@@ -288,14 +246,17 @@ if(systemStage == '1-Wide_Market_Scope'):
 if(systemStage == '2-Fundamental-Analysis'):
   st.title('Fundamental Analysis Home Page')
   st.write(' *'*25)
+
   st.header('General Analysis Notes')
   st.write("https://www.investopedia.com/terms/f/fundamentalanalysis.asp")
   st.write(' *'*25)
+
   st.subheader('Definition:')
   st.write('* Fundamental analysis is a method of evaluating the intrinsic value of an asset and analyzing the factors that could influence its \
     price in the future. This form of analysis is based on external events and influences, as well as financial statements and industry trends.')
   st.write("* Fundamental analysts are concerned with the difference between a stock's value, and the price at which it is trading.")
   st.write(' *'*25)
+
   st.subheader('The 6 Segments to perform fundamental analysis on stocks')
   st.write("1) Use the financial ratios for initial screening")
   st.write("2) Understand the company")
@@ -304,19 +265,23 @@ if(systemStage == '2-Fundamental-Analysis'):
   st.write("5) Find the company's competitors")
   st.write("6) Analyse the future prospects.")
   st.write(' *'*25)
+
   st.subheader("KEY TAKEAWAYS")
   st.write("* Fundamental analysis is a method of determining a stock's real or 'fair market' value.")
   st.write("* Fundamental analysts search for stocks that are currently trading at prices that are higher or lower than their real value.")
   st.write("* If the fair market value is higher than the market price, the stock is deemed to be undervalued and a buy recommendation is given.")
   st.write("* In contrast, technical analysts ignore the fundamentals in favor of studying the historical price trends of the stock.")
   st.write(' *'*25)
+
   st.header('Model Results Below:')
 
   st.sidebar.subheader('> Step #2')
   ticker = st.sidebar.text_input('Enter Stock Ticker IN ALL CAPS')
+
   if ticker:
     st.sidebar.subheader('Ticker Input = Good')
     st.sidebar.write(' *'*25)
+
     import requests
     def get_symbol(symbol):
         url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
@@ -329,6 +294,7 @@ if(systemStage == '2-Fundamental-Analysis'):
     st.sidebar.subheader('> Step #3')
     st.sidebar.markdown(f"Hit 'Run' For Fundamental Analysis On:\n {fundamental_company} ({ticker})")
     run_button = st.sidebar.button("RUN")
+
     if run_button:
       stock = yf.Ticker(ticker)
       info = stock.info
@@ -399,39 +365,60 @@ if(systemStage == '2-Fundamental-Analysis'):
       marketDF = pd.DataFrame(data=marketInfo, index=[0])
       st.table(marketDF)
       st.write(' *'*25)
+
       st.subheader('- To Work In A Different Analysis Category:')
       st.write('* Go To Step #1')
       st.subheader('- To Use Other Models Within This Same Analysis Category:')
       st.write('* Go To Step #2')      
 
 
-
       # get only yearly data
+      st.header('Annual Financial Statements')
+      st.subheader('yearly_income_statement:')
       st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_income_statement'])
+      st.subheader('yearly_balance_sheet:')
       st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_balance_sheet'])
+      st.subheader('yearly_cash_flow:')
       st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_cash_flow'])
+      # st.subheader("balance_sheet")
+      # st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).balance_sheet(frequency='a'))
+      # st.subheader("cash_flow")
+      # st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).cash_flow(frequency='a'))
+      # st.subheader("income_statement")
+      # st.dataframe(Ticker(ticker, asynchronous=True).income_statement(frequency='a'))      
 
+      st.header('Quarterly Financial Statements')
+      st.subheader('quarterly_income_statement:')
       st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_income_statement'])
+      st.subheader('quarterly_balance_sheet:')
       st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_balance_sheet'])
-      st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_cash_flow'])
+      st.subheader('quarterly_cash_flow:')
+      st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_cash_flow'])  
 
-      st.dataframe(si.get_stats(ticker))
-      st.dataframe(si.get_stats_valuation(ticker))      
 
-      st.dataframe(Ticker(ticker, formatted=False).recommendation_trend)
-      st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).balance_sheet(frequency='a'))
-      st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).cash_flow(frequency='a'))
-      st.dataframe(Ticker(ticker, asynchronous=True).income_statement(frequency='a'))
-      st.dataframe(Ticker(ticker, asynchronous=True).insider_holders)
-      st.dataframe(Ticker(ticker, asynchronous=True).insider_transactions)
-      st.dataframe(Ticker(ticker, asynchronous=True).institution_ownership)
-      st.dataframe(Ticker(ticker, asynchronous=True).sec_filings)
-      st.dataframe(Ticker(ticker, asynchronous=True).summary_profile)
-
+      st.header('Key Characteristics, Data, & Information')
       yf_ticker = yf.Ticker(ticker)
       info_yf_ticker = yf_ticker.info
-      # pre_build = info_yf_ticker.style.set_properties(**{'width': '300px'})
-      st.dataframe(info_yf_ticker)    
+
+      st.subheader("information")
+      st.dataframe(info_yf_ticker)
+      st.subheader("recommendation_trend")
+      st.dataframe(Ticker(ticker, formatted=False).recommendation_trend)
+      st.subheader("insider_holders")
+      st.dataframe(Ticker(ticker, asynchronous=True).insider_holders)
+      st.subheader("insider_transactions")
+      st.dataframe(Ticker(ticker, asynchronous=True).insider_transactions)
+      st.subheader("institution_ownership")
+      st.dataframe(Ticker(ticker, asynchronous=True).institution_ownership)
+      st.subheader("sec_filings")
+      st.dataframe(Ticker(ticker, asynchronous=True).sec_filings)
+      st.subheader("summary_profile")
+      st.dataframe(Ticker(ticker, asynchronous=True).summary_profile)
+
+      st.subheader('Key Statistics')
+      st.dataframe(si.get_stats(ticker))
+      st.subheader('Statistics & Valuation')
+      st.dataframe(si.get_stats_valuation(ticker))      
 
 
 else:
@@ -498,6 +485,7 @@ if(systemStage == '3-Technical-Analysis'):
 
   st.sidebar.subheader('> Step #2')
   ticker = st.sidebar.text_input('Enter Stock Ticker IN ALL CAPS')
+
   if ticker:
     st.sidebar.subheader('Ticker Input = Good')
     st.sidebar.write(' *'*25)
@@ -514,6 +502,7 @@ if(systemStage == '3-Technical-Analysis'):
   st.sidebar.subheader('> Step #3')
   st.sidebar.markdown(f"Hit 'Run' For Technical Analysis On:\n\n {technical_company} ({ticker})")
   run_button = st.sidebar.button("RUN")
+
   if run_button:
     st.subheader('Moving Average')
     coMA1, coMA2 = st.beta_columns(2)
@@ -630,7 +619,6 @@ if(systemStage=='4-Portfolio_Construction'):
   st.write('* https://www.investopedia.com/terms/m/modernportfoliotheory.asp')
   st.write(' *'*25)
 
-
   models = ['-Select-Model-', 'Principal Component Analysis', 'Efficient Frontier', 'Portfolio Optimizer']
   st.sidebar.subheader('> Step # 2')
   model = st.sidebar.selectbox('Choose A Model', models)
@@ -640,9 +628,6 @@ if(systemStage=='4-Portfolio_Construction'):
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-
-#     '1-Wide_Market_Scope', '2-Financial_Analysis_Methods','3-Portfolio_Construction', 
-    # '4-Financial_Forecasting','5-Trading_Strategies','6-Backtesting_Returns'
 
   if(model=='Principal Component Analysis'):
     st.title('(1) Principal Component Analysis (PCA)')
