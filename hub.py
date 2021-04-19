@@ -700,8 +700,9 @@ if(systemStage == '5-Financial_Forecasting'):
   st.subheader("Use The Side Bar via the Arrow ('>') on the upper left corner of the screen")
 
   models = [
-    '-Select-A-Model-', 'Prophet Model', 'Stocker Analysis', 'A.R.I.M.A', 'S.A.R.I.M.A', 
+    '-Select-A-Model-', 'Prophet Model', 'Stocker Analysis', 'S.A.R.I.M.A', 
     'Monte Carlo Simulation', 'Univariate Analysis'
+      # 'A.R.I.M.A',
     ]
   
   st.sidebar.header('[Step # 2]')
@@ -775,15 +776,15 @@ if(systemStage == '5-Financial_Forecasting'):
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-  if(model=='A.R.I.M.A'):
-    st.title('(A.R.I.M.A)')
-    st.header('Auto Regression Integrated Moving Average')
+#   if(model=='A.R.I.M.A'):
+#     st.title('(A.R.I.M.A)')
+#     st.header('Auto Regression Integrated Moving Average')
 
-    if stock_ticker:
-      run_strategy_arima = st.button("Run ARIMA")
-      if run_strategy_arima:
-        f1.Web_Arima(stock_ticker).full_build()
-        f1.The_Arima_Model(stock_ticker).arima_model()
+#     if stock_ticker:
+#       run_strategy_arima = st.button("Run ARIMA")
+#       if run_strategy_arima:
+#         f1.Web_Arima(stock_ticker).full_build()
+#         f1.The_Arima_Model(stock_ticker).arima_model()
 
 
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
