@@ -152,7 +152,7 @@ tickers_dow = si.tickers_dow()
 # tickers_ftse100 = si.tickers_ftse100()
 # tickers_ftse250 = si.tickers_ftse250()
 # tickers_ibovespa = si.tickers_ibovespa()
-tickers_nasdaq = si.tickers_nasdaq()
+# tickers_nasdaq = si.tickers_nasdaq()
 # tickers_nifty50 = si.tickers_nifty50()
 # tickers_niftybank = si.tickers_niftybank()
 tickers_sp500 = si.tickers_sp500()
@@ -161,18 +161,18 @@ get_day_losers = si.get_day_losers()
 get_day_most_active = si.get_day_most_active()
 
 index_ticker_lists_A = [
-  # get_undervalued_large_caps, tickers_ftse100, tickers_ftse250, tickers_ibovespa, tickers_nifty50, tickers_niftybank
-  tickers_dow, tickers_nasdaq, tickers_sp500, get_day_gainers, get_day_losers, get_day_most_active, 
+  tickers_dow, tickers_sp500, get_day_gainers, get_day_losers, get_day_most_active, 
   fool_stock_advisor, fool_rule_breakers, oxford_dynamicFortunes, oxford_strategicTrends, oxford_ST_fortuneHunters, 
   oxford_ST_foundation,  oxford_ST_trailblazer, oxford_ST_reefer, oxford_trading, oxford_goneFishin, oxford_baggers, 
   oxford_allstars, blockchain, oxford_comminique, oxford_CASH_list, my_new_kicks, watch_lst_bulk, dow, sp100, sp500
+  # get_undervalued_large_caps, tickers_ftse100, tickers_ftse250, tickers_ibovespa, tickers_nifty50, tickers_niftybank, tickers_nasdaq
 ]
 index_ticker_lists_B = [
-  # 'get_undervalued_large_caps', 'tickers_ftse100', 'tickers_ftse250', 'tickers_ibovespa', 'tickers_nifty50', 'tickers_niftybank',
-    'tickers_dow', 'tickers_nasdaq', 'tickers_sp500', 'get_day_gainers', 'get_day_losers', 'get_day_most_active', 'fool_stock_advisor', 'fool_rule_breakers',
-   'oxford_dynamicFortunes', 'oxford_strategicTrends', 'oxford_ST_fortuneHunters', 'oxford_ST_foundation', 'oxford_ST_trailblazer',
-   'oxford_ST_reefer', 'oxford_trading', 'oxford_goneFishin', 'oxford_baggers', 'oxford_allstars', 'blockchain', 'oxford_comminique', 
-   'oxford_CASH_list', 'my_new_kicks', 'watch_lst_bulk', 'dow', 'sp100', 'sp500'
+  'tickers_dow', 'tickers_sp500', 'get_day_gainers', 'get_day_losers', 'get_day_most_active', 'fool_stock_advisor', 'fool_rule_breakers',
+  'oxford_dynamicFortunes', 'oxford_strategicTrends', 'oxford_ST_fortuneHunters', 'oxford_ST_foundation', 'oxford_ST_trailblazer',
+  'oxford_ST_reefer', 'oxford_trading', 'oxford_goneFishin', 'oxford_baggers', 'oxford_allstars', 'blockchain', 'oxford_comminique', 
+  'oxford_CASH_list', 'my_new_kicks', 'watch_lst_bulk', 'dow', 'sp100', 'sp500'
+  # 'get_undervalued_large_caps', 'tickers_ftse100', 'tickers_ftse250', 'tickers_ibovespa', 'tickers_nifty50', 'tickers_niftybank','tickers_nasdaq'
 ]
 
 
