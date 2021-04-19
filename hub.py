@@ -147,30 +147,29 @@ oxford_comminique = clean(oxford_comminique)
 oxford_CASH_list = clean(oxford_CASH_list)
 my_new_kicks = clean(my_new_kicks)
 
-get_undervalued_large_caps = si.get_undervalued_large_caps()
+# get_undervalued_large_caps = si.get_undervalued_large_caps()
 tickers_dow = si.tickers_dow()
-tickers_ftse100 = si.tickers_ftse100()
-tickers_ftse250 = si.tickers_ftse250()
-tickers_ibovespa = si.tickers_ibovespa()
+# tickers_ftse100 = si.tickers_ftse100()
+# tickers_ftse250 = si.tickers_ftse250()
+# tickers_ibovespa = si.tickers_ibovespa()
 tickers_nasdaq = si.tickers_nasdaq()
-tickers_nifty50 = si.tickers_nifty50()
-tickers_niftybank = si.tickers_niftybank()
+# tickers_nifty50 = si.tickers_nifty50()
+# tickers_niftybank = si.tickers_niftybank()
 tickers_sp500 = si.tickers_sp500()
 get_day_gainers = si.get_day_gainers()
 get_day_losers = si.get_day_losers()
 get_day_most_active = si.get_day_most_active()
 
 index_ticker_lists_A = [
-  get_undervalued_large_caps, tickers_dow, tickers_ftse100, tickers_ftse250, tickers_ibovespa, tickers_nasdaq, 
-  tickers_nifty50, tickers_niftybank, tickers_sp500, get_day_gainers, get_day_losers, get_day_most_active, 
+  # get_undervalued_large_caps, tickers_ftse100, tickers_ftse250, tickers_ibovespa, tickers_nifty50, tickers_niftybank
+  tickers_dow, tickers_nasdaq, tickers_sp500, get_day_gainers, get_day_losers, get_day_most_active, 
   fool_stock_advisor, fool_rule_breakers, oxford_dynamicFortunes, oxford_strategicTrends, oxford_ST_fortuneHunters, 
   oxford_ST_foundation,  oxford_ST_trailblazer, oxford_ST_reefer, oxford_trading, oxford_goneFishin, oxford_baggers, 
   oxford_allstars, blockchain, oxford_comminique, oxford_CASH_list, my_new_kicks, watch_lst_bulk, dow, sp100, sp500
 ]
 index_ticker_lists_B = [
-  'get_undervalued_large_caps', 
-    'tickers_dow', 'tickers_ftse100', 'tickers_ftse250', 'tickers_ibovespa', 'tickers_nasdaq', 'tickers_nifty50', 'tickers_niftybank',
-    'tickers_sp500', 'get_day_gainers', 'get_day_losers', 'get_day_most_active', 'fool_stock_advisor', 'fool_rule_breakers',
+  # 'get_undervalued_large_caps', 'tickers_ftse100', 'tickers_ftse250', 'tickers_ibovespa', 'tickers_nifty50', 'tickers_niftybank',
+    'tickers_dow', 'tickers_nasdaq', 'tickers_sp500', 'get_day_gainers', 'get_day_losers', 'get_day_most_active', 'fool_stock_advisor', 'fool_rule_breakers',
    'oxford_dynamicFortunes', 'oxford_strategicTrends', 'oxford_ST_fortuneHunters', 'oxford_ST_foundation', 'oxford_ST_trailblazer',
    'oxford_ST_reefer', 'oxford_trading', 'oxford_goneFishin', 'oxford_baggers', 'oxford_allstars', 'blockchain', 'oxford_comminique', 
    'oxford_CASH_list', 'my_new_kicks', 'watch_lst_bulk', 'dow', 'sp100', 'sp500'
@@ -234,8 +233,8 @@ if(systemStage == '1-Wide_Market_Scope'):
   st.dataframe(si.get_day_losers().set_index('Symbol'))
   st.header("Today's Top Active Stocks")
   st.dataframe(si.get_day_most_active().set_index('Symbol'))
-  st.header("Current Undervalued Large Cap Stocks")
-  st.dataframe(si.get_undervalued_large_caps().set_index('Symbol'))
+  # st.header("Current Undervalued Large Cap Stocks")
+  # st.dataframe(si.get_undervalued_large_caps().set_index('Symbol'))
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -387,13 +386,13 @@ if(systemStage == '2-Fundamental-Analysis'):
       # st.subheader("income_statement")
       # st.dataframe(Ticker(ticker, asynchronous=True).income_statement(frequency='a'))      
 
-      st.header('Quarterly Financial Statements')
-      st.subheader('quarterly_income_statement:')
-      st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_income_statement'])
-      st.subheader('quarterly_balance_sheet:')
-      st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_balance_sheet'])
-      st.subheader('quarterly_cash_flow:')
-      st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_cash_flow'])  
+      # st.header('Quarterly Financial Statements')
+      # st.subheader('quarterly_income_statement:')
+      # st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_income_statement'])
+      # st.subheader('quarterly_balance_sheet:')
+      # st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_balance_sheet'])
+      # st.subheader('quarterly_cash_flow:')
+      # st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_cash_flow'])  
 
 
       st.header('Key Characteristics, Data, & Information')
