@@ -98,7 +98,6 @@ pyarrow==3.0.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.20
-pycocotools==2.0.0
 pydeck==0.6.1
 pyfolio
 pyforest
@@ -156,8 +155,8 @@ Werkzeug==1.0.1
 widgetsnbextension==3.5.1
 wrapt==1.12.1
 xgboost
-yahoo-fin
-yahooquery
 yfinance==0.1.59
+yahoo_fin
+yahooquery
 zict==2.0.0
 zipp==3.4.1
