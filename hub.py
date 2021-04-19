@@ -400,32 +400,32 @@ if(systemStage == '2-Fundamental-Analysis'):
 
 
 
-    # get only yearly data
-    st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_income_statement'])
-    st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_balance_sheet'])
-    st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_cash_flow'])
+      # get only yearly data
+      st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_income_statement'])
+      st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_balance_sheet'])
+      st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_cash_flow'])
 
-    st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_income_statement'])
-    st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_balance_sheet'])
-    st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_cash_flow'])
+      st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_income_statement'])
+      st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_balance_sheet'])
+      st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_cash_flow'])
 
-    st.dataframe(si.get_stats(ticker))
-    st.dataframe(si.get_stats_valuation(ticker))      
+      st.dataframe(si.get_stats(ticker))
+      st.dataframe(si.get_stats_valuation(ticker))      
 
-    st.dataframe(Ticker(ticker, formatted=False).recommendation_trend)
-    st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).balance_sheet(frequency='a'))
-    st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).cash_flow(frequency='a'))
-    st.dataframe(Ticker(ticker, asynchronous=True).income_statement(frequency='a'))
-    st.dataframe(Ticker(ticker, asynchronous=True).insider_holders)
-    st.dataframe(Ticker(ticker, asynchronous=True).insider_transactions)
-    st.dataframe(Ticker(ticker, asynchronous=True).institution_ownership)
-    st.dataframe(Ticker(ticker, asynchronous=True).sec_filings)
-    st.dataframe(Ticker(ticker, asynchronous=True).summary_profile)
+      st.dataframe(Ticker(ticker, formatted=False).recommendation_trend)
+      st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).balance_sheet(frequency='a'))
+      st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).cash_flow(frequency='a'))
+      st.dataframe(Ticker(ticker, asynchronous=True).income_statement(frequency='a'))
+      st.dataframe(Ticker(ticker, asynchronous=True).insider_holders)
+      st.dataframe(Ticker(ticker, asynchronous=True).insider_transactions)
+      st.dataframe(Ticker(ticker, asynchronous=True).institution_ownership)
+      st.dataframe(Ticker(ticker, asynchronous=True).sec_filings)
+      st.dataframe(Ticker(ticker, asynchronous=True).summary_profile)
 
-    yf_ticker = yf.Ticker(ticker)
-    info_yf_ticker = yf_ticker.info
-    # pre_build = info_yf_ticker.style.set_properties(**{'width': '300px'})
-    st.dataframe(info_yf_ticker)    
+      yf_ticker = yf.Ticker(ticker)
+      info_yf_ticker = yf_ticker.info
+      # pre_build = info_yf_ticker.style.set_properties(**{'width': '300px'})
+      st.dataframe(info_yf_ticker)    
 
 
 else:
