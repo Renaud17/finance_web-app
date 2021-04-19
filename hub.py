@@ -413,12 +413,9 @@ if(systemStage == '2-Fundamental-Analysis'):
       st.dataframe(Ticker(ticker, asynchronous=True).sec_filings)
       st.subheader("summary_profile")
       st.dataframe(Ticker(ticker, asynchronous=True).summary_profile)
-
       st.subheader('Key Statistics')
       st.dataframe(si.get_stats(ticker))
-      st.subheader('Statistics & Valuation')
-      st.dataframe(si.get_stats_valuation(ticker))      
-
+      
 
 else:
   def calcMovingAverage(data, size):
