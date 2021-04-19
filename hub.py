@@ -254,7 +254,24 @@ if(systemStage == '1-Wide_Market_Scope'):
   st.title('Wide Market Scope To Observe Macro Scale')
   st.header('Current Under Construction')
   st.write('* This Stage of the Financial Web Application ')
-  st.sidebar.selectbox('Select Ticker List: ', )
+    
+  st.header("Today's Top Stock Gainers")
+  st.dataframe(si.get_day_gainers().set_index('Symbol'))
+  st.header("Today's Top Stock Losers")
+  st.dataframe(si.get_day_losers().set_index('Symbol'))
+  st.header("Today's Top Active Stocks")
+  st.dataframe(si.get_day_most_active().set_index('Symbol'))
+  st.header("Current Undervalued Large Cap Stocks")
+  st.dataframe(si.get_undervalued_large_caps().set_index('Symbol'))
+
+  # st.dataframe(si.tickers_ftse100())
+  # st.dataframe(si.tickers_ftse250())
+  # st.dataframe(si.tickers_ibovespa())
+  # st.dataframe(si.tickers_nifty50().set_index('Symbol'))
+  # st.dataframe(si.tickers_niftybank().set_index('Symbol'))
+  # st.dataframe(si.tickers_sp500().set_index('Symbol'))
+  # st.dataframe(si.tickers_nasdaq().set_index('Symbol'))
+  
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -382,38 +399,34 @@ if(systemStage == '2-Fundamental-Analysis'):
       st.write('* Go To Step #2')      
 
 
-      st.dataframe(Ticker(ticker, formatted=False).recommendation_trend)
-      st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).balance_sheet(frequency='a'))
-      st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).cash_flow(frequency='a'))
-      st.dataframe(Ticker(ticker, asynchronous=True).income_statement(frequency='a'))
-      st.dataframe(Ticker(ticker, asynchronous=True).insider_holders)
-      st.dataframe(Ticker(ticker, asynchronous=True).insider_transactions)
-      st.dataframe(Ticker(ticker, asynchronous=True).institution_ownership)
-      st.dataframe(Ticker(ticker, asynchronous=True).sec_filings)
-      st.dataframe(Ticker(ticker, asynchronous=True).summary_profile)
 
-      yf_ticker = yf.Ticker(ticker)
-      info_yf_ticker = yf_ticker.info
-      # pre_build = info_yf_ticker.style.set_properties(**{'width': '300px'})
-      st.dataframe(info_yf_ticker)
+    # get only yearly data
+    st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_income_statement'])
+    st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_balance_sheet'])
+    st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_cash_flow'])
 
-      st.dataframe(si.get_day_gainers().set_index('Symbol'))
-      st.dataframe(si.get_day_losers().set_index('Symbol'))
+    st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_income_statement'])
+    st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_balance_sheet'])
+    st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_cash_flow'])
 
-      
+    st.dataframe(si.get_stats(ticker))
+    st.dataframe(si.get_stats_valuation(ticker))      
 
+    st.dataframe(Ticker(ticker, formatted=False).recommendation_trend)
+    st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).balance_sheet(frequency='a'))
+    st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).cash_flow(frequency='a'))
+    st.dataframe(Ticker(ticker, asynchronous=True).income_statement(frequency='a'))
+    st.dataframe(Ticker(ticker, asynchronous=True).insider_holders)
+    st.dataframe(Ticker(ticker, asynchronous=True).insider_transactions)
+    st.dataframe(Ticker(ticker, asynchronous=True).institution_ownership)
+    st.dataframe(Ticker(ticker, asynchronous=True).sec_filings)
+    st.dataframe(Ticker(ticker, asynchronous=True).summary_profile)
 
-      # get only yearly data
-      st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_income_statement'])
-      st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_balance_sheet'])
-      st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_cash_flow'])
+    yf_ticker = yf.Ticker(ticker)
+    info_yf_ticker = yf_ticker.info
+    # pre_build = info_yf_ticker.style.set_properties(**{'width': '300px'})
+    st.dataframe(info_yf_ticker)    
 
-      st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_income_statement'])
-      st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_balance_sheet'])
-      st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_cash_flow'])
-
-      st.dataframe(si.get_stats(ticker))
-      st.dataframe(si.get_stats_valuation(ticker))
 
 else:
   def calcMovingAverage(data, size):
