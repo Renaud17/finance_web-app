@@ -156,5 +156,6 @@ widgetsnbextension==3.5.1
 wrapt==1.12.1
 xgboost
 yfinance==0.1.59
+yahoo-fin==0.8.8
 zict==2.0.0
 zipp==3.4.1
