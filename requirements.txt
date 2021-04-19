@@ -29,7 +29,7 @@ distributed==2021.3.0
 entrypoints==0.3
 ephem==3.7.7.1
 flatbuffers==1.12
-fbprophet
+#fbprophet
 gast==0.3.3
 gitdb==4.0.7
 GitPython==3.1.14
@@ -156,8 +156,8 @@ widgetsnbextension==3.5.1
 wrapt==1.12.1
 xgboost==1.3.3
 yfinance==0.1.59
-yahoo-fin==0.8.7
-yahoofinancials==1.6
-yahooquery==2.2.15
+yahoo-fin
+yahoofinancials
+yahooquery
 zict==2.0.0
 zipp==3.4.1
