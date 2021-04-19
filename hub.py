@@ -191,7 +191,7 @@ if(systemStage=='-Select-Stage-'):
   st.subheader("All Interaction & Inputs will work through the side-pannel that will pop up when you click on the '>'")
   st.write('')
   st.write("* Follow the Steps down the side pannel for each model and it will indicate you to hit a 'RUN' button at the bottom")
-  st.write("* When your are ready to Access, Configure, & Run the models in each stage, Select A Stage in Step #1 on the Side Bar to the left.")
+  st.write("* When yor are ready to Access, Configure, & Run the models in each stage, Select A Stage in Step #1 on the Side Bar to the left.")
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
