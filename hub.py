@@ -179,11 +179,13 @@ if(systemStage=='-Select-Stage-'):
       market.  In doing so and emplorinng the prinicipal concepts at the heart of data science this application attempts to narrow the field of potential investments\
          from the entire stock market down to a targeted selection of securities with the aim to outperform the broader market index.")
   st.header("This web application is broken into several Stages:")
-  st.subheader('1) Fundamental Analysis')
-  st.subheader('2) Technical Analysis')
-  st.subheader('3) Portfolio Theory & Construction')
-  st.subheader('4) Forecasting Techniques')
-  st.subheader('5) Trading Strategies & Backtesting')
+  st.subheader('1) Wide-View Market Analysis')
+  st.subheader('2) Fundamental Analysis')
+  st.subheader('3) Technical Analysis')
+  st.subheader('4) Portfolio Theory & Construction')
+  st.subheader('6) Forecasting Techniques')
+  st.subheader('6) Trading Strategies')
+  st.subheader('7) Backtesting Methods')
 
   st.title("To begin using the models within this web-app, locate the '>' in the upper LEFT hand corner of the screen")
   st.write('')
