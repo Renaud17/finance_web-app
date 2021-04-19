@@ -198,7 +198,7 @@ class Web_Arima(object):
         plt.plot(train_data, label='training')
         plt.plot(test_data, color = 'blue', label='Actual Stock Price')
         plt.plot(fc_series, color = 'orange',label='Predicted Stock Price')
-        plt.fill_between(lower_series.index, lower_series, upper_series, color='k', alpha=.10, fontsize=20, fontweight='bold')
+        plt.fill_between(lower_series.index, lower_series, upper_series, color='k', alpha=.10)
         plt.title(f'{self.company} ({self.ticker}) - Stock Price Prediction')
         plt.xlabel('Time', fontsize=20, fontweight='bold')
         plt.ylabel('Actual Stock Price', fontsize=20, fontweight='bold')
