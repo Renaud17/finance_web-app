@@ -42,6 +42,7 @@ google-auth==1.28.0
 google-auth-oauthlib==0.4.4
 google-pasta==0.2.0
 grpcio==1.32.0
+html5lib
 h5py==2.10.0
 HeapDict==1.0.1
 hijri-converter==2.1.1
