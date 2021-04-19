@@ -1,6 +1,7 @@
 import warnings
 warnings.filterwarnings('ignore')
 from datetime import datetime, date, timedelta
+from dateutil.relativedelta import relativedelta
 from pathlib import Path
 today = str(datetime.now())[:10]
 from datetime import datetime
@@ -25,6 +26,7 @@ plt.rcParams['figure.dpi'] = 150
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import pandas as pd
+pd.options.display.max_columns = 15
 import numpy as np
 import itertools
 import streamlit as st
@@ -38,6 +40,8 @@ from prophet.plot import plot_plotly, plot_components_plotly
 from prophet.plot import add_changepoints_to_plot
 from prophet import Prophet
 import yfinance as yf
+import yahoo_fin.stock_info as si
+from yahooquery import Ticker
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.statespace.sarimax import SARIMAX
@@ -143,17 +147,63 @@ oxford_comminique = clean(oxford_comminique)
 oxford_CASH_list = clean(oxford_CASH_list)
 my_new_kicks = clean(my_new_kicks)
 
+get_undervalued_large_caps = si.get_undervalued_large_caps()
+tickers_dow = si.tickers_dow()
+tickers_ftse100 = si.tickers_ftse100()
+tickers_ftse250 = si.tickers_ftse250()
+tickers_ibovespa = si.tickers_ibovespa()
+tickers_nasdaq = si.tickers_nasdaq()
+tickers_nifty50 = si.tickers_nifty50()
+tickers_niftybank = si.tickers_niftybank()
+tickers_sp500 = si.tickers_sp500()
+get_day_gainers = si.get_day_gainers()
+get_day_losers = si.get_day_losers()
+get_day_most_active = si.get_day_most_active()
+
+fin_yahoo_ticker_lists = [
+    get_undervalued_large_caps,
+    tickers_dow,
+    tickers_ftse100,
+    tickers_ftse250,
+    tickers_ibovespa,
+    tickers_nasdaq,
+    tickers_nifty50,
+    tickers_niftybank,
+    tickers_sp500,
+    get_day_gainers,
+    get_day_losers,
+    get_day_most_active
+]
+
+fin_yahoo_ticker_list_names = [
+    'get_undervalued_large_caps',
+    'tickers_dow',
+    'tickers_ftse100',
+    'tickers_ftse250',
+    'tickers_ibovespa',
+    'tickers_nasdaq',
+    'tickers_nifty50',
+    'tickers_niftybank',
+    'tickers_sp500',
+    'get_day_gainers',
+    'get_day_losers',
+    'get_day_most_active'
+]
+
 index_ticker_lists_A = [
+  get_undervalued_large_caps, tickers_dow, tickers_ftse100, tickers_ftse250, tickers_ibovespa, tickers_nasdaq, 
+  tickers_nifty50, tickers_niftybank, tickers_sp500, get_day_gainers, get_day_losers, get_day_most_active, 
   fool_stock_advisor, fool_rule_breakers, oxford_dynamicFortunes, oxford_strategicTrends, oxford_ST_fortuneHunters, 
-  oxford_ST_foundation, oxford_ST_trailblazer, oxford_ST_reefer, oxford_trading, oxford_goneFishin, oxford_baggers, 
-  oxford_allstars, blockchain, oxford_comminique, oxford_CASH_list, my_new_kicks, watch_lst_bulk,
-  dow, sp100, sp500
+  oxford_ST_foundation,  oxford_ST_trailblazer, oxford_ST_reefer, oxford_trading, oxford_goneFishin, oxford_baggers, 
+  oxford_allstars, blockchain, oxford_comminique, oxford_CASH_list, my_new_kicks, watch_lst_bulk, dow, sp100, sp500
 ]
 index_ticker_lists_B = [
-  'fool_stock_advisor', 'fool_rule_breakers', 'oxford_dynamicFortunes', 'oxford_strategicTrends', 'oxford_ST_fortuneHunters', 
-  'oxford_ST_foundation', 'oxford_ST_trailblazer', 'oxford_ST_reefer', 'oxford_trading', 'oxford_goneFishin', 'oxford_baggers', 
-  'oxford_allstars', 'blockchain', 'oxford_comminique', 'oxford_CASH_list', 'my_new_kicks', 'watch_lst_bulk',
-  'dow', 'sp100', 'sp500'
+  'get_undervalued_large_caps',
+    'tickers_dow', 'tickers_ftse100', 'tickers_ftse250', 'tickers_ibovespa', 'tickers_nasdaq', 'tickers_nifty50', 'tickers_niftybank',
+    'tickers_sp500', 'get_day_gainers', 'get_day_losers', 'get_day_most_active', 'fool_stock_advisor', 'fool_rule_breakers',
+   'oxford_dynamicFortunes', 'oxford_strategicTrends', 'oxford_ST_fortuneHunters', 'oxford_ST_foundation', 'oxford_ST_trailblazer',
+   'oxford_ST_reefer', 'oxford_trading', 'oxford_goneFishin', 'oxford_baggers', 'oxford_allstars', 'blockchain', 'oxford_comminique', 
+   'oxford_CASH_list', 'my_new_kicks', 'watch_lst_bulk', 'dow', 'sp100', 'sp500'
 ]
 
 
@@ -204,6 +254,7 @@ if(systemStage == '1-Wide_Market_Scope'):
   st.title('Wide Market Scope To Observe Macro Scale')
   st.header('Current Under Construction')
   st.write('* This Stage of the Financial Web Application ')
+  st.sidebar.selectbox('Select Ticker List: ', )
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -331,10 +382,6 @@ if(systemStage == '2-Fundamental-Analysis'):
       st.write('* Go To Step #2')      
 
 
-      from yahoo_fin.stock_info import get_analysts_info
-      from yahoo_fin.stock_info import *
-      from yahooquery import Ticker
-
       st.dataframe(Ticker(ticker, formatted=False).recommendation_trend)
       st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).balance_sheet(frequency='a'))
       st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).cash_flow(frequency='a'))
@@ -350,15 +397,23 @@ if(systemStage == '2-Fundamental-Analysis'):
       # pre_build = info_yf_ticker.style.set_properties(**{'width': '300px'})
       st.dataframe(info_yf_ticker)
 
-      todays_gainers = get_day_gainers()
-      todays_losers = get_day_losers()
+      st.dataframe(si.get_day_gainers().set_index('Symbol'))
+      st.dataframe(si.get_day_losers().set_index('Symbol'))
+
+      
+
 
       # get only yearly data
-      st.text(get_financials(ticker, yearly = True, quarterly = False))
-      # get only quarterly data
-      st.text(get_financials(ticker, yearly = False, quarterly = True))
-      st.text(get_stats(ticker))
-      st.text(get_stats_valuation(ticker))
+      st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_income_statement'])
+      st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_balance_sheet'])
+      st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_cash_flow'])
+
+      st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_income_statement'])
+      st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_balance_sheet'])
+      st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_cash_flow'])
+
+      st.dataframe(si.get_stats(ticker))
+      st.dataframe(si.get_stats_valuation(ticker))
 
 else:
   def calcMovingAverage(data, size):
