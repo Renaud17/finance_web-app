@@ -41,6 +41,7 @@ from prophet.plot import add_changepoints_to_plot
 from prophet import Prophet
 import yfinance as yf
 import yahoo_fin.stock_info as si
+from yahoo_fin import news
 from yahooquery import Ticker
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.seasonal import seasonal_decompose
@@ -61,118 +62,56 @@ def clean(listA):
     lst.sort()
     return lst
 
-saveTickers = Path('tickers/')
+saveTickers = Path('tickers/') 
 dow = pd.read_pickle(saveTickers / f'dow_ticker_lst.pkl')
 sp100 = pd.read_pickle(saveTickers / f'sp100_ticker_lst.pkl')
 sp500 = pd.read_pickle(saveTickers / f'sp500_ticker_lst.pkl')
 indices_main = ['^OEX','^MID','^GSPC','^DJI','^NYA','^RUT','^W5000']
-index_names = ['SP100','SP400','SP500','DOW','NYSE','Russ2k','Wilshire5k']
-combined_index_main_names = [list(x) for x in zip(indices_main, index_names)]
+
 my_positions = pd.read_pickle(saveTickers / f'chuck_merged_ticker_lst.pkl')
 watch_lst0 = pd.read_pickle(saveTickers / f'watch_merged_ticker_lst.pkl')
-watch_lst_bulk = my_positions + watch_lst0
+watch_lst_bulk = list(set(my_positions + watch_lst0))
 
-fool_stock_advisor = [
-    'LMND','ZM','TTD','PINS','TEAM','SAM','DIS','ASML','ECL','NYT','LRCX',
-    'NTDOY','PYPL','AMZN','ABNB','ATVI','ZM','SKLZ','SHOP', 'STAA','LULU','WING',
-    'ETSY','BL','RDFN','LOGI','EQIX','U','RGEN','CHGG','PINS','FUBO','W','MRNA','AXON',
-    'SNBR','TDOC','GDRX','PLNT'
-]
-fool_rule_breakers = [
-  'PLNT','GDRX','RDFN','PINS','LULU','AVAV','FSLY','AXON','BL','ZEN','DDOG','NEE','CRM','TEAM','ZG','Z','TWLO',
-  'RMD','STAA','WING','ETSY','LOGI','EQIX','U','RGEN','CHGG','FUBO','LO','MRNA','SNBR','TDOC'
-]
-oxford_dynamicFortunes = [
-  'BZH','CROX','HA','HAS','PFGC','POOL','GDOT','HUYA','GRUB','FSLR','SPWR','GS','BYND','PFGC','VRA'
-]
-oxford_strategicTrends = [
-  'NLOK','NET','BYND','YETI','CURLF','ALB','WMT','DG','BCO','NFE','UBER','RUN','BABA','FAST','CRLBF','LUN-T','TRIP','FCEL'
-]
-oxford_ST_fortuneHunters = [
-  'ALB','BABA','FAST','FCEL','LUN-T','YETI'
-]
-oxford_ST_foundation = [
-  'BCO','DG','DLR','GRMN','WMT'
-]
-oxford_ST_trailblazer = [
-  'LSCC','MU','NVDA','TRIP','UBER'
-]
-oxford_ST_reefer = [
-  'CRLBF','CURLF','IIPR'
-]
-oxford_trading = [
-  'CVS','XLE','IBM','ORCL','VZ','DEM','WIX','ZEN'
-]
-oxford_goneFishin = [
-  'VWEHX, VSMAX','VIPSX','VFSTX','VEMAX','VTSAX','VPADX','VGSLX','VEUSX','GDX'
-]
-oxford_baggers = [
-  'GKOS','MRVL','NEO','NVCR','PFPT'
-]
-oxford_allstars = [
-  'TDF','PSHZF','MKL','IEP','EQR','EMF','BRK-B'
-]
-blockchain = [
-  'AIG','F','PFE','V','WMT','JLL','MCK','RDS-B','BUD','DAL','RIOT','MRNA','AMKBY','BRPHF','ZEST'
-]
-oxford_comminique = [
-  'WIX','PSHZF','ZEN','IBM','VZ','XLE','ORCL','NEO','LBTYA','DRNA'
-]
-oxford_CASH_list = [
-  'EA','EGHT','BZUN','TTWO','EBAY','FTNT','SAIL','BABA',
-  'SAM','COLM','DPZ','EXPE','NUVA','EA','HSY','HAS','NFLX','SIX'
-]
-my_new_kicks = [
-  'AAPL','ASML','BLDP','BA','CRLBF','GWPH','NVDA','PLTR','SNOW','SIVB','TSLA','HRVSF','ARKG','ARKK','GBTC','ECL','NNOX','OKTA','CRM','SOHU',
-  'FVRR','LTCN','OROCF','ETCG','APHA','BILI','CLLS','COUP','CUE','NYT','RIOT','SE','SQ','TECK'
-]
+day_gainers = list(si.get_day_gainers()['Symbol'])
+day_losers = list(si.get_day_losers()['Symbol'])
+day_most_active = list(si.get_day_most_active()['Symbol'])
+undervalued_large_caps = list(si.get_undervalued_large_caps()['Symbol'])
 
-snp500 = pd.read_csv("files/SP500.csv")
-symbols = snp500['Symbol'].sort_values().tolist()
-
-fool_stock_advisor = clean(fool_stock_advisor)
-fool_rule_breakers = clean(fool_rule_breakers)
-oxford_dynamicFortunes = clean(oxford_dynamicFortunes)
-oxford_strategicTrends = clean(oxford_strategicTrends)
-oxford_ST_fortuneHunters = clean(oxford_ST_fortuneHunters)
-oxford_ST_foundation = clean(oxford_ST_foundation)
-oxford_ST_trailblazer = clean(oxford_ST_trailblazer)
-oxford_ST_reefer = clean(oxford_ST_reefer)
-oxford_trading = clean(oxford_trading)
-oxford_goneFishin = clean(oxford_goneFishin)
-oxford_baggers = clean(oxford_baggers)
-oxford_allstars = clean(oxford_allstars)
-blockchain = clean(blockchain)
-oxford_comminique = clean(oxford_comminique)
-oxford_CASH_list = clean(oxford_CASH_list)
-my_new_kicks = clean(my_new_kicks)
-
-# get_undervalued_large_caps = si.get_undervalued_large_caps()
-tickers_dow = si.tickers_dow()
-# tickers_ftse100 = si.tickers_ftse100()
-# tickers_ftse250 = si.tickers_ftse250()
-# tickers_ibovespa = si.tickers_ibovespa()
-# tickers_nasdaq = si.tickers_nasdaq()
-# tickers_nifty50 = si.tickers_nifty50()
-# tickers_niftybank = si.tickers_niftybank()
-tickers_sp500 = si.tickers_sp500()
-get_day_gainers = si.get_day_gainers()
-get_day_losers = si.get_day_losers()
-get_day_most_active = si.get_day_most_active()
+fool_composite = [
+    'LMND','ZM','TTD','PINS','TEAM','SAM','DIS','ASML','ECL','NYT',
+    'LRCX','NTDOY','PYPL','AMZN','ABNB','ATVI','ZM','SKLZ','SHOP', 'STAA',
+    'LULU','WING', 'ETSY','BL','RDFN','LOGI','EQIX','U','RGEN','CHGG',
+    'PINS','FUBO','W','MRNA','AXON','SNBR','TDOC','GDRX','PLNT','PLNT',
+    'GDRX','RDFN','PINS','LULU','AVAV','FSLY','AXON','BL','ZEN','DDOG',
+    'NEE','CRM','TEAM','ZG','Z','TWLO','RMD','STAA','WING','ETSY',
+    'LOGI','EQIX','U','RGEN','CHGG','FUBO','LO','MRNA','SNBR','TDOC',
+    'AAPL','ASML','BLDP','BA','CRLBF','GWPH','NVDA','PLTR','SNOW','SIVB',
+    'TSLA','HRVSF','ARKG','ARKK','GBTC','ECL','NNOX','OKTA','CRM','SOHU',
+    'FVRR','LTCN','OROCF','ETCG','APHA','BILI','CLLS','COUP','CUE','NYT',
+    'RIOT','SE','SQ','TECK'    
+]
+oxford_composite = [
+  'BZH','CROX','HA','HAS','PFGC','POOL','GDOT','HUYA','GRUB','FSLR','SPWR',
+  'GS','BYND','PFGC','VRA','NLOK','NET','BYND','YETI','CURLF','ALB','WMT',
+  'DG','BCO','NFE','UBER','RUN','BABA','FAST','CRLBF','LUN-T','TRIP','FCEL',
+  'ALB','BABA','FAST','FCEL','LUN-T','YETI','BCO','DG','DLR','GRMN','WMT',
+  'LSCC','MU','NVDA','TRIP','UBER','CRLBF','CURLF','IIPR','CVS','XLE','IBM',
+  'ORCL','VZ','DEM','WIX','ZEN','VWEHX, VSMAX','VIPSX','VFSTX','VEMAX',
+  'VTSAX','VPADX','VGSLX','VEUSX','GDX','GKOS','MRVL','NEO','NVCR','PFPT',
+  'TDF','PSHZF','MKL','IEP','EQR','EMF','BRK-B','AIG','F','PFE','V','WMT',
+  'JLL','MCK','RDS-B','BUD','DAL','RIOT','MRNA','AMKBY','BRPHF','ZEST',
+  'WIX','PSHZF','ZEN','IBM','VZ','XLE','ORCL','NEO','LBTYA','DRNA','EA',
+  'EGHT','BZUN','TTWO','EBAY','FTNT','SAIL','BABA','SAM','COLM','DPZ',
+  'EXPE','NUVA','EA','HSY','HAS','NFLX','SIX'
+]
 
 index_ticker_lists_A = [
-  tickers_dow, tickers_sp500, get_day_gainers, get_day_losers, get_day_most_active, 
-  fool_stock_advisor, fool_rule_breakers, oxford_dynamicFortunes, oxford_strategicTrends, oxford_ST_fortuneHunters, 
-  oxford_ST_foundation,  oxford_ST_trailblazer, oxford_ST_reefer, oxford_trading, oxford_goneFishin, oxford_baggers, 
-  oxford_allstars, blockchain, oxford_comminique, oxford_CASH_list, my_new_kicks, watch_lst_bulk, dow, sp100, sp500
-  # get_undervalued_large_caps, tickers_ftse100, tickers_ftse250, tickers_ibovespa, tickers_nifty50, tickers_niftybank, tickers_nasdaq
+  dow, sp100, sp500, indices_main, watch_lst_bulk, fool_composite, oxford_composite,
+  day_gainers, day_losers, day_most_active, undervalued_large_caps
 ]
 index_ticker_lists_B = [
-  'tickers_dow', 'tickers_sp500', 'get_day_gainers', 'get_day_losers', 'get_day_most_active', 'fool_stock_advisor', 'fool_rule_breakers',
-  'oxford_dynamicFortunes', 'oxford_strategicTrends', 'oxford_ST_fortuneHunters', 'oxford_ST_foundation', 'oxford_ST_trailblazer',
-  'oxford_ST_reefer', 'oxford_trading', 'oxford_goneFishin', 'oxford_baggers', 'oxford_allstars', 'blockchain', 'oxford_comminique', 
-  'oxford_CASH_list', 'my_new_kicks', 'watch_lst_bulk', 'dow', 'sp100', 'sp500'
-  # 'get_undervalued_large_caps', 'tickers_ftse100', 'tickers_ftse250', 'tickers_ibovespa', 'tickers_nifty50', 'tickers_niftybank','tickers_nasdaq'
+  'dow', 'sp100', 'sp500', 'indices_main','watch_lst_bulk', 'fool_composite', 'oxford_composite',
+  'day_gainers', 'day_losers', 'day_most_active', 'undervalued_large_caps'
 ]
 
 
@@ -224,17 +163,26 @@ if(systemStage=='-Select-Stage-'):
 
 if(systemStage == '1-Wide_Market_Scope'):
   st.title('Wide Market Scope To Observe Macro Scale')
-  st.header('Current Under Construction')
-  st.write('* This Stage of the Financial Web Application ')
+  st.write("A look At Today's Active Stock Screeners")
     
-  st.header("Today's Top Stock Gainers")
-  st.dataframe(si.get_day_gainers().set_index('Symbol'))
-  st.header("Today's Top Stock Losers")
-  st.dataframe(si.get_day_losers().set_index('Symbol'))
-  st.header("Today's Top Active Stocks")
-  st.dataframe(si.get_day_most_active().set_index('Symbol'))
-  # st.header("Current Undervalued Large Cap Stocks")
-  # st.dataframe(si.get_undervalued_large_caps().set_index('Symbol'))
+  for r in range(1):
+    try:
+      st.header("Today's Top Stock Gainers")
+      st.dataframe(si.get_day_gainers().set_index('Symbol'))
+
+      st.header("Today's Top Stock Losers")
+      st.dataframe(si.get_day_losers().set_index('Symbol'))
+
+      st.header("Today's Top Active Stocks")
+      st.dataframe(si.get_day_most_active().set_index('Symbol'))
+
+      st.header("Futures")
+      st.dataframe(si.get_futures().set_index('Symbol'))
+
+      st.header("Current Undervalued Large Cap Stocks")
+      st.dataframe(si.get_undervalued_large_caps().set_index('Symbol'))
+    except Exception:
+      pass
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -365,56 +313,138 @@ if(systemStage == '2-Fundamental-Analysis'):
       st.table(marketDF)
       st.write(' *'*25)
 
+      for i in range(1):
+          try:
+              st.write(f"live_price = $ {si.get_live_price(ticker)}")
+              st.write(f"postmarket_price = $ {si.get_postmarket_price(ticker)}")
+              st.write(f"premarket_price = $ {si.get_premarket_price(ticker)}")
+          except Exception:
+              pass      
+
+      for i in range(1):
+        st.header('Analysis Info')
+        try:
+          st.dataframe(pd.DataFrame(si.get_analysts_info(ticker).items()))
+        except Exception:
+          pass            
+
+      for i in range(1):
+        st.header('Quarterly Financial Statements')
+        try:
+          st.subheader('quarterly_income_statement:')
+          st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_income_statement'])
+          st.subheader('quarterly_balance_sheet:')
+          st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_balance_sheet'])
+          st.subheader('quarterly_cash_flow:')
+          st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_cash_flow'])  
+        except Exception:
+          pass
+
+      for i in range(1):
+          st.subheader('Company_splits')
+          try:
+              st.dataframe(si.get_splits(ticker))
+          except Exception:
+              pass
+
+      for i in range(1):
+          st.subheader('Company_News')
+          try:
+              st.dataframe(pd.DataFrame(news.get_yf_rss(ticker)).set_index('title'))
+          except Exception:
+              pass
+
+      for i in range(1):
+          st.subheader('Company_splits')
+          try:
+              stats = si.get_stats(ticker)
+              stats.set_index('Attribute',inplace=True)
+              st.dataframe(stats)
+          except Exception:
+              pass        
+
+      for i in range(1):
+          st.subheader('stats_n_valuation')
+          try:
+              stat_val = si.get_stats_valuation(ticker)
+              stat_val.set_index('Unnamed: 0',inplace=True)
+              st.dataframe(stat_val)
+          except Exception:
+              pass        
+
+      for i in range(1):
+          st.subheader('Company_splits')
+          try:
+              qt = pd.DataFrame(si.get_quote_table(ticker).items())
+              qt.columns = ['quote title','result']
+              qt.set_index('quote title',inplace=True)
+              st.dataframe(qt)
+          except Exception:
+              pass          
+              
+      for i in range(1):
+          st.subheader('Key Statistics')
+          try:
+              st.dataframe(si.get_stats(ticker))      
+              
+          except Exception:
+              pass
+
+      for i in range(1):
+          st.subheader("recommendation_trend")
+          try:
+              st.dataframe(Ticker(ticker, formatted=False).recommendation_trend)
+          except Exception:
+              pass
+
+      for i in range(1):
+          st.subheader("insider_holders")
+          try:
+              st.dataframe(Ticker(ticker, asynchronous=True).insider_holders)
+          except Exception:
+              pass        
+
+      for i in range(1):
+          st.subheader("insider_transactions")
+          try:
+              st.dataframe(Ticker(ticker, asynchronous=True).insider_transactions)
+          except Exception:
+              pass
+
+      for i in range(1):
+          st.subheader("institution_ownership")
+          try:
+              st.dataframe(Ticker(ticker, asynchronous=True).institution_ownership)
+          except Exception:
+              pass       
+
+      for i in range(1):
+          st.subheader("summary_profile")
+          try:
+              st.dataframe(Ticker(ticker, asynchronous=True).summary_profile)
+          except Exception:
+              pass          
+
+      for i in range(1):
+        st.header("Earnings History")
+        try:
+          df0 = pd.DataFrame(si.get_earnings_history(ticker))
+          df = df0[[
+              'ticker','companyshortname','startdatetime','epsestimate','epsactual','epssurprisepct'
+          ]]
+          df.set_index('startdatetime',inplace=True)
+          df.index = pd.to_datetime(df.index)
+          st.dataframe(df)
+          fig, ax = plt.subplots()
+          df[['epsestimate', 'epsactual']].plot()
+          st.pyplot(fig)
+        except Exception:
+          pass          
+
       st.subheader('- To Work In A Different Analysis Category:')
       st.write('* Go To Step #1')
       st.subheader('- To Use Other Models Within This Same Analysis Category:')
       st.write('* Go To Step #2')      
-
-
-      # get only yearly data
-      st.header('Annual Financial Statements')
-      st.subheader('yearly_income_statement:')
-      st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_income_statement'])
-      st.subheader('yearly_balance_sheet:')
-      st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_balance_sheet'])
-      st.subheader('yearly_cash_flow:')
-      st.dataframe(si.get_financials(ticker, yearly = True, quarterly = False)['yearly_cash_flow'])
-      # st.subheader("balance_sheet")
-      # st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).balance_sheet(frequency='a'))
-      # st.subheader("cash_flow")
-      # st.dataframe(Ticker(ticker, formatted=True, asynchronous=True).cash_flow(frequency='a'))
-      # st.subheader("income_statement")
-      # st.dataframe(Ticker(ticker, asynchronous=True).income_statement(frequency='a'))      
-
-      # st.header('Quarterly Financial Statements')
-      # st.subheader('quarterly_income_statement:')
-      # st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_income_statement'])
-      # st.subheader('quarterly_balance_sheet:')
-      # st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_balance_sheet'])
-      # st.subheader('quarterly_cash_flow:')
-      # st.dataframe(si.get_financials(ticker, yearly = False, quarterly = True)['quarterly_cash_flow'])  
-
-
-      st.header('Key Characteristics, Data, & Information')
-      yf_ticker = yf.Ticker(ticker)
-      info_yf_ticker = yf_ticker.info
-
-      st.subheader("information")
-      st.dataframe(info_yf_ticker)
-      st.subheader("recommendation_trend")
-      st.dataframe(Ticker(ticker, formatted=False).recommendation_trend)
-      st.subheader("insider_holders")
-      st.dataframe(Ticker(ticker, asynchronous=True).insider_holders)
-      st.subheader("insider_transactions")
-      st.dataframe(Ticker(ticker, asynchronous=True).insider_transactions)
-      st.subheader("institution_ownership")
-      st.dataframe(Ticker(ticker, asynchronous=True).institution_ownership)
-      st.subheader("sec_filings")
-      st.dataframe(Ticker(ticker, asynchronous=True).sec_filings)
-      st.subheader("summary_profile")
-      st.dataframe(Ticker(ticker, asynchronous=True).summary_profile)
-      st.subheader('Key Statistics')
-      st.dataframe(si.get_stats(ticker))
       
 
 else:
