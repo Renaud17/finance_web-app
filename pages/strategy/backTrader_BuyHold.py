@@ -3,6 +3,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 plt.rcParams['figure.figsize'] = [15, 7]
 plt.rcParams['figure.dpi'] = 150
+import streamlit as st
 
 from pathlib import Path
 from datetime import datetime
@@ -21,7 +22,7 @@ class BuyAndHold_Buy(bt.Strategy):
 
     def stop(self):       # calculate the actual returns
         self.roi = (self.broker.get_value() / self.val_start) - 1.0
-        print("\n ROI: %.2f, \nCash: %.2f" % (
+        st.write("\n ROI: %.2f, \nCash: %.2f" % (
           1000.0 * self.roi, self.broker.get_value()))
 
 def setup(stock, start, end):
@@ -32,7 +33,7 @@ def setup(stock, start, end):
     )
     return data
 
-def xavier(stock, start=datetime(2020, 1, 1), end=datetime.now()):
+def xavier(stock, start=datetime(2021, 1, 1), end=datetime.now()):
       data = setup(stock, start, end)
       cerebro = bt.Cerebro()
       cerebro.adddata((data))
@@ -41,9 +42,13 @@ def xavier(stock, start=datetime(2020, 1, 1), end=datetime.now()):
       cerebro.broker.setcash(start_cash)
       cerebro.run()
       t_name=str(f'backTrader_technicalIndicator_{stock}.png')
-      cerebro.plot(tic_name=t_name,
-          plotter=None, numfigs=1, iplot=True, start=None, end=None,tight=True, use=None)
-      plt.savefig(savePlot / f'{stock}_bt_buyHold.png')
+      st.pyplot(
+          cerebro.plot(
+              tic_name=t_name,plotter=None, numfigs=1, iplot=True, start=None, end=None,tight=True, use=None
+              )
+      )              
+        
+    #   plt.savefig(savePlot / f'{stock}_bt_buyHold.png')
 
 
 if __name__ == '__main__':

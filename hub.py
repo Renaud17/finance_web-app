@@ -624,7 +624,7 @@ if(systemStage=='4-Portfolio_Construction'):
 
   st.header('2) Markowitz Efficient Frontier')
   st.write("* In modern portfolio theory, the efficient frontier is an investment portfolio which occupies the efficient \
-     part of the risk–return spectrum.\ Formally, it is the set of portfolios which satisfy the condition that no other portfolio \
+     part of the risk–return spectrum. Formally, it is the set of portfolios which satisfy the condition that no other portfolio \
        exists with a higher expected return but with the same standard deviation of return.")
   st.write("* The efficient frontier is the set of optimal portfolios that offer the highest expected return for a \
       defined level of risk or the lowest risk for a given level of expected return. Portfolios that lie below the \
@@ -1156,7 +1156,9 @@ if(systemStage=='7-Backtesting_Returns'):
   st.write(' *'*25)
   
   st.title('> General Analysis Definitions')
-  models = ['-Select-Model-', 'BackTesting-LongTerm','Backtrader - SMA Strategy']
+  models = ['-Select-Model-', 'BackTesting-LongTerm'
+  # ,'Backtrader_SMA','Backtrader - SMA Strategy'
+  ]
 
   st.sidebar.subheader('> Step #2')
   model = st.sidebar.selectbox('Choose A Model', models)
@@ -1178,26 +1180,49 @@ if(systemStage=='7-Backtesting_Returns'):
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-  for r in range(1):
-    try:
+  # for r in range(1):
+  #   try:
 
-      if(model=='BackTesting-LongTerm'):
-        fin = False
-        st.title('BackTesting - 1')
-        st.write('details')
+  #     if(model=='BackTesting-LongTerm'):
+  #       fin = False
+  #       st.title('BackTesting - 1')
+  #       st.write('details')
 
-        if stock_ticker:
-          run_strategy_backtesting1 = st.sidebar.button("Run Backtest 1")
-          if run_strategy_backtesting1:
-            f2.Web_One(stock_ticker)
-            fin = True
+  #       if stock_ticker:
+  #         run_strategy_backtesting1 = st.sidebar.button("Run Backtest 1")
+  #         if run_strategy_backtesting1:
+  #           f2.Web_One(stock_ticker)
+  #           fin = True
 
-        if fin:
-          st.write(' *'*25)
-          st.title('Model Render Complete')
+  #       if fin:
+  #         st.write(' *'*25)
+  #         st.title('Model Render Complete')
 
-    except Exception:
-      pass
+  #   except Exception:
+  #     pass
+
+
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+  # for r in range(1):
+  #   try:
+  #     if(model=='Backtrader_SMA'):
+  #       fin = False
+  #       st.title('Backtrader For Testing - SMA Strategy')
+  #       st.write('details')
+
+  #       if stock_ticker:
+  #         run_strategy_backtraderSMA = st.sidebar.button("Run Backtrader SMA Strategy")
+  #         if run_strategy_backtraderSMA:
+  #           f2.buyHold(stock_ticker)
+  #           fin = True
+
+  #       if fin:
+  #         st.write(' *'*25)
+  #         st.title('Model Render Complete')        
+  #   except Exception:
+  #     pass
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

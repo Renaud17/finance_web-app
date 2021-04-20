@@ -27,7 +27,7 @@ plt.rc('ytick', labelsize = sm)   # fontsize of the tick labels
 plt.rc('legend', fontsize = sm)   # legend fontsize
 plt.rc('figure', titlesize = lg)  # fontsize of the figure title
 plt.rc('axes', linewidth=2)       # linewidth of plot lines
-plt.rcParams['figure.dpi'] = +
+plt.rcParams['figure.dpi'] = 100
 
 from scipy.stats import spearmanr
 from sklearn.metrics import mean_squared_error
