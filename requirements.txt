@@ -46,6 +46,7 @@ h5py==2.10.0
 HeapDict==1.0.1
 hijri-converter==2.1.1
 holidays==0.11.1
+html5lib
 idna==2.10
 immutables==0.15
 importlib-metadata==3.10.0
