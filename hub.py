@@ -1009,7 +1009,8 @@ if(systemStage=='6-Trading_Strategies'):
   st.write('* backtrader backtesting')
   
   models = [
-    '-Select-Model-','Moving Averages - SMA & EMA','Moving Averages - B','Support & Resistance Lines', 'overBought_overSold'
+    '-Select-Model-','Moving Averages - SMA & EMA','Support & Resistance Lines', 'overBought_overSold'
+    # 'Moving Averages - B'
   ]
 
   st.sidebar.subheader('> Step #2')
@@ -1034,47 +1035,62 @@ if(systemStage=='6-Trading_Strategies'):
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
+
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
   if(model=='Moving Averages - SMA & EMA'):
     st.write(' *'*25)
     st.title('Moving Averages - SMA & EMA')
     fin = False
 
     if stock_ticker:
-      st.sidebar.subheader('> Step #4')
-      st.sidebar.write('Select The Short & Long Moving Average Intervals:')
-      short_SMA_EMA = int(st.sidebar.number_input('Enter A SHORT Moving Average:'))
-      if short_SMA_EMA:
-        long_SMA_EMA = int(st.sidebar.number_input('Enter A LONG Moving Average:'))
-        st.sidebar.write(' *'*25)
 
-        if long_SMA_EMA:
-          st.sidebar.subheader('> Step #5')
-          st.sidebar.write('Click Button Below To Run Model')
-          run_strategy_movAvg_SMA_EMA = st.sidebar.button("Run Moving Average - SMA & EMA")
-          if run_strategy_movAvg_SMA_EMA:
-            f2.MovingAverageCrossStrategy(
-              stock_symbol = stock_ticker, 
-              start_date = '2020-01-01', 
-              end_date = '2021-04-16', 
-              short_window = short_SMA_EMA, 
-              long_window = long_SMA_EMA, 
-              moving_avg = 'SMA', 
-              display_table = True
-            )
-            st.subheader(f'The Above Table Is A Record Of Buy & Sell Signals For: \n {strategy_company} ({stock_ticker})')
-            st.write(f'* Using the short-{short_SMA_EMA} & long-{long_SMA_EMA} Moving Average Intervals.')
-            f2.MovingAverageCrossStrategy(
-              stock_symbol = stock_ticker, 
-              start_date = '2020-01-01', 
-              end_date = '2021-04-16', 
-              short_window = short_SMA_EMA, 
-              long_window = long_SMA_EMA, 
-              moving_avg = 'EMA', 
-              display_table = True
-            )
-            st.subheader(f'The Above Table Is A Record Of Buy & Sell Signals For: \n {strategy_company} ({stock_ticker})')
-            st.write(f'* Using the short-{short_SMA_EMA} & long-{long_SMA_EMA} Moving Average Intervals.')
-            fin = True
+      def get_symbol_longName(symbol):
+          url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
+          result = requests.get(url).json()
+          for x in result['ResultSet']['Result']:
+              if x['symbol'] == symbol:
+                  return x['name']
+      company_longName = get_symbol_longName(stock_ticker)      
+
+      optimal_doubleSMA = f2.The_Strategy_2(stock_ticker, company_longName)
+      S, L, mkt, strat, out = optimal_doubleSMA.grab_data()
+      st.write(f"\nBest Short/Long Double Moving Averages = {S} & {L}\n")
+
+      st.sidebar.subheader('> Step #4')
+      short_SMA_EMA = S
+      long_SMA_EMA = L
+
+      if long_SMA_EMA:
+        st.sidebar.subheader('> Step #5')
+        st.sidebar.write('Click Button Below To Run Model')
+        run_strategy_movAvg_SMA_EMA = st.sidebar.button("Run Moving Average - SMA & EMA")
+        if run_strategy_movAvg_SMA_EMA:
+          f2.MovingAverageCrossStrategy(
+            stock_symbol = stock_ticker, 
+            start_date = '2020-01-01', 
+            end_date = '2021-04-16', 
+            short_window = short_SMA_EMA, 
+            long_window = long_SMA_EMA, 
+            moving_avg = 'SMA', 
+            display_table = True
+          )
+          st.subheader(f'The Above Table Is A Record Of Buy & Sell Signals For: \n {strategy_company} ({stock_ticker})')
+          st.write(f'* Using the short-{short_SMA_EMA} & long-{long_SMA_EMA} Moving Average Intervals.')
+          f2.MovingAverageCrossStrategy(
+            stock_symbol = stock_ticker, 
+            start_date = '2020-01-01', 
+            end_date = '2021-04-16', 
+            short_window = short_SMA_EMA, 
+            long_window = long_SMA_EMA, 
+            moving_avg = 'EMA', 
+            display_table = True
+          )
+          st.subheader(f'The Above Table Is A Record Of Buy & Sell Signals For: \n {strategy_company} ({stock_ticker})')
+          st.write(f'* Using the short-{short_SMA_EMA} & long-{long_SMA_EMA} Moving Average Intervals.')
+          fin = True
 
     if fin:
       st.write(' *'*25)
@@ -1085,19 +1101,19 @@ if(systemStage=='6-Trading_Strategies'):
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-  if(model=='Moving Averages - B'):
-    st.title('Moving Average 0')
-    fin = False
+  # if(model=='Moving Averages - B'):
+  #   st.title('Moving Average 0')
+  #   fin = False
 
-    if stock_ticker:
-      run_strategy_movAvg_B = st.sidebar.button("Run Moving Average-B (Double)")
-      if run_strategy_movAvg_B:
-        f2.ST_Trading_signals(stock_ticker)
-        fin = True
+  #   if stock_ticker:
+  #     run_strategy_movAvg_B = st.sidebar.button("Run Moving Average-B (Double)")
+  #     if run_strategy_movAvg_B:
+  #       f2.ST_Trading_signals(stock_ticker)
+  #       fin = True
 
-    if fin:
-      st.write(' *'*25)
-      st.title('Model Render Complete')        
+  #   if fin:
+  #     st.write(' *'*25)
+  #     st.title('Model Render Complete')        
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1180,26 +1196,26 @@ if(systemStage=='7-Backtesting_Returns'):
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-  # for r in range(1):
-  #   try:
+  for r in range(1):
+    try:
 
-  #     if(model=='BackTesting-LongTerm'):
-  #       fin = False
-  #       st.title('BackTesting - 1')
-  #       st.write('details')
+      if(model=='BackTesting-LongTerm'):
+        fin = False
+        st.title('BackTesting - 1')
+        st.write('details')
 
-  #       if stock_ticker:
-  #         run_strategy_backtesting1 = st.sidebar.button("Run Backtest 1")
-  #         if run_strategy_backtesting1:
-  #           f2.Web_One(stock_ticker)
-  #           fin = True
+        if stock_ticker:
+          run_strategy_backtesting1 = st.sidebar.button("Run Backtest 1")
+          if run_strategy_backtesting1:
+            f2.Web_One(stock_ticker)
+            fin = True
 
-  #       if fin:
-  #         st.write(' *'*25)
-  #         st.title('Model Render Complete')
+        if fin:
+          st.write(' *'*25)
+          st.title('Model Render Complete')
 
-  #   except Exception:
-  #     pass
+    except Exception:
+      pass
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1228,24 +1244,24 @@ if(systemStage=='7-Backtesting_Returns'):
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-  for r in range(1):
-    try:
-      if(model=='Backtrader - SMA Strategy'):
-        fin = False
-        st.title('Backtrader For Testing - SMA Strategy')
-        st.write('details')
+  # for r in range(1):
+  #   try:
+  #     if(model=='Backtrader - SMA Strategy'):
+  #       fin = False
+  #       st.title('Backtrader For Testing - SMA Strategy')
+  #       st.write('details')
 
-        if stock_ticker:
-          run_strategy_backtraderSMA = st.sidebar.button("Run Backtrader SMA Strategy")
-          if run_strategy_backtraderSMA:
-            f2.backtrader_sma_strategy_run(stock_ticker)
-            fin = True
+  #       if stock_ticker:
+  #         run_strategy_backtraderSMA = st.sidebar.button("Run Backtrader SMA Strategy")
+  #         if run_strategy_backtraderSMA:
+  #           f2.backtrader_sma_strategy_run(stock_ticker)
+  #           fin = True
 
-        if fin:
-          st.write(' *'*25)
-          st.title('Model Render Complete')        
-    except Exception:
-      pass    
+  #       if fin:
+  #         st.write(' *'*25)
+  #         st.title('Model Render Complete')        
+  #   except Exception:
+  #     pass    
       
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
