@@ -5,7 +5,7 @@ from pathlib import Path
 today = str(datetime.now())[:10]
 import matplotlib
 import matplotlib as mpl
-matplotlib.use('Agg')
+matplotlib.use('TkAgg')
 from matplotlib import style
 from matplotlib import pyplot as plt
 plt.style.use('ggplot')
@@ -119,7 +119,8 @@ class SmaStrategy(bt.Strategy):
 def backtrader_sma_strategy_run(tick):
 
     # download data
-    data = bt.feeds.YahooFinanceData(dataname=tick,  fromdate=datetime(2020, 1, 1), todate=datetime.now())
+    data = bt.feeds.YahooFinanceData(dataname=tick,  fromdate=datetime(2021, 1, 1), todate=datetime.now())
+
     # create a Cerebro entity
     cerebro = bt.Cerebro(stdstats = False)
 
@@ -133,15 +134,14 @@ def backtrader_sma_strategy_run(tick):
     # run backtest
     Starting = (f'Starting Portfolio Value: {cerebro.broker.getvalue():.2f}')
     cerebro.run()
-
     st.header(f"Starting Portfolio Value: {Starting}")
     st.header(f'Final Portfolio Value: {cerebro.broker.getvalue():.2f}')
 
     # plot results
-    fig, ax = plt.subplots()
-    ax = cerebro.plot(iplot=False)
-    st.pyplot(plt.show())
-#     st.pyplot()
+    # fig, ax = plt.subplots()
+    # ax = cerebro.plot(iplot=False)
+    # st.pyplot(plt.show())
+    st.pyplot(cerebro.plot(iplot=False, use='TkAgg'))
 
 
 #  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

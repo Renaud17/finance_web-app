@@ -27,7 +27,7 @@ plt.rc('ytick', labelsize = sm)   # fontsize of the tick labels
 plt.rc('legend', fontsize = sm)   # legend fontsize
 plt.rc('figure', titlesize = lg)  # fontsize of the figure title
 plt.rc('axes', linewidth=2)       # linewidth of plot lines
-plt.rcParams['figure.dpi'] = 100
+plt.rcParams['figure.dpi'] = +
 
 from scipy.stats import spearmanr
 from sklearn.metrics import mean_squared_error
@@ -51,13 +51,6 @@ else:
     print('Using CPU')
 
 print('SYSTEM LOAD COMPLETE')
-
-
-
-
-
-
-
 
 
 
@@ -108,12 +101,23 @@ company
 
 
 
-
 # Executing class and variables
 MACD_indicator = MovingAverage(closing_prices)
 MACD_line, signal_line, histogram = MACD_indicator.MACD()
 COOLDOWN_PERIOD = 30
 cooldown = 0
+
+# Initial variables
+INITIAL_INVESTMENT = 5000
+net_portfolio = INITIAL_INVESTMENT
+
+MAX_STOCK_PURCHASE = 1000 # maximum spent on each buy signal
+BROKERAGE_FEE = 9.50 # Selfwealth brokerage fee
+
+PROFIT_THRESHOLD = 1.2
+COOLDOWN_PERIOD = 30 # number of elapsed days before another buy can be executed
+
+
 
 # Generating buy and sell signals
 for i in range(1, len(closing_prices)):
@@ -134,6 +138,8 @@ for i in range(1, len(closing_prices)):
             if MACD_line['EMA'].iloc[i] > 0:
                 sell.iloc[i] = closing_prices[i] # SELL
             high = 'SIGNAL'
+
+
 
 # Plotting results 
 plt.rcParams["figure.figsize"] = [16,9]
@@ -170,57 +176,6 @@ ax3.set(xlabel='Date', ylabel='($)')
 plt.tight_layout()
 plt.show()
 
-
-
-
-
-
-# Initial variables
-INITIAL_INVESTMENT = 5000
-net_portfolio = INITIAL_INVESTMENT
-
-MAX_STOCK_PURCHASE = 1000 # maximum spent on each buy signal
-BROKERAGE_FEE = 9.50 # Selfwealth brokerage fee
-
-PROFIT_THRESHOLD = 1.2
-COOLDOWN_PERIOD = 30 # number of elapsed days before another buy can be executed
-
-
-
-# Plotting results 
-plt.rcParams["figure.figsize"] = [16,9]
-plt.rcParams["lines.linewidth"] = 0.75
-
-fig, (ax1, ax2, ax3) = plt.subplots(3,1)
-plt.grid(True)
-
-ax1.xaxis.set_tick_params(rotation=45)
-
-ax1.plot(closing_prices, label = 'Closing Prices')
-ax1.plot(buy, 'g^', markersize=13, label = 'Buy')
-ax1.plot(sell, 'rv', markersize=13, label = 'Sell')
-ax1.legend(loc='best')
-ax1.title.set_text(f'{company} Buy/Sell')
-ax1.set(xlabel='Date', ylabel='($)')
-
-ax2.plot(MACD_line, label = 'MACD Line')
-ax2.plot(signal_line, label = 'Signal Line')
-histogram_y = [histogram['EMA'].iloc[i] for i in range(0, len(histogram))]
-ax2.bar(histogram.index, histogram_y, color=['g' if histogram_y[i] > 0 else 'r' for i in range(0,len(histogram_y))], width = 1, label = 'Histogram')
-ax2.legend(loc='best')
-ax2.title.set_text(f'{company} MACD vs Signal Line (with histogram)')
-ax2.xaxis.set_tick_params(rotation=45)
-ax2.set(xlabel='Date', ylabel=f'{ticker_stock} Price ($USD)')
-
-ax3.plot(closing_prices, label =f'{ticker_stock} Historical Price')
-ax3.plot(MACD_indicator.EMA(12), label = '12 day EMA') # uncomment if you wish to plot the 12 day EMA 
-ax3.plot(MACD_indicator.EMA(26), label = '26 day EMA') # uncomment if you wish to plot the 26 day EMA
-ax3.legend(loc='best')
-ax3.title.set_text(f'{company} MACD Indicators (12) vs (26)')
-ax3.set(xlabel='Date', ylabel=f'{ticker_stock} Price ($USD)')
-
-plt.tight_layout()
-plt.show()
 
 
 

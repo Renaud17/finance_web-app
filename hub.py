@@ -39,6 +39,7 @@ from prophet.diagnostics import cross_validation
 from prophet.plot import plot_plotly, plot_components_plotly
 from prophet.plot import add_changepoints_to_plot
 from prophet import Prophet
+import requests
 import yfinance as yf
 import yahoo_fin.stock_info as si
 from yahoo_fin import news
@@ -123,12 +124,12 @@ index_ticker_lists_B = [
 st.sidebar.subheader('> Step #1')
 systemStage = st.sidebar.selectbox('Select Analysis Category:',
   [
-    '-Select-Stage-','1-Wide_Market_Scope', '2-Fundamental-Analysis', '3-Technical-Analysis',
+    '-Home-','1-Wide_Market_Scope', '2-Fundamental-Analysis', '3-Technical-Analysis',
     '4-Portfolio_Construction','5-Financial_Forecasting','6-Trading_Strategies','7-Backtesting_Returns'
   ]
 )
 st.sidebar.write(' *'*25)
-if(systemStage=='-Select-Stage-'):
+if(systemStage=='-Home-'):
   st.title("Welcome To The 'Fin-Web-App'")
   st.write("* A web application designed specifically with the goal to bring the benefit of complex machine learning models & techniques to the average individual.\
     This program provides a wide range of analytical data analysis tools to uncover what information resides within the underlying data to more acurately interperate the \
@@ -229,14 +230,13 @@ if(systemStage == '2-Fundamental-Analysis'):
     st.sidebar.subheader('Ticker Input = Good')
     st.sidebar.write(' *'*25)
 
-    import requests
-    def get_symbol(symbol):
+    def get_fundamental_symbol(symbol):
         url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
         result = requests.get(url).json()
         for x in result['ResultSet']['Result']:
             if x['symbol'] == symbol:
                 return x['name']
-    fundamental_company = get_symbol(ticker)
+    fundamental_company = get_fundamental_symbol(ticker)
 
     st.sidebar.subheader('> Step #3')
     st.sidebar.markdown(f"Hit 'Run' For Fundamental Analysis On:\n {fundamental_company} ({ticker})")
@@ -486,7 +486,7 @@ if(systemStage == '3-Technical-Analysis'):
   st.write("https://www.investopedia.com/terms/t/technicalanalysis.asp")
   st.write(' *'*25)
   st.subheader('Definition:')
-  st.write('* Technical analysis is a trading discipline employed to evaluate investments and identify trading opportunities by analyzing\ statistical \
+  st.write('* Technical analysis is a trading discipline employed to evaluate investments and identify trading opportunities by analyzing statistical \
     trends gathered from trading activity, such as price movement and volume. ... Technical analysis can be used on any security with historical trading data.')
   st.write('* In finance, technical analysis is an analysis methodology for forecasting \
     the direction of prices through the study of past market data, primarily price and volume.')
@@ -516,7 +516,6 @@ if(systemStage == '3-Technical-Analysis'):
     st.sidebar.subheader('Ticker Input = Good')
     st.sidebar.write(' *'*25)
 
-    import requests
     def get_symbol(symbol):
         url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
         result = requests.get(url).json()
@@ -624,7 +623,7 @@ if(systemStage=='4-Portfolio_Construction'):
   st.write(' *'*25)
 
   st.header('2) Markowitz Efficient Frontier')
-  st.write("* In modern portfolio theory, the efficient frontier is an investment portfolio which occupies the 'efficient'\
+  st.write("* In modern portfolio theory, the efficient frontier is an investment portfolio which occupies the efficient \
      part of the risk–return spectrum.\ Formally, it is the set of portfolios which satisfy the condition that no other portfolio \
        exists with a higher expected return but with the same standard deviation of return.")
   st.write("* The efficient frontier is the set of optimal portfolios that offer the highest expected return for a \
@@ -1022,14 +1021,13 @@ if(systemStage=='6-Trading_Strategies'):
   st.sidebar.write(' * example: TSLA ')
   st.sidebar.write(' *'*25)
 
-  import requests
-  def get_symbol(symbol):
+  def get_strategy_symbol(symbol):
       url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
       result = requests.get(url).json()
       for x in result['ResultSet']['Result']:
           if x['symbol'] == symbol:
               return x['name']
-  strategy_company = get_symbol(stock_ticker)
+  strategy_company = get_strategy_symbol(stock_ticker)
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1158,11 +1156,7 @@ if(systemStage=='7-Backtesting_Returns'):
   st.write(' *'*25)
   
   st.title('> General Analysis Definitions')
-
-  
-
-
-  models = ['-Select-Model-', 'Backtrader - SMA Strategy', 'BackTesting-LongTerm']
+  models = ['-Select-Model-', 'BackTesting-LongTerm','Backtrader - SMA Strategy']
 
   st.sidebar.subheader('> Step #2')
   model = st.sidebar.selectbox('Choose A Model', models)
@@ -1172,56 +1166,69 @@ if(systemStage=='7-Backtesting_Returns'):
   stock_ticker = st.sidebar.text_input('Type In Stock Ticker To Model (ALL CAPS): ')
   st.sidebar.write(' *'*25)
 
-  import requests
-  def get_symbol(symbol):
+  def get_backtest_symbol(symbol):
       url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
       result = requests.get(url).json()
       for x in result['ResultSet']['Result']:
           if x['symbol'] == symbol:
               return x['name']
-  backtest_company = get_symbol(stock_ticker)
+  backtest_company = get_backtest_symbol(stock_ticker)
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+  for r in range(1):
+    try:
 
-  if(model=='Backtrader - SMA Strategy'):
-    fin = False
-    st.title('Backtrader For Testing - SMA Strategy')
-    st.write('details')
+      if(model=='BackTesting-LongTerm'):
+        fin = False
+        st.title('BackTesting - 1')
+        st.write('details')
 
-    if stock_ticker:
-      run_strategy_backtraderSMA = st.sidebar.button("Run Backtrader SMA Strategy")
-      if run_strategy_backtraderSMA:
-        f2.backtrader_sma_strategy_run(stock_ticker)
-        fin = True
+        if stock_ticker:
+          run_strategy_backtesting1 = st.sidebar.button("Run Backtest 1")
+          if run_strategy_backtesting1:
+            f2.Web_One(stock_ticker)
+            fin = True
 
-    if fin:
-      st.write(' *'*25)
-      st.title('Model Render Complete')        
+        if fin:
+          st.write(' *'*25)
+          st.title('Model Render Complete')
+
+    except Exception:
+      pass
+
+
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+  for r in range(1):
+    try:
+      if(model=='Backtrader - SMA Strategy'):
+        fin = False
+        st.title('Backtrader For Testing - SMA Strategy')
+        st.write('details')
+
+        if stock_ticker:
+          run_strategy_backtraderSMA = st.sidebar.button("Run Backtrader SMA Strategy")
+          if run_strategy_backtraderSMA:
+            f2.backtrader_sma_strategy_run(stock_ticker)
+            fin = True
+
+        if fin:
+          st.write(' *'*25)
+          st.title('Model Render Complete')        
+    except Exception:
+      pass    
       
-
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-  if(model=='BackTesting-LongTerm'):
-    fin = False
-    st.title('BackTesting - 1')
-    st.write('details')
-
-    if stock_ticker:
-      run_strategy_backtesting1 = st.sidebar.button("Run Backtest 1")
-      if run_strategy_backtesting1:
-        f2.Web_One(stock_ticker)
-        fin = True
-
-    if fin:
-      st.write(' *'*25)
-      st.title('Model Render Complete')
-
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+  # for r in range(1):
+  #   try:
+
+  #   except Exception:
+  #     pass
