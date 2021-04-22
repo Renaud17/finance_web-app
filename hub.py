@@ -132,15 +132,15 @@ st.sidebar.write(' *'*25)
 if(systemStage=='-Home-'):
   st.title("Welcome To The 'Fin-Web-App'")
   st.write("* A web application designed specifically with the goal to bring the benefit of complex machine learning models & techniques to the average individual.\
-    This program provides a wide range of analytical data analysis tools to uncover what information resides within the underlying data to more acurately interperate the \
-      market.  In doing so and emplorinng the prinicipal concepts at the heart of data science this application attempts to narrow the field of potential investments\
+    This program provides a wide range of analytical data analysis tools to uncover what information resides within the underlying data to more accurately interpret the \
+      market.  In doing so and imploring the principal concepts at the heart of data science this application attempts to narrow the field of potential investments\
          from the entire stock market down to a targeted selection of securities with the aim to outperform the broader market index.")
   st.header("This web application is broken into several Stages:")
   st.subheader('1) Wide-View Market Analysis')
   st.subheader('2) Fundamental Analysis')
   st.subheader('3) Technical Analysis')
   st.subheader('4) Portfolio Theory & Construction')
-  st.subheader('6) Forecasting Techniques')
+  st.subheader('5) Forecasting Techniques')
   st.subheader('6) Trading Strategies')
   st.subheader('7) Backtesting Methods')
 
@@ -154,7 +154,7 @@ if(systemStage=='-Home-'):
   st.header('Financial Disclosure:')
   st.write("NO INVESTMENT ADVICE Nothing in the Site constitutes professional and/or financial advice, \
     nor does any information on the Site constitute a comprehensive or complete statement of the matters \
-      discussed or the law relating thereto. HII is not a fiduciary by virtue of any person's use of or \
+      discussed or the law relating thereto. The Creator of this application is not a fiduciary by virtue of any person's use of or \
         access to the Site or Content.")
 
 
