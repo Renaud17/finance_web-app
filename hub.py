@@ -1009,7 +1009,7 @@ if(systemStage=='6-Trading_Strategies'):
   st.write('* backtrader backtesting')
   
   models = [
-    '-Select-Model-','Moving Averages - SMA & EMA','Support & Resistance Lines', 'overBought_overSold'
+    '-Select-Model-','Moving Averages - SMA & EMA','Strategy II','Support & Resistance Lines', 'overBought_overSold'
     # 'Moving Averages - B'
   ]
 
@@ -1096,6 +1096,25 @@ if(systemStage=='6-Trading_Strategies'):
       st.write(' *'*25)
       st.title('Model Render Complete')      
 
+
+
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+  if(model=='Strategy II'):
+    st.title('Strategy II')
+    fin = False
+
+    if stock_ticker:
+      run_strategy_movAvg_B = st.sidebar.button("Run Strategy II")
+      if run_strategy_movAvg_B:
+        f2.runRun(stock_ticker)
+        fin = True
+
+    if fin:
+      st.write(' *'*25)
+      st.title('Model Render Complete')        
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
