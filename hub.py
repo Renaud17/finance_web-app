@@ -1056,7 +1056,7 @@ if(systemStage=='6-Trading_Strategies'):
 
         company_longName = get_symbol_longName(stock_ticker)      
         res = f2.The_Strategy_2(stock_ticker, company_longName).grab_data()
-        S, L, mkt, strat, out = res['SMA1'][0], res['SMA2'][0], res['MARKET'][0], res['STRATEGY'][0], res['OUT'][0]
+        S, L, mkt, strat, out = res.iloc['SMA1'][0], res.iloc['SMA2'][0], res.iloc['MARKET'][0], res.iloc['STRATEGY'][0], res.iloc['OUT'][0]
         
         st.title("Double Moving Average Strategy")
         st.header(f"{company_longName} ({ticker})")
