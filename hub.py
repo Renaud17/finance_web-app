@@ -3,8 +3,7 @@ warnings.filterwarnings('ignore')
 from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 from pathlib import Path
-today = str(datetime.now())[:10]
-from datetime import datetime
+# today = str(datetime.now())[:10]
 import matplotlib
 import matplotlib as mpl
 matplotlib.use('Agg')
@@ -22,27 +21,24 @@ plt.rc('figure', titlesize = lg)  # fontsize of the figure title
 plt.rc('axes', linewidth=2)       # linewidth of plot lines
 plt.rcParams['figure.figsize'] = [18, 10]
 plt.rcParams['figure.dpi'] = 150
-
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
+
 import pandas as pd
 pd.options.display.max_columns = 15
 import numpy as np
 import itertools
 import streamlit as st
 st.set_option('deprecation.showPyplotGlobalUse', False)
-
 from dask.distributed import Client
-from prophet.plot import plot_cross_validation_metric
-from prophet.diagnostics import performance_metrics
-from prophet.diagnostics import cross_validation
-from prophet.plot import plot_plotly, plot_components_plotly
-from prophet.plot import add_changepoints_to_plot
 from prophet import Prophet
+from prophet.plot import plot_cross_validation_metric
+from prophet.diagnostics import performance_metrics, cross_validation
+from prophet.plot import plot_plotly, plot_components_plotly, add_changepoints_to_plot
 import requests
 import yfinance as yf
-import yahoo_fin.stock_info as si
 from yahoo_fin import news
+import yahoo_fin.stock_info as si
 from yahooquery import Ticker
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.seasonal import seasonal_decompose
@@ -53,32 +49,28 @@ from pages import strategy as f2
 from pages import portfolio as f3
 from pages import backtest as f4
 
-
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 
 def clean(listA):
     lst = list(set(listA))
     lst.sort()
     return lst
 
-saveTickers = Path('tickers/') 
-dow = pd.read_pickle(saveTickers / f'dow_ticker_lst.pkl')
-sp100 = pd.read_pickle(saveTickers / f'sp100_ticker_lst.pkl')
-sp500 = pd.read_pickle(saveTickers / f'sp500_ticker_lst.pkl')
-indices_main = ['^OEX','^MID','^GSPC','^DJI','^NYA','^RUT','^W5000']
-
+saveTickers = Path('tickers/')
 my_positions = pd.read_pickle(saveTickers / f'chuck_merged_ticker_lst.pkl')
 watch_lst0 = pd.read_pickle(saveTickers / f'watch_merged_ticker_lst.pkl')
 watch_lst_bulk = list(set(my_positions + watch_lst0))
 
+dow = pd.read_pickle(saveTickers / f'dow_ticker_lst.pkl')
+sp100 = pd.read_pickle(saveTickers / f'sp100_ticker_lst.pkl')
+sp500 = pd.read_pickle(saveTickers / f'sp500_ticker_lst.pkl')
+indices_main = ['^OEX','^MID','^GSPC','^DJI','^NYA','^RUT','^W5000']
 day_gainers = list(si.get_day_gainers()['Symbol'])
 day_losers = list(si.get_day_losers()['Symbol'])
 day_most_active = list(si.get_day_most_active()['Symbol'])
 undervalued_large_caps = list(si.get_undervalued_large_caps()['Symbol'])
-
 fool_composite = [
     'LMND','ZM','TTD','PINS','TEAM','SAM','DIS','ASML','ECL','NYT',
     'LRCX','NTDOY','PYPL','AMZN','ABNB','ATVI','ZM','SKLZ','SHOP', 'STAA',
@@ -106,7 +98,6 @@ oxford_composite = [
   'EGHT','BZUN','TTWO','EBAY','FTNT','SAIL','BABA','SAM','COLM','DPZ',
   'EXPE','NUVA','EA','HSY','HAS','NFLX','SIX'
 ]
-
 index_ticker_lists_A = [
   dow, sp100, sp500, indices_main, watch_lst_bulk, fool_composite, oxford_composite,
   day_gainers, day_losers, day_most_active, undervalued_large_caps
@@ -115,6 +106,8 @@ index_ticker_lists_B = [
   'dow', 'sp100', 'sp500', 'indices_main','watch_lst_bulk', 'fool_composite', 'oxford_composite',
   'day_gainers', 'day_losers', 'day_most_active', 'undervalued_large_caps'
 ]
+for r in range(len(index_ticker_lists_A)):
+  index_ticker_lists_A[r] = clean(index_ticker_lists_A[r])
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -178,11 +171,21 @@ if(systemStage == '1-Wide_Market_Scope'):
       st.header("Today's Top Active Stocks")
       st.dataframe(si.get_day_most_active().set_index('Symbol'))
 
-      st.header("Futures")
-      st.dataframe(si.get_futures().set_index('Symbol'))
+      # st.header("Top Trending Tickers")
+      # st.dataframe(si.si.get_trending_tickers().set_index('Symbol'))      
 
       st.header("Current Undervalued Large Cap Stocks")
       st.dataframe(si.get_undervalued_large_caps().set_index('Symbol'))
+
+      # st.header("Top Mutual Funds")
+      # st.dataframe(si.si.get_mutual_fund().set_index('Symbol'))
+
+      st.header("Crypto")
+      st.dataframe(si.get_top_crypto().set_index('Symbol'))
+
+      st.header("Futures")
+      st.dataframe(si.get_futures().set_index('Symbol'))            
+
     except Exception:
       pass
 
