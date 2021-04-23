@@ -1042,53 +1042,51 @@ if(systemStage=='6-Trading_Strategies'):
     fin = False
 
     if stock_ticker:
-
-      def get_symbol_longName(symbol):
-          url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
-          result = requests.get(url).json()
-          for x in result['ResultSet']['Result']:
-              if x['symbol'] == symbol:
-                  return x['name']
-      company_longName = get_symbol_longName(stock_ticker)      
-
-      res = f2.The_Strategy_2(stock_ticker, company_longName).grab_data()
-      res = res.loc[res['SMA1'] < res['SMA2']]
-      res = res.sort_values('OUT', ascending=False).reset_index(drop=True).head(10)   
-      S, L, mkt, strat, out = res['SMA1'][0], res['SMA2'][0], res['MARKET'][0], res['STRATEGY'][0], res['OUT'][0]
-      
-      st.title("Double Moving Average Strategy")
-      st.header(f"{company_longName} ({ticker})")
-      st.subheader(f"\nBest Short/Long Intervals = {S} & {L}\n")
-      st.dataframe(res)      
-
       st.sidebar.subheader('> Step #4')
       st.sidebar.write('Click Button Below To Run Model')
-      run_strategy_movAvg_SMA_EMA = st.sidebar.button("Run Moving Average - SMA & EMA")
+      run_strategy_movAvg_SMA_EMA = st.sidebar.button("Run Moving Average - SMA & EMA")      
+
       if run_strategy_movAvg_SMA_EMA:
+        def get_symbol_longName(symbol):
+            url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
+            result = requests.get(url).json()
+            for x in result['ResultSet']['Result']:
+                if x['symbol'] == symbol:
+                    return x['name']
+
+        company_longName = get_symbol_longName(stock_ticker)      
+        res = f2.The_Strategy_2(stock_ticker, company_longName).grab_data()
+        S, L, mkt, strat, out = res['SMA1'][0], res['SMA2'][0], res['MARKET'][0], res['STRATEGY'][0], res['OUT'][0]
+        
+        st.title("Double Moving Average Strategy")
+        st.header(f"{company_longName} ({ticker})")
+        st.subheader(f"\nBest Short/Long Intervals = {S} & {L}\n")
+        st.dataframe(res)      
+
         f2.MovingAverageCrossStrategy(
           stock_symbol = stock_ticker, 
           longName = company_longName,
           start_date = '2020-01-01', 
           end_date = '2021-04-16', 
-          short_window = short_SMA_EMA, 
-          long_window = long_SMA_EMA, 
+          short_window = S, 
+          long_window = L, 
           moving_avg = 'SMA', 
           display_table = True
         )
         st.subheader(f'The Above Table Is A Record Of Buy & Sell Signals For: \n {strategy_company} ({stock_ticker})')
-        st.write(f'* Using the short-{short_SMA_EMA} & long-{long_SMA_EMA} Moving Average Intervals.')
+        st.write(f'* Using the short-{S} & long-{L} Moving Average Intervals.')
         f2.MovingAverageCrossStrategy(
           stock_symbol = stock_ticker, 
           longName = company_longName,
           start_date = '2020-01-01', 
           end_date = '2021-04-16', 
-          short_window = short_SMA_EMA, 
-          long_window = long_SMA_EMA, 
+          short_window = S, 
+          long_window = L, 
           moving_avg = 'EMA', 
           display_table = True
         )
         st.subheader(f'The Above Table Is A Record Of Buy & Sell Signals For: \n {strategy_company} ({stock_ticker})')
-        st.write(f'* Using the short-{short_SMA_EMA} & long-{long_SMA_EMA} Moving Average Intervals.')
+        st.write(f'* Using the short-{S} & long-{L} Moving Average Intervals.')
         fin = True
 
     if fin:

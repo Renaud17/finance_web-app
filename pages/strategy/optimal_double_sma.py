@@ -84,6 +84,8 @@ class The_Strategy_2(object):
                 'OUT': (perf['Strategy'] - perf['Returns'])
                 }, index=[0]), ignore_index=True
             )
+        results = results.loc[results['SMA1'] < results['SMA2']]
+        results = results.sort_values('OUT', ascending=False).reset_index(drop=True).head(10)
         return results
 
 #  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
