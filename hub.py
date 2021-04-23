@@ -861,15 +861,15 @@ if(systemStage == '5-Financial_Forecasting'):
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-  if(model=='A.R.I.M.A'):
-    st.title('(A.R.I.M.A)')
-    st.header('Auto Regression Integrated Moving Average')
+  # if(model=='A.R.I.M.A'):
+  #   st.title('(A.R.I.M.A)')
+  #   st.header('Auto Regression Integrated Moving Average')
 
-    if stock_ticker:
-      run_strategy_arima = st.button("Run ARIMA")
-      if run_strategy_arima:
-        f1.Web_Arima(stock_ticker).full_build()
-        f1.The_Arima_Model(stock_ticker).arima_model()
+  #   if stock_ticker:
+  #     run_strategy_arima = st.button("Run ARIMA")
+  #     if run_strategy_arima:
+  #       f1.Web_Arima(stock_ticker).full_build()
+  #       f1.The_Arima_Model(stock_ticker).arima_model()
 
 
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
