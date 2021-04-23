@@ -1054,14 +1054,8 @@ if(systemStage=='6-Trading_Strategies'):
                 if x['symbol'] == symbol:
                     return x['name']
 
-        company_longName = get_symbol_longName(stock_ticker)      
-        res = f2.The_Strategy_2(stock_ticker, company_longName).grab_data()
-        S, L, mkt, strat, out = res.iloc['SMA1'][0], res.iloc['SMA2'][0], res.iloc['MARKET'][0], res.iloc['STRATEGY'][0], res.iloc['OUT'][0]
-        
-        st.title("Double Moving Average Strategy")
-        st.header(f"{company_longName} ({ticker})")
-        st.subheader(f"\nBest Short/Long Intervals = {S} & {L}\n")
-        st.dataframe(res)      
+        company_longName = get_symbol_longName(stock_ticker)
+        S, L  = f2.The_Strategy_2(stock_ticker, company_longName).grab_data()
 
         f2.MovingAverageCrossStrategy(
           stock_symbol = stock_ticker, 
