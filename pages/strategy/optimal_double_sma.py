@@ -79,14 +79,14 @@ class The_Strategy_2(object):
             perf = np.exp(data1[['Returns', 'Strategy']].sum())             
             results = results.append(pd.DataFrame(
                 {'SMA1': SMA1, 'SMA2': SMA2,                          
-                'MARKET': perf['Returns'],                          
-                'STRATEGY': perf['Strategy'],                          
+                'MARKET(%)': perf['Returns'],                          
+                'STRATEGY(%)': perf['Strategy'],                          
                 'OUT': (perf['Strategy'] - perf['Returns'])
                 }, index=[0]), ignore_index=True
             )
         results = results.loc[results['SMA1'] < results['SMA2']]
         results = results.sort_values('OUT', ascending=False).reset_index(drop=True).head(10)   
-        S, L, mkt, strat, out = results['SMA1'][0], results['SMA2'][0], results['MARKET'][0], results['STRATEGY'][0], results['OUT'][0]
+        S, L, mkt, strat, out = results['SMA1'][0], results['SMA2'][0], results['MARKET(%)'][0], results['STRATEGY(%)'][0], results['OUT'][0]
 
         st.title("Double Moving Average Strategy")
         st.header(f"{self.sName} ({self.tic})")
@@ -112,12 +112,3 @@ if __name__ =='__main__':
 
     Short, Long  = The_Strategy_2(ticker, company_longName).grab_data()
     st.write(f"\nBest Short/Long Intervals = {Short} & {Long}\n")
-
-    # res = res.loc[res['SMA1'] < res['SMA2']]
-    # res = res.sort_values('OUT', ascending=False).reset_index(drop=True).head(10)   
-    # S, L, mkt, strat, out = res['SMA1'][0], res['SMA2'][0], res['MARKET'][0], res['STRATEGY'][0], res['OUT'][0]
-    
-    # st.title("Double Moving Average Strategy")
-    # st.header(f"{company_longName} ({ticker})")
-    # st.subheader(f"\nBest Short/Long Intervals = {S} & {L}\n")
-    # st.dataframe(res)
