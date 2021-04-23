@@ -23,6 +23,8 @@ import warnings
 warnings.filterwarnings('ignore')
 import pandas_datareader.data as web
 import streamlit as st
+import yfinance as yf
+import requests
 
 
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -31,7 +33,8 @@ import streamlit as st
 
 
 def MovingAverageCrossStrategy(
-    stock_symbol = 'GSPC', 
+    stock_symbol,
+    longName,
     start_date = '2019-01-01', 
     end_date = '2021-04-01', 
     short_window = 20, 
@@ -55,22 +58,11 @@ def MovingAverageCrossStrategy(
   # import the closing price data of the stock for the aforementioned period of time in Pandas dataframe
     start = datetime.datetime(*map(int, start_date.split('-')))
     end = datetime.datetime(*map(int, end_date.split('-'))) 
-    stock_df = web.DataReader(stock_symbol, 'yahoo', start = start, end = end)['Close']
+    # stock_df = web.DataReader(stock_symbol, 'yahoo', start = start, end = end)['Close']
+    stock_df = yf.download(stock_symbol, period = 'max', parse_dates=True)['Close']    
     stock_df = pd.DataFrame(stock_df) # convert Series object to dataframe 
     stock_df.columns = {'Close Price'} # assign new colun name
     stock_df.dropna(axis = 0, inplace = True) # remove any null rows
-
-
-    import requests
-    def get_symbol(symbol):
-        url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
-        result = requests.get(url).json()
-        for x in result['ResultSet']['Result']:
-            if x['symbol'] == symbol:
-                return x['name']
-    company = get_symbol(stock_symbol)
-
-
                         
   # column names for long and short moving average columns
     short_window_col = str(short_window) + '_' + moving_avg
@@ -99,20 +91,32 @@ def MovingAverageCrossStrategy(
   # plot close price, short-term and long-term moving averages
     fig, ax = plt.subplots()
     plt.tick_params(axis = 'both', labelsize = 15)
-    stock_df['Close Price'].plot(color = 'k', lw = 1, label = 'Close Price')  
-    stock_df[short_window_col].plot(color = 'b', lw = 1, label = short_window_col)
-    stock_df[long_window_col].plot(color = 'g', lw = 1, label = long_window_col) 
+    stock_df.loc['2020':, 'Close Price'].plot(color = 'k', lw = 1, label = 'Close Price')
+    stock_df.loc['2020':][short_window_col].plot(color = 'b', lw = 1, label = short_window_col)
+    stock_df.loc['2020':][long_window_col].plot(color = 'g', lw = 1, label = long_window_col) 
   # plot 'buy' signals
-    plt.plot(stock_df[stock_df['Position'] == 1].index, 
-            stock_df[short_window_col][stock_df['Position'] == 1], 
-            '^', markersize = 15, color = 'g', alpha = 0.7, label = 'buy')
+    plt.plot(
+      stock_df.loc['2020':][stock_df['Position'] == 1].index, 
+      stock_df.loc['2020':][short_window_col][stock_df['Position'] == 1], 
+      '^', 
+      markersize = 15, 
+      color = 'g', 
+      alpha = 0.7, 
+      label = 'buy'
+    )
   # plot 'sell' signals
-    plt.plot(stock_df[stock_df['Position'] == -1].index, 
-            stock_df[short_window_col][stock_df['Position'] == -1], 
-            'v', markersize = 15, color = 'r', alpha = 0.7, label = 'sell')
+    plt.plot(
+      stock_df.loc['2020':][stock_df['Position'] == -1].index, 
+      stock_df.loc['2020':][short_window_col][stock_df['Position'] == -1], 
+      'v', 
+      markersize = 15, 
+      color = 'r', 
+      alpha = 0.7, 
+      label = 'sell'
+    )
     plt.ylabel('Price in $', fontsize=20, fontweight='bold')
     plt.xlabel('Date', fontsize=20, fontweight='bold')
-    plt.title(f"{company} ({stock_symbol}) - {str(moving_avg)} Crossover", fontsize=30, fontweight='bold')
+    plt.title(f"{longName} ({stock_symbol}) - {str(moving_avg)} Crossover", fontsize=30, fontweight='bold')
     plt.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
     ax.legend(loc='best',prop={"size":16})
     plt.tight_layout()
@@ -122,7 +126,7 @@ def MovingAverageCrossStrategy(
     if display_table == True:
         df_pos = stock_df[(stock_df['Position'] == 1) | (stock_df['Position'] == -1)]
         df_pos['Position'] = df_pos['Position'].apply(lambda x: 'Buy' if x == 1 else 'Sell')
-        st.text(tabulate(df_pos, headers = 'keys', tablefmt = 'psql'))
+        st.text(tabulate(df_pos.loc['2020':], headers = 'keys', tablefmt = 'psql'))
 
 
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -131,25 +135,38 @@ def MovingAverageCrossStrategy(
 
 
 if __name__ == '__main__':
-    MovingAverageCrossStrategy(
-        stock_symbol = 'BA', 
-        start_date = '2019-01-01', 
-        end_date = '2021-04-01', 
-        short_window = 20, 
-        long_window = 50, 
-        moving_avg = 'SMA', 
-        display_table = True
-    )
 
-    MovingAverageCrossStrategy(
-        stock_symbol = 'BA', 
-        start_date = '2019-01-01', 
-        end_date = '2021-04-01', 
-        short_window = 20, 
-        long_window = 50, 
-        moving_avg = 'EMA', 
-        display_table = True
-    )
+  stock_ticker = 'BA'
+
+  def get_symbol_longName(symbol):
+      url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
+      result = requests.get(url).json()
+      for x in result['ResultSet']['Result']:
+          if x['symbol'] == symbol:
+              return x['name']
+  company_longName = get_symbol_longName(stock_ticker)    
+
+  MovingAverageCrossStrategy(
+      stock_symbol = stock_ticker, 
+      longName=company_longName,
+      start_date = '2019-01-01', 
+      end_date = '2021-04-01', 
+      short_window = 20, 
+      long_window = 50, 
+      moving_avg = 'SMA', 
+      display_table = True
+  )
+
+  MovingAverageCrossStrategy(
+      stock_symbol = stock_ticker, 
+      longName=company_longName,
+      start_date = '2019-01-01', 
+      end_date = '2021-04-01', 
+      short_window = 20, 
+      long_window = 50, 
+      moving_avg = 'EMA', 
+      display_table = True
+  )
 
 
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

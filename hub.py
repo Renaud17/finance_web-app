@@ -1051,42 +1051,45 @@ if(systemStage=='6-Trading_Strategies'):
                   return x['name']
       company_longName = get_symbol_longName(stock_ticker)      
 
-      optimal_doubleSMA = f2.The_Strategy_2(stock_ticker, company_longName)
-      S, L, mkt, strat, out = optimal_doubleSMA.grab_data()
-      st.write(f"\nBest Short/Long Double Moving Averages = {S} & {L}\n")
+      res = f2.The_Strategy_2(stock_ticker, company_longName).grab_data()
+      res = res.loc[res['SMA1'] < res['SMA2']]
+      res = res.sort_values('OUT', ascending=False).reset_index(drop=True).head(10)   
+      S, L, mkt, strat, out = res['SMA1'][0], res['SMA2'][0], res['MARKET'][0], res['STRATEGY'][0], res['OUT'][0]
+      
+      st.title("Double Moving Average Strategy")
+      st.header(f"{company_longName} ({ticker})")
+      st.subheader(f"\nBest Short/Long Intervals = {S} & {L}\n")
+      st.dataframe(res)      
 
       st.sidebar.subheader('> Step #4')
-      short_SMA_EMA = S
-      long_SMA_EMA = L
-
-      if long_SMA_EMA:
-        st.sidebar.subheader('> Step #5')
-        st.sidebar.write('Click Button Below To Run Model')
-        run_strategy_movAvg_SMA_EMA = st.sidebar.button("Run Moving Average - SMA & EMA")
-        if run_strategy_movAvg_SMA_EMA:
-          f2.MovingAverageCrossStrategy(
-            stock_symbol = stock_ticker, 
-            start_date = '2020-01-01', 
-            end_date = '2021-04-16', 
-            short_window = short_SMA_EMA, 
-            long_window = long_SMA_EMA, 
-            moving_avg = 'SMA', 
-            display_table = True
-          )
-          st.subheader(f'The Above Table Is A Record Of Buy & Sell Signals For: \n {strategy_company} ({stock_ticker})')
-          st.write(f'* Using the short-{short_SMA_EMA} & long-{long_SMA_EMA} Moving Average Intervals.')
-          f2.MovingAverageCrossStrategy(
-            stock_symbol = stock_ticker, 
-            start_date = '2020-01-01', 
-            end_date = '2021-04-16', 
-            short_window = short_SMA_EMA, 
-            long_window = long_SMA_EMA, 
-            moving_avg = 'EMA', 
-            display_table = True
-          )
-          st.subheader(f'The Above Table Is A Record Of Buy & Sell Signals For: \n {strategy_company} ({stock_ticker})')
-          st.write(f'* Using the short-{short_SMA_EMA} & long-{long_SMA_EMA} Moving Average Intervals.')
-          fin = True
+      st.sidebar.write('Click Button Below To Run Model')
+      run_strategy_movAvg_SMA_EMA = st.sidebar.button("Run Moving Average - SMA & EMA")
+      if run_strategy_movAvg_SMA_EMA:
+        f2.MovingAverageCrossStrategy(
+          stock_symbol = stock_ticker, 
+          longName = company_longName,
+          start_date = '2020-01-01', 
+          end_date = '2021-04-16', 
+          short_window = short_SMA_EMA, 
+          long_window = long_SMA_EMA, 
+          moving_avg = 'SMA', 
+          display_table = True
+        )
+        st.subheader(f'The Above Table Is A Record Of Buy & Sell Signals For: \n {strategy_company} ({stock_ticker})')
+        st.write(f'* Using the short-{short_SMA_EMA} & long-{long_SMA_EMA} Moving Average Intervals.')
+        f2.MovingAverageCrossStrategy(
+          stock_symbol = stock_ticker, 
+          longName = company_longName,
+          start_date = '2020-01-01', 
+          end_date = '2021-04-16', 
+          short_window = short_SMA_EMA, 
+          long_window = long_SMA_EMA, 
+          moving_avg = 'EMA', 
+          display_table = True
+        )
+        st.subheader(f'The Above Table Is A Record Of Buy & Sell Signals For: \n {strategy_company} ({stock_ticker})')
+        st.write(f'* Using the short-{short_SMA_EMA} & long-{long_SMA_EMA} Moving Average Intervals.')
+        fin = True
 
     if fin:
       st.write(' *'*25)
@@ -1188,7 +1191,7 @@ if(systemStage=='7-Backtesting_Returns'):
   
   st.title('> General Analysis Definitions')
   models = ['-Select-Model-', 'BackTesting-LongTerm', 'Portfolio Analysis','Vectorized Backtest'
-  # ,'Backtrader_SMA','Backtrader - SMA Strategy'
+  # ,'Backtrader_SMA', 'Backtrader - SMA Strategy'
   ]
 
   st.sidebar.subheader('> Step #2')

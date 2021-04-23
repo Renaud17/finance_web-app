@@ -34,12 +34,6 @@ plt.rcParams["legend.frameon"] = True
 plt.rcParams["legend.fancybox"] = True
 pd.set_option('display.max_rows', 25)
 import requests
-from pathlib import Path
-from datetime import datetime
-today = str(datetime.now())[:10]
-savePlot = Path(f'report/portfolio_{today}/IIII_strategy')
-if not savePlot.exists():
-    savePlot.mkdir(parents=True)
 from scipy.stats import spearmanr
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import MinMaxScaler
@@ -55,17 +49,13 @@ class The_Strategy_2(object):
         ticker = yf.Ticker(self.tic)
         self.raw = ticker.history(period='max')
         self.raw.columns = ['Open', 'High', 'Low', self.sName, 'Volume', 'Dividends', 'Stock Splits']
-        print(self.raw.head())
-        print(self.raw.tail())
         SMA1 = 2
         SMA2 = 5
         data1= pd.DataFrame(self.raw[self.sName])
         data1.columns = [self.sName]
         data1['SMA1'] = data1[self.sName].rolling(SMA1).mean()
         data1['SMA2'] = data1[self.sName].rolling(SMA2).mean()
-
         data1['Position'] = np.where(data1['SMA1'] > data1['SMA2'], 1, -1)
-
         data1['Returns'] = np.log(data1[self.sName] / data1[self.sName].shift(1))
         data1['Strategy'] = data1['Position'].shift(1) * data1['Returns']
         data1.round(4).tail()
@@ -94,17 +84,14 @@ class The_Strategy_2(object):
                 'OUT': (perf['Strategy'] - perf['Returns'])
                 }, index=[0]), ignore_index=True
             )
-        results = results.sort_values('OUT', ascending=False).reset_index(drop=True).head(10)
-        S, L, mkt, strat, out = results['SMA1'][0], results['SMA2'][0], results['MARKET'][0], results['STRATEGY'][0], results['OUT'][0]
-        st.dataframe(results)
-        return S, L, mkt, strat, out
+        return results
 
 #  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 #  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 
 if __name__ =='__main__':
 
-    ticker = 'BE'
+    ticker = 'LAZR'
 
     def get_symbol_longName(symbol):
         url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
@@ -114,6 +101,12 @@ if __name__ =='__main__':
                 return x['name']
     company_longName = get_symbol_longName(ticker)
 
-    optimal_doubleSMA = The_Strategy_2(ticker, company_longName)
-    S, L, mkt, strat, out = optimal_doubleSMA.grab_data()
-    print(f"\nBest Short/Long Double Moving Averages = {S} & {L}\n")
+    res = The_Strategy_2(ticker, company_longName).grab_data()
+    res = res.loc[res['SMA1'] < res['SMA2']]
+    res = res.sort_values('OUT', ascending=False).reset_index(drop=True).head(10)   
+    S, L, mkt, strat, out = res['SMA1'][0], res['SMA2'][0], res['MARKET'][0], res['STRATEGY'][0], res['OUT'][0]
+    
+    st.title("Double Moving Average Strategy")
+    st.header(f"{company_longName} ({ticker})")
+    st.subheader(f"\nBest Short/Long Intervals = {S} & {L}\n")
+    st.dataframe(res)
