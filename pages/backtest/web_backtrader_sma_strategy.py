@@ -5,7 +5,7 @@ from pathlib import Path
 today = str(datetime.now())[:10]
 import matplotlib
 import matplotlib as mpl
-matplotlib.use('TkAgg')
+# matplotlib.use('TkAgg')
 from matplotlib import style
 from matplotlib import pyplot as plt
 plt.style.use('ggplot')

@@ -1182,8 +1182,9 @@ if(systemStage=='7-Backtesting_Returns'):
   st.write(' *'*25)
   
   st.title('> General Analysis Definitions')
-  models = ['-Select-Model-', 'BackTesting-LongTerm', 'Portfolio Analysis','Vectorized Backtest'
-  # ,'Backtrader_SMA', 'Backtrader - SMA Strategy'
+  models = [
+    '-Select-Model-', 'BackTesting-LongTerm', 'Portfolio Analysis','Vectorized Backtest',
+    'Backtrader_SMA', 'Backtrader - SMA Strategy'
   ]
 
   st.sidebar.subheader('> Step #2')
@@ -1218,7 +1219,7 @@ if(systemStage=='7-Backtesting_Returns'):
 
           run_strategy_backtesting1 = st.sidebar.button("Run Backtest 1")
           if run_strategy_backtesting1:
-            f3.Web_One(stock_ticker)
+            f4.Web_One(stock_ticker)
             fin = True
 
         if fin:
@@ -1340,47 +1341,47 @@ if(systemStage=='7-Backtesting_Returns'):
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *        
 
 
-  # for r in range(1):
-  #   try:
-  #     if(model=='Backtrader_SMA'):
-  #       fin = False
-  #       st.title('Backtrader For Testing - SMA Strategy')
-  #       st.write('details')
+  for r in range(1):
+    try:
+      if(model=='Backtrader_SMA'):
+        fin = False
+        st.title('Backtrader For Testing - SMA Strategy')
+        st.write('details')
 
-  #       if stock_ticker:
-  #         run_strategy_backtraderSMA = st.sidebar.button("Run Backtrader SMA Strategy")
-  #         if run_strategy_backtraderSMA:
-  #           f2.buyHold(stock_ticker)
-  #           fin = True
+        if stock_ticker:
+          run_strategy_backtraderSMA = st.sidebar.button("Run Backtrader SMA Strategy")
+          if run_strategy_backtraderSMA:
+            f4.backtrader_sma_strategy_run(stock_ticker)
+            fin = True
 
-  #       if fin:
-  #         st.write(' *'*25)
-  #         st.title('Model Render Complete')        
-  #   except Exception:
-  #     pass
+        if fin:
+          st.write(' *'*25)
+          st.title('Model Render Complete')        
+    except Exception:
+      pass
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-  # for r in range(1):
-  #   try:
-  #     if(model=='Backtrader - SMA Strategy'):
-  #       fin = False
-  #       st.title('Backtrader For Testing - SMA Strategy')
-  #       st.write('details')
+  for r in range(1):
+    try:
+      if(model=='Backtrader - SMA Strategy'):
+        fin = False
+        st.title('Backtrader For Testing - SMA Strategy')
+        st.write('details')
 
-  #       if stock_ticker:
-  #         run_strategy_backtraderSMA = st.sidebar.button("Run Backtrader SMA Strategy")
-  #         if run_strategy_backtraderSMA:
-  #           f2.backtrader_sma_strategy_run(stock_ticker)
-  #           fin = True
+        if stock_ticker:
+          run_strategy_backtraderSMA = st.sidebar.button("Run Backtrader SMA Strategy")
+          if run_strategy_backtraderSMA:
+            f4.buyHold(stock_ticker)
+            fin = True
 
-  #       if fin:
-  #         st.write(' *'*25)
-  #         st.title('Model Render Complete')        
-  #   except Exception:
-  #     pass    
+        if fin:
+          st.write(' *'*25)
+          st.title('Model Render Complete')        
+    except Exception:
+      pass    
       
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
