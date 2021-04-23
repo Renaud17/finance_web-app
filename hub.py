@@ -51,6 +51,7 @@ from statsmodels.tsa.statespace.sarimax import SARIMAX
 from pages import forecast as f1
 from pages import strategy as f2
 from pages import portfolio as f3
+from pages import backtest as f4
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1035,11 +1036,6 @@ if(systemStage=='6-Trading_Strategies'):
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
   if(model=='Moving Averages - SMA & EMA'):
     st.write(' *'*25)
     st.title('Moving Averages - SMA & EMA')
@@ -1191,25 +1187,13 @@ if(systemStage=='7-Backtesting_Returns'):
   st.write(' *'*25)
   
   st.title('> General Analysis Definitions')
-  models = ['-Select-Model-', 'BackTesting-LongTerm'
+  models = ['-Select-Model-', 'BackTesting-LongTerm', 'Portfolio Analysis','Vectorized Backtest'
   # ,'Backtrader_SMA','Backtrader - SMA Strategy'
   ]
 
   st.sidebar.subheader('> Step #2')
   model = st.sidebar.selectbox('Choose A Model', models)
   st.sidebar.write(' *'*25)
-
-  st.sidebar.subheader('> Step #3')
-  stock_ticker = st.sidebar.text_input('Type In Stock Ticker To Model (ALL CAPS): ')
-  st.sidebar.write(' *'*25)
-
-  def get_backtest_symbol(symbol):
-      url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
-      result = requests.get(url).json()
-      for x in result['ResultSet']['Result']:
-          if x['symbol'] == symbol:
-              return x['name']
-  backtest_company = get_backtest_symbol(stock_ticker)
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1223,10 +1207,23 @@ if(systemStage=='7-Backtesting_Returns'):
         st.title('BackTesting - 1')
         st.write('details')
 
+        st.sidebar.subheader('> Step #3')
+        stock_ticker = st.sidebar.text_input('Type In Stock Ticker To Model (ALL CAPS): ')
+        st.sidebar.write(' *'*25)
+
         if stock_ticker:
+
+          def get_backtest_symbol(symbol):
+              url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
+              result = requests.get(url).json()
+              for x in result['ResultSet']['Result']:
+                  if x['symbol'] == symbol:
+                      return x['name']
+          backtest_company = get_backtest_symbol(stock_ticker) 
+
           run_strategy_backtesting1 = st.sidebar.button("Run Backtest 1")
           if run_strategy_backtesting1:
-            f2.Web_One(stock_ticker)
+            f3.Web_One(stock_ticker)
             fin = True
 
         if fin:
@@ -1239,6 +1236,114 @@ if(systemStage=='7-Backtesting_Returns'):
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+  for r in range(1):
+    try:
+
+      if(model=='Portfolio Analysis'):
+        fin = False
+        st.title('Portfolio Analysis')
+        st.write('details')
+
+        st.sidebar.subheader('> Step #3')
+        Em = str(st.sidebar.selectbox('Pick Ticker Lists:',['Pick-Em','Pick From Ticker Lists']))
+
+        if Em:
+
+          if Em == 'Pick-Em':
+            stock_tickers = st.sidebar.text_input('Enter Ticker List Here: (ex. DIS ECL PLNT NYT)')
+            stock_tickers = stock_tickers.split()
+            if type(stock_tickers)==list:
+              st.sidebar.subheader('ticker list entered in good order')
+              st.sidebar.markdown(stock_tickers)
+              st.sidebar.write(' *'*25)
+              st.sidebar.subheader('> Step #4 - Run Portfolio Analysis')
+              buttonA = st.sidebar.button('Run Optimizer A')
+              if buttonA:
+                f4.Analize_Portfolio(stock_tickers, 'Pick_EM_Portfolio').situation()
+                fin = True
+
+          if Em == 'Pick From Ticker Lists':
+            stockS = st.sidebar.selectbox('Choose Ticker List: ', index_ticker_lists_B)
+            for idx, num in enumerate(index_ticker_lists_B):
+              if num == stockS:
+                st.sidebar.subheader('> Step #4 - Run Optimization')
+                buttonB = st.sidebar.button('Run Optimizer B')
+                if buttonB:
+                  f4.Analize_Portfolio(index_ticker_lists_A[idx], num).situation()
+                  fin = True            
+
+        if fin:
+          st.write(' *'*25)
+          st.title('Model Render Complete')
+
+    except Exception:
+      pass
+
+
+
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+  for r in range(1):
+    try:
+
+      if(model=='Vectorized Backtest'):
+        fin = False
+        st.title('Vectorized Backtest')
+        st.write('details')
+
+        st.sidebar.subheader('> Step #3')
+        Em = str(st.sidebar.selectbox('Pick Ticker Lists:',['Pick-Em','Pick From Ticker Lists']))
+
+        if Em:
+
+          if Em == 'Pick-Em':
+            stock_tickers = st.sidebar.text_input('Enter Ticker List Here: (ex. DIS ECL PLNT NYT)')
+            stock_tickers = stock_tickers.split()
+            if type(stock_tickers)==list:
+              st.sidebar.subheader('ticker list entered in good order')
+              st.sidebar.markdown(stock_tickers)
+              st.sidebar.write(' *'*25)
+              st.sidebar.subheader('> Step #4 - Run Portfolio Analysis')
+              buttonA = st.sidebar.button('Run Optimizer A')
+              if buttonA:
+                f4.The_Vectorized_Backtest(
+                  stocks=index_ticker_lists_A[idx], 
+                  saver='Pick_EM_Portfolio', 
+                  bulk=' ~ Pick_EM_Portfolio ~ ',
+                  period='1y'
+                  ).four()                
+                fin = True
+
+          if Em == 'Pick From Ticker Lists':
+            stockS = st.sidebar.selectbox('Choose Ticker List: ', index_ticker_lists_B)
+            for idx, num in enumerate(index_ticker_lists_B):
+              if num == stockS:
+                st.sidebar.subheader('> Step #4 - Run Optimization')
+                buttonB = st.sidebar.button('Run Optimizer B')
+                if buttonB:
+                  f4.The_Vectorized_Backtest(
+                    stocks=index_ticker_lists_A[idx], 
+                    saver='pick em portfolio', 
+                    bulk=' ~ pick em portfolio ~ ',
+                    period='1y'
+                    ).four()
+                  fin = True            
+
+        if fin:
+          st.write(' *'*25)
+          st.title('Model Render Complete')
+
+    except Exception:
+      pass
+
+
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *        
+
 
   # for r in range(1):
   #   try:
