@@ -23,6 +23,7 @@ cmdstanpy==0.9.68
 contextvars==2.4
 convertdate==2.3.2
 cssselect==1.1.0
+cufflinks
 cycler==0.10.0
 Cython==0.29.22
 dask==2021.3.0
