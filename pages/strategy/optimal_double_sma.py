@@ -63,8 +63,8 @@ class The_Strategy_2(object):
         np.exp(data1[['Returns', 'Strategy']].sum())
         np.exp(data1[['Returns', 'Strategy']].std() * 252**0.5)
 
-        sma1 = range(2, 110, 2)
-        sma2 = range(5, 220, 5)
+        sma1 = range(2, 76, 2)
+        sma2 = range(5, 202, 5)
         results = pd.DataFrame()
         for SMA1, SMA2 in product(sma1, sma2):
             data1 = pd.DataFrame(self.raw[self.sName])
@@ -90,8 +90,8 @@ class The_Strategy_2(object):
 
         st.title("Double Moving Average Strategy")
         st.header(f"{self.sName} ({self.tic})")
-        st.subheader(f"\nBest Short/Long Intervals = {S} & {L}\n")
-        st.dataframe(results)        
+        st.subheader(f"\n({self.tic}) {self.sName} - Best Short/Long Intervals = {S} & {L}\n")
+        st.dataframe(results[:3])        
 
         return S, L
 

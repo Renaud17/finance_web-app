@@ -752,7 +752,7 @@ if(systemStage=='4-Portfolio_Construction'):
 
       if Em == 'Pick-Em':
         stock_tickers = st.sidebar.text_input('Enter Ticker List Here: (ex. DIS ECL PLNT NYT)')
-        stock_tickers = stock_tickers.split()
+        # stock_tickers = stock_tickers.split()
         if type(stock_tickers)==list:
           st.sidebar.subheader('ticker list entered in good order')
           st.sidebar.markdown(stock_tickers)
