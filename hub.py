@@ -64,6 +64,11 @@ watch_lst0 = pd.read_pickle(saveTickers / f'watch_merged_ticker_lst.pkl')
 watch_lst_bulk = list(set(my_positions + watch_lst0))
 
 dow = pd.read_pickle(saveTickers / f'dow_ticker_lst.pkl')
+dow_sell = ['AXP', 'CRM', 'DIS', 'INTC', 'MRK', 'NKE', 'WMT']
+dow_buy = [
+  'AAPL', 'AMGN', 'BA', 'CAT', 'CSCO', 'CVX', 'DOW', 'GS', 'HD', 'HON', 'IBM', 
+  'JNJ', 'JPM', 'KO', 'MCD', 'MMM', 'MSFT', 'PG', 'TRV', 'UNH', 'V', 'VZ', 'WBA'
+  ]
 sp100 = pd.read_pickle(saveTickers / f'sp100_ticker_lst.pkl')
 sp500 = pd.read_pickle(saveTickers / f'sp500_ticker_lst.pkl')
 indices_main = ['^OEX','^MID','^GSPC','^DJI','^NYA','^RUT','^W5000']
@@ -752,7 +757,7 @@ if(systemStage=='4-Portfolio_Construction'):
 
       if Em == 'Pick-Em':
         stock_tickers = st.sidebar.text_input('Enter Ticker List Here: (ex. DIS ECL PLNT NYT)')
-        # stock_tickers = stock_tickers.split()
+        stock_tickers = stock_tickers.split()
         if type(stock_tickers)==list:
           st.sidebar.subheader('ticker list entered in good order')
           st.sidebar.markdown(stock_tickers)

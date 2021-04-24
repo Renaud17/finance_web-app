@@ -184,11 +184,6 @@ def movAvgCrossStrategy(stock_symbol, longName, short_window, long_window, movin
     stock_df['Signal'] = np.where(stock_df[short_window_col] > stock_df[long_window_col], 1.0, 0.0) 
   # create a new column 'Position' which is a day-to-day difference of the 'Signal' column. 
     stock_df['Position'] = stock_df['Signal'].diff()
-    
-    # if display_table == True:
-        # df_pos = stock_df[(stock_df['Position'] == 1) | (stock_df['Position'] == -1)]
-        # df_pos['Position'] = df_pos['Position'].apply(lambda x: 'Buy' if x == 1 else 'Sell')
-        # table1 = tabulate(df_pos.loc['2020':], headers = 'keys', tablefmt = 'psql')
 
     df_pos = stock_df[(stock_df['Position'] == 1) | (stock_df['Position'] == -1)]
     df_pos['Position'] = df_pos['Position'].apply(lambda x: 'Buy' if x == 1 else 'Sell')
@@ -198,9 +193,6 @@ def movAvgCrossStrategy(stock_symbol, longName, short_window, long_window, movin
     if df_pos['Position'][-1] == 'Sell':
         sell_lst.append(stock_symbol)
 
-    # df_pos.reset_index(inplace=True)
-    # return df_pos.iloc[-1]
-
 
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 #*     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
@@ -209,10 +201,11 @@ def movAvgCrossStrategy(stock_symbol, longName, short_window, long_window, movin
 
 if __name__ == '__main__':
 
-    st.title("Double Moving Average Strategy")
+  for r in range(len(index_ticker_lists_B)):
+    st.title(index_ticker_lists_B[r])
     buy_lst = []
     sell_lst = []
-    stock_ticker = dow
+    stock_ticker = index_ticker_lists_A[r]
     df1 = pd.DataFrame()
     df2 = pd.DataFrame()
 
@@ -226,29 +219,7 @@ if __name__ == '__main__':
         company_longName = get_symbol_longName(ss)    
 
         S, L, res, raw1  = The_Strategy_2(ss, company_longName).grab_data()
-        # res=pd.DataFrame(res)
-        # res['Symbol']=st
-        # res['LongName']=company_longName
-
-        cross=movAvgCrossStrategy(ss, company_longName, S, L, 'SMA', raw1)
-    #     cross=pd.DataFrame(cross).T
-    #     cross.columns = ['Date','CurPrice','shortMavgPrice','longMavgPrice','Count','Action']
-    #     cross['Date'] = pd.to_datetime((cross['Date']))
-    #     cross.round({'CurPrice': 2, 'shortMavgPrice': 2, 'longMavgPrice': 2})
-    #     cross['Symbol']=st
-    #     cross['LongName']=st
-
-    #     df1 = pd.concat([df1, res], ignore_index = True)
-    #     df1.reset_index()
-    #     df2 = pd.concat([df2, cross], ignore_index = True)
-    #     df2.reset_index()
-    #     df2.round({'CurPrice': 2, 'shortMavgPrice': 2, 'longMavgPrice': 2})
-
-    #     df1.set_index(['Symbol','LongName'], inplace=True)
-    #     df2.set_index(['Symbol','LongName'], inplace=True)
-
-    # st.dataframe(df1)
-    # st.dataframe(df2)
+        cross=movAvgCrossStrategy(ss, company_longName, S, L, 'SMA', raw1)        
 
     st.header('BUY LIST')
     st.subheader(buy_lst)
