@@ -277,7 +277,7 @@ if(systemStage == '0-Recommendations'):
 #       *       *       *       *       *       *       *       *                                                > stage: [ STOCK TICKER LIST IMPORTS (B) ]
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-saveTickers = Path('files/recommendations/')
+saveTickers = Path('files/recommendations')
 dow_analyst_buys1 = pd.read_pickle(saveTickers / f'rec1_DOW.pkl')
 sp100_analyst_buys1 = pd.read_pickle(saveTickers / f'rec1_SP100.pkl')
 sp500_analyst_buys1 = pd.read_pickle(saveTickers / f'rec1_SP500.pkl')
