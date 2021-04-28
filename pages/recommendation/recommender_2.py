@@ -104,8 +104,8 @@ class Recommendations2(object):
                   {
                     'Stock': stock, 
                     "RS_Rating": RS_Rating ,
-                    "20 Day MA": moving_average_50, 
-                    "50 Day Ma": moving_average_150, 
+                    "20 Day MA": moving_average_20, 
+                    "50 Day Ma": moving_average_50, 
                     "200 Day MA": moving_average_200, 
                     "52 Week Low": low_of_52week, 
                     "52 week High": high_of_52week
@@ -122,5 +122,5 @@ class Recommendations2(object):
     st.header(f"Ratings Analysis - {self.sName}")
     st.dataframe(exportList)
 
-    rec2_ticker_list = list(dataframe.index)
+    rec2_ticker_list = list(exportList.index)
     return rec2_ticker_list
