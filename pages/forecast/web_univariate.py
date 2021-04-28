@@ -113,7 +113,7 @@ class The_Univariate_TS_Reg(object):
                 name='LSTM'),
                 Dense(n_features, name='Output'),
                 ])
-            st.text(rnn.summary())
+            st.write(rnn.summary())
 
             rnn.compile(loss='mae', optimizer='RMSProp')
             
@@ -137,14 +137,17 @@ class The_Univariate_TS_Reg(object):
             loss_history.index += 1
             best_rmse = loss_history.val_loss.min()
             best_epoch = loss_history.val_loss.idxmin()
-            title = f'5-Epoch Rolling RMSE (Best Validation RMSE: {best_rmse:.4%})'
             loss_history.columns=['Training RMSE', 'Validation RMSE']
-            loss_history.rolling(5).mean().plot(logy=True, lw=2, title=title, ax=ax)
+            loss_history.rolling(5).mean().plot(logy=True, lw=2, ax=ax)
             ax.axvline(best_epoch, ls='--', lw=1, c='k')
             sns.despine()
             plt.grid(True)
+            plt.title(f'5-Epoch Rolling RMSE (Best Validation RMSE: {best_rmse:.4%})', fontsize=30, fontweight='bold')
+            plt.xlabel('Period', fontsize=20, fontweight='bold')
+            plt.ylabel('Error', fontsize=20, fontweight='bold')            
+            ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+            ax.legend(loc='best',prop={"size":16})
             fig.tight_layout()
-            plt.legend(loc='best')
             st.pyplot(fig)
             plt.close(fig)
             
@@ -213,11 +216,15 @@ class The_Univariate_TS_Reg(object):
             ax.vlines(['2019-01-01', '2019-12-25'] ,0, 1, transform=ax.get_xaxis_transform(), colors='y', lw=2, ls='--', label='Validation_Range')
             ax.vlines(['2020-01-01', '2020-12-25'] ,0, 1, transform=ax.get_xaxis_transform(), colors='g', lw=2, ls='--', label='Test_Prediction_Range')
             ax.vlines(['2021-01-01', '2021-06-30'] ,0, 1, transform=ax.get_xaxis_transform(), colors='b', lw=2, ls='--', label='Out_Of_Sample-Prediction_Range')
-            ax.set_title(f'In- and Out-of-sample Predictions For ~ {self.company} ({self.saver})')
-            ax.set_ylabel('Stock Price ($)')
-            ax.set_xlabel('Date')
-            plt.legend(loc='best')
+            ax.set_title(f'In- and Out-of-sample Predictions For ~ {self.company} ({self.saver})', fontsize=30, fontweight='bold')
+            ax.set_ylabel('Stock Price ($)', fontsize=20, fontweight='bold')
+            ax.set_xlabel('Date', fontsize=20, fontweight='bold')
             plt.grid(True)
+            for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+                label.set_fontsize(15)
+            ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+            ax.legend(loc='best',prop={"size":16})
+            plt.xlim(date(2018,12,1))
             plt.tight_layout()
             st.pyplot(fig)
             return

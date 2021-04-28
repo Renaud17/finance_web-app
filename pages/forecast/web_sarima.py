@@ -40,6 +40,7 @@ from prophet.plot import plot_plotly, plot_components_plotly
 from prophet.plot import add_changepoints_to_plot
 from prophet import Prophet
 import yfinance as yf
+import yahoo_fin.stock_info as si
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.statespace.sarimax import SARIMAX
@@ -65,9 +66,9 @@ class The_SARIMA_Model(object):
 
     def dataHull(self):
         self.start='2011-01-01'
-        self.end='2021-01-02'
+        self.end='2021-01-03'
 
-        self.x_data = yf.download(self.sss, start=self.end)['Adj Close']
+        self.x_data = yf.download(self.sss, start='2021-01-01')['Adj Close']
         self.x_data.columns = [self.company]
 
         self.spData = yf.download(self.sss, start=self.start, end=self.end)
@@ -83,6 +84,7 @@ class The_SARIMA_Model(object):
         st.subheader('Each intersection indicates either a Buy Or Sell Signal')
         st.write(" * If Stock Price is crossing up above the Rolling-Mean == [BUY]")
         st.write(" * If Stock Price is crossing down below the Rolling-Mean == [SELL]")
+        st.write(' *'*34)
 
         fig, ax = plt.subplots()
         ax.set_xlabel('Dates', fontsize=20, fontweight='bold')
@@ -93,19 +95,20 @@ class The_SARIMA_Model(object):
         for label in (ax.get_xticklabels() + ax.get_yticklabels()):
 	        label.set_fontsize(15)
         plt.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        plt.xlim(date(2018,1,1))
         ax.legend(loc='best',prop={"size":16})
         plt.tight_layout()
         st.pyplot(fig)
 
         st.write(' *'*34)
-        st.header("Make Historical Time Series (Stock Price History) 'Stationary'")
-        st.write(' *'*34)
+        st.title("Make Historical Time Series (Stock Price History) 'Stationary'")
         st.header(f'Detrending The TimeSeries History For {self.sss}')
         st.subheader('Detrending')
         st.markdown(' * process of removing trend lines fron a non-stationary data set.')
         st.write(' * involves transformation step that norlalizes large values into smaller ones')
         st.write(' * examples = logarithmic function, square-root function, cube-function')
         st.write(' * further step is to subtract the transformation from the moving average')
+        st.write(' *'*34)
 
 
     def adf(self):
@@ -116,6 +119,7 @@ class The_SARIMA_Model(object):
         self.critical_values = self.result[4]
         for key, value in self.critical_values.items():
             st.write('Critical value (%s): %.3f' % (key, value))
+        st.write(' *'*34)
         self.df_log = np.log(self.df_settle)
         self.df_log_ma= self.df_log.rolling(2).mean()
         self.df_detrend = self.df_log - self.df_log_ma
@@ -131,6 +135,7 @@ class The_SARIMA_Model(object):
         self.critical_values2 = self.result2[4]
         for key, value in self.critical_values2.items():
             st.write('Critical value (%s): %.3f' % (key, value))
+        st.write(' *'*34)
         self.df_log_diff = self.df_log.diff(periods=3).dropna()
       # Mean and standard deviation of differenced data
         self.df_diff_rolling = self.df_log_diff.rolling(12)
@@ -148,6 +153,7 @@ class The_SARIMA_Model(object):
         for label in (ax.get_xticklabels() + ax.get_yticklabels()):
 	        label.set_fontsize(15)
         ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        plt.xlim(date(2018,1,1))
         ax.legend(loc='best',prop={"size":16})
         plt.tight_layout()
         st.pyplot(fig)
@@ -177,9 +183,11 @@ class The_SARIMA_Model(object):
         for label in (ax.get_xticklabels() + ax.get_yticklabels()):
 	        label.set_fontsize(15)
         ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        plt.xlim(date(2018,1,1))
         ax.legend(loc='best',prop={"size":16})
         plt.tight_layout()
         st.pyplot(fig)        
+        st.write(' *'*34)
 
         self.result = adfuller(self.df_residual.dropna())
         st.write('ADF statistic:',  self.result[0])
@@ -187,6 +195,7 @@ class The_SARIMA_Model(object):
         self.critical_values = self.result[4]
         for key, value in self.critical_values.items():
             st.write('Critical value (%s): %.3f' % (key, value))
+        st.write(' *'*34)
 
 
     def arima_grid_search(self, s=12):
@@ -214,6 +223,7 @@ class The_SARIMA_Model(object):
                     continue
         st.write('ARIMA{}x{}'.format(self.pdq, self.pdqs))
         st.write('Lowest AIC: ' , self.lowest_aic)
+        st.write(' *'*34)
         return self.lowest_aic, self.pdq, self.pdqs
 
 
@@ -227,13 +237,16 @@ class The_SARIMA_Model(object):
             enforce_invertibility=True,
             disp=False)
         self.model_results = self.model.fit(maxiter = 200, disp = False)
-        st.write(self.model_results.summary())
+        st.text(self.model_results.summary())
+        st.write(' *'*34)
 
         fig, ax = plt.subplots()
         plt.legend(loc='best')
         plt.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        plt.xlim(date(2020,1,1))
         plt.tight_layout()
         st.pyplot(self.model_results.plot_diagnostics(figsize=(15, 12)))
+        st.write(' *'*34)
         return self.model_results
 
 
@@ -244,10 +257,8 @@ class The_SARIMA_Model(object):
         self.prediction_ci = self.prediction.conf_int()
 
         fig, ax = plt.subplots()
-
         ax = self.df_settle['2018':].plot(label='actual')
         self.prediction_ci.plot(ax=ax, style=['--', '--'], label='Predict')
-        self.x_data.plot(style='--',color='k', lw=2, label='Price Since Prediction')
         self.ci_index = self.prediction_ci.index
         self.lower_ci = self.prediction_ci.iloc[:, 0]
         self.upper_ci = self.prediction_ci.iloc[:, 1]
@@ -255,7 +266,7 @@ class The_SARIMA_Model(object):
         ax.vlines(['2018-05-01', '2020-01'] ,0, 1, transform=ax.get_xaxis_transform(), colors='k', ls='--', label='Train')
         ax.vlines(['2020-01-01', '2021-01'] ,0, 1, transform=ax.get_xaxis_transform(), colors='r', ls='--', label='Test')
         ax.vlines(['2021-01-01', '2022-06-30'] ,0, 1, transform=ax.get_xaxis_transform(), colors='g', ls='--', label='Prediction')
-
+        self.x_data.plot(lw=1,label='Price Since Prediction', color='k', ls='--')
         ax.set_xlabel('Time (years)', fontsize=20, fontweight='bold')
         ax.set_ylabel('Prices', fontsize=20, fontweight='bold')
         ax.set_title(f'{self.company} ({self.sss}) - SARIMA MODEL', fontsize=30, fontweight='bold')
@@ -265,8 +276,17 @@ class The_SARIMA_Model(object):
         fontP.set_size('large')
         ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', prop=fontP)
         ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
+        plt.xlim(date(2018,1,1))
         plt.tight_layout()
         st.pyplot(fig)
+
+        for i in range(1):
+            try:
+                st.write(f"Current live_price = $ {si.get_live_price(ticker)}")
+                st.write(f"Current postmarket_price = $ {si.get_postmarket_price(ticker)}")
+                st.write(f"Current premarket_price = $ {si.get_premarket_price(ticker)}")
+            except Exception:
+                pass        
         return
 
 
@@ -274,11 +294,8 @@ class The_SARIMA_Model(object):
 #*     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-
 if __name__ == '__main__':
-
     stock_ticker = 'BA'
-
     if stock_ticker:
         The_SARIMA_Model(stock_ticker).predict()
 

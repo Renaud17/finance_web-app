@@ -486,6 +486,7 @@ if(systemStage == '2-Fundamental-Analysis'):
       marketDF = pd.DataFrame(data=marketInfo, index=[0])
       st.table(marketDF)
       st.write(' *'*25)
+
       for i in range(1):
           try:
               st.write(f"live_price = $ {si.get_live_price(ticker)}")
@@ -1074,15 +1075,16 @@ if(systemStage == '5-Financial_Forecasting'):
 
       if run_strategy_Regression:
         dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, modName = f1.Regression_Model(stock_ticker).preprocessing()
+        days = 20
 
         if modName == 'linear_regression':
-            Regression_Model(stock_ticker).linear_regression(dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days)
+            f1.Regression_Model(stock_ticker).linear_regression(dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days)
         if modName == 'quadratic_regression_2':
-            Regression_Model(stock_ticker).quadratic_regression_2(dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days)
+            f1.Regression_Model(stock_ticker).quadratic_regression_2(dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days)
         if modName == 'quadratic_regression_3':
-            Regression_Model(stock_ticker).quadratic_regression_3(dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days)
+            f1.Regression_Model(stock_ticker).quadratic_regression_3(dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days)
         if modName == 'knn':
-            Regression_Model(stock_ticker).knn(dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days)        
+            f1.Regression_Model(stock_ticker).knn(dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days)        
       st.title('Model Render Complete')        
 
 
@@ -1154,24 +1156,20 @@ if(systemStage == '5-Financial_Forecasting'):
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#       *       *       *       *       *       *       *       *                   > model: [ MONTE CARLO SIMULATION ]
+#       *       *       *       *       *       *       *       *               > model: [ UNIVARIATE TIME SERIES RNN ]
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   if(model=='Univariate Analysis'):
-    st.title('UNIVARIATE TIME-SERIES MODELING & FORCASTS')
-    st.write("The term 'univariate' implies that forecasting is based on a sample of time series observations of the \
+    st.title('Univariate TimeSeries RNN Forecast')
+    st.write("* The term 'univariate' implies that forecasting is based on a sample of time series observations of the \
       exchange rate without taking into account the effect of the other variables such as prices and interest rates.\
         If this is the case, then there is no need to take an explicit account of these variables."
     )
     if stock_ticker:
-      f1.univariate(stock_ticker).runs()
-    else:
-      ticker_univariate = st.text_input('Enter Ticker For Univariate Model:')
-      if ticker_univariate:
-        run_strategy_univariate = st.sidebar.button("Run Univariate")
-        if run_strategy_univariate:
-          f1.univariate(ticker_univariate).runs()
-          st.title('Model Render Complete')
+      run_strategy_univariate = st.sidebar.button("Run Univariate Model")
+      if run_strategy_univariate:      
+        f1.univariate(stock_ticker).runs()
+        st.title('Model Render Complete')
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1237,7 +1235,7 @@ if(systemStage=='6-Trading_Strategies'):
   st.write('* xgboost sim/backtesting')
   st.write('* backtrader backtesting')
   
-  models = ['-Select-Model-','Moving Averages - SMA & EMA','Strategy II','Support & Resistance Lines', 'overBought_overSold']
+  models = ['-Select-Model-','Moving Averages - SMA & EMA','Strategy II', 'Optimal_SMA', 'Support & Resistance Lines', 'overBought_overSold']
   # 'Moving Averages - B'
 
   st.sidebar.subheader('> Step #2')
@@ -1326,6 +1324,25 @@ if(systemStage=='6-Trading_Strategies'):
       run_strategy_movAvg_B = st.sidebar.button("Run Strategy II")
       if run_strategy_movAvg_B:
         f2.runRun(stock_ticker)
+        fin = True
+
+    if fin:
+      st.write(' *'*25)
+      st.title('Model Render Complete')        
+
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                              > model: [ OPTIMAL SMA ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+  if(model=='Optimal_SMA'):
+    st.title('Optimal SMA')
+    fin = False
+
+    if stock_ticker:
+      run_strategy_Optimal_SMA = st.sidebar.button("Run Optimal-SMA")
+      if run_strategy_Optimal_SMA:
+        f2.Optimal_SMA(stock_ticker).build_optimal_sma()
         fin = True
 
     if fin:

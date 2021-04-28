@@ -125,13 +125,14 @@ class The_Monte_Carlo(object):
             ax = gbm_simulations_df.plot(alpha=0.2, legend=False)
             line_1, = ax.plot(index, gbm_simulations_df.mean(axis=1), color='red')
             line_2, = ax.plot(index, adj_close[last_train_date:last_test_date], color='blue')
-            ax.set_title(f"{self.company} - ({self.stock}) - Monte Carlo Simulations", fontsize=16)
+            ax.set_title(f"{self.company} - ({self.stock}) - Monte Carlo Simulations", fontsize=30, fontweight='bold')
             ax.legend((line_1, line_2), ('mean-price', 'actual-price'))
-            plt.xlabel('Test Date Range')
-            plt.ylabel('Stock Price')
+            plt.xlabel('Test Date Range', fontsize=20, fontweight='bold')
+            plt.ylabel('Stock Price', fontsize=20, fontweight='bold')
+            for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+                label.set_fontsize(15)
+            ax.grid(True, color='k', linestyle='-', linewidth=1, alpha=.3)
             plt.tight_layout()
-            plt.grid(which='major', axis='both')
-            st.set_option('deprecation.showPyplotGlobalUse', False)
             st.pyplot(plt.show())
 
 
@@ -139,11 +140,8 @@ class The_Monte_Carlo(object):
 #*     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-
 if __name__ == '__main__':
-
     stock_ticker = 'TSLA'
-
     if stock_ticker:
         The_Monte_Carlo(stock_ticker)
 
