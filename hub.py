@@ -221,15 +221,13 @@ if(systemStage == '0-Recommendations'):
     all_ticker_list_names_1 = [
       'DOW', 'SP100', 'SP500', 'day_gainers', 'day_losers', 'day_most_active', 'undervalued_large_caps', 'fool_composite', 'oxford_composite', 'watch_lst_bulk'
     ]
-    nameZ = [
-      'dow_analyst_buys', 'sp100_analyst_buys', 'sp500_analyst_buys', 'day_gainers_analyst_buys', 'day_losers_analyst_buys', 'day_most_active_analyst_buys',
-      'undervalued_large_caps_analyst_buys', 'fool_composite_analyst_buys', 'oxford_composite_analyst_buys', 'watch_lst_bulk_analyst_buys'
-    ]
 
     run_button_rec1 = st.sidebar.button("RUN Recommender-1")
     if run_button_rec1:
       for a in range(len(all_ticker_lists_1)):
-        f5.Recommendations1(all_ticker_lists_1[a], all_ticker_list_names_1[a]).run_rec1()
+        money_lst = f5.Recommendations1(all_ticker_lists_1[a], all_ticker_list_names_1[a]).run_rec1()
+        with open(f"files/recommendations/rec1_{all_ticker_list_names_1[a]}.pkl", "wb") as f:
+          pickle.dump(money_lst, f)   
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -240,6 +238,21 @@ if(systemStage == '0-Recommendations'):
     st.title('Recommender-2')
     st.subheader('This Model will take SEVERAL minutes to complete - be patient and do not leave this page once it starts running')
     st.write(' *'*25)
+
+    all_ticker_lists_2 = [
+      dow, sp100, sp500, day_gainers, day_losers, day_most_active, undervalued_large_caps, fool_composite, oxford_composite, watch_lst_bulk
+    ]
+    all_ticker_list_names_2 = [
+      'DOW', 'SP100', 'SP500', 'day_gainers', 'day_losers', 'day_most_active', 'undervalued_large_caps', 'fool_composite', 'oxford_composite', 'watch_lst_bulk'
+    ]
+
+    run_button_rec2 = st.sidebar.button("RUN Recommender-2")
+    if run_button_rec2:
+      for a in range(len(all_ticker_lists_2)):
+        f5.Recommendations2(all_ticker_lists_2[a], all_ticker_list_names_2[a]).run_rec2()
+
+
+
     
     st.sidebar.subheader('> Step #3')
     b1 = st.sidebar.button("dow")
@@ -257,68 +270,89 @@ if(systemStage == '0-Recommendations'):
       st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
       st.sidebar.markdown(dow)
       st.sidebar.write(' *'*25)
-      f5.Recommendations2(dow, 'dow').run_rec2()
+      cleaned_list = f5.Recommendations2(dow, 'dow').run_rec2()
+      with open(f"files/recommendations/rec2_dow.pkl", "wb") as f:
+        pickle.dump(cleaned_list, f)
+
     if b2:
       st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
       st.sidebar.markdown(sp100)
       st.sidebar.write(' *'*25)
-      f5.Recommendations2(sp100, 'sp100').run_rec2()
+      cleaned_list = f5.Recommendations2(sp100, 'sp100').run_rec2()
+      with open(f"files/recommendations/rec2_sp100.pkl", "wb") as f:
+        pickle.dump(cleaned_list, f)      
     if b3:
       st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
       st.sidebar.markdown(sp500)
       st.sidebar.write(' *'*25)
-      f5.Recommendations2(sp500, 'sp500').run_rec2()            
+      cleaned_list = f5.Recommendations2(sp500, 'sp500').run_rec2()            
+      with open(f"files/recommendations/rec2_sp500.pkl", "wb") as f:
+        pickle.dump(cleaned_list, f)
     if b4:
       st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
       st.sidebar.markdown(day_most_active)
       st.sidebar.write(' *'*25)
-      f5.Recommendations2(day_most_active, 'day_most_active').run_rec2()     
+      cleaned_list = f5.Recommendations2(day_most_active, 'day_most_active').run_rec2()     
+      with open(f"files/recommendations/rec2_day_most_active.pkl", "wb") as f:
+        pickle.dump(cleaned_list, f)
     if b5:
       st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
       st.sidebar.markdown(undervalued_large_caps)
       st.sidebar.write(' *'*25)
-      f5.Recommendations2(undervalued_large_caps, 'undervalued_large_caps').run_rec2()
+      cleaned_list = f5.Recommendations2(undervalued_large_caps, 'undervalued_large_caps').run_rec2()
+      with open(f"files/recommendations/rec2_undervalued_large_caps.pkl", "wb") as f:
+        pickle.dump(cleaned_list, f)
     if b6:
       st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
       st.sidebar.markdown(watch_lst_bulk)
       st.sidebar.write(' *'*25)
-      f5.Recommendations2(watch_lst_bulk, 'watch_lst_bulk').run_rec2()
+      cleaned_list = f5.Recommendations2(watch_lst_bulk, 'watch_lst_bulk').run_rec2()
+      with open(f"files/recommendations/rec2_watch_lst_bulk.pkl", "wb") as f:
+        pickle.dump(cleaned_list, f)
     if b7:
       st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
       st.sidebar.markdown(fool_composite)
       st.sidebar.write(' *'*25)
-      f5.Recommendations2(fool_composite, 'fool_composite').run_rec2()
+      cleaned_list = f5.Recommendations2(fool_composite, 'fool_composite').run_rec2()
+      with open(f"files/recommendations/rec2_fool_composite.pkl", "wb") as f:
+        pickle.dump(cleaned_list, f)
     if b8:
       st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
       st.sidebar.markdown(oxford_composite)
       st.sidebar.write(' *'*25)
-      f5.Recommendations2(oxford_composite, 'oxford_composite').run_rec2()
+      cleaned_list = f5.Recommendations2(oxford_composite, 'oxford_composite').run_rec2()
+      with open(f"files/recommendations/rec2_oxford_composite.pkl", "wb") as f:
+        pickle.dump(cleaned_list, f)
     if b9:
       st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
       st.sidebar.markdown(day_gainers)
       st.sidebar.write(' *'*25)
-      f5.Recommendations2(day_gainers, 'day_gainers').run_rec2()
+      cleaned_list = f5.Recommendations2(day_gainers, 'day_gainers').run_rec2()
+      with open(f"files/recommendations/rec2_day_gainers.pkl", "wb") as f:
+        pickle.dump(cleaned_list, f)
     if b10:
       st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
       st.sidebar.markdown(day_losers)
       st.sidebar.write(' *'*25)
-      f5.Recommendations2(day_losers, 'day_losers').run_rec2()    
+      cleaned_list = f5.Recommendations2(day_losers, 'day_losers').run_rec2()    
+      with open(f"files/recommendations/rec2_day_losers.pkl", "wb") as f:
+        pickle.dump(cleaned_list, f)
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 #       *       *       *       *       *       *       *       *                                                > stage: [ STOCK TICKER LIST IMPORTS (B) ]
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-dow_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_DOW.pkl')
-sp100_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_SP100.pkl')
-sp500_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_SP500.pkl')
-day_gainers_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_day_gainers.pkl')
-day_losers_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_day_losers.pkl')
-day_most_active_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_day_most_active.pkl')
-undervalued_large_caps_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_undervalued_large_caps_ticker_lst.pkl')
-fool_composite_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_fool_composite.pkl')
-oxford_composite_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_oxford_composite.pkl')
-watch_lst_bulk_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_watch_lst_bulk.pkl')
+dow_analyst_buys1 = pd.read_pickle(saveTickers / f'files/recommendations/rec1_DOW.pkl')
+sp100_analyst_buys1 = pd.read_pickle(saveTickers / f'files/recommendations/rec1_SP100.pkl')
+sp500_analyst_buys1 = pd.read_pickle(saveTickers / f'files/recommendations/rec1_SP500.pkl')
+day_gainers_analyst_buys1 = pd.read_pickle(saveTickers / f'files/recommendations/rec1_day_gainers.pkl')
+day_losers_analyst_buys1 = pd.read_pickle(saveTickers / f'files/recommendations/rec1_day_losers.pkl')
+day_most_active_analyst_buys1 = pd.read_pickle(saveTickers / f'files/recommendations/rec1_day_most_active.pkl')
+undervalued_large_caps_analyst_buys1 = pd.read_pickle(saveTickers / f'files/recommendations/rec1_undervalued_large_caps_ticker_lst.pkl')
+fool_composite_analyst_buys1 = pd.read_pickle(saveTickers / f'files/recommendations/rec1_fool_composite.pkl')
+oxford_composite_analyst_buys1 = pd.read_pickle(saveTickers / f'files/recommendations/rec1_composite.pkl')
+watch_lst_bulk_analyst_buys1 = pd.read_pickle(saveTickers / f'files/recommendations/rec1_watch_lst_bulk.pkl')
 
 index_ticker_lists_A = [
   dow, sp100, sp500, indices_main, watch_lst_bulk, fool_composite, oxford_composite,

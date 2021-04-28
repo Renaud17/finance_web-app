@@ -49,11 +49,14 @@ class Recommendations1(object):
         st.text(recomendation_ticker_list)
         st.write(' *'*25)
         
-        with open(f"tickers/recommendations_{self.name}.pkl", "wb") as f:
-            pickle.dump(recomendation_ticker_list, f)
+        # with open(f"tickers/recommendations_{self.name}.pkl", "wb") as f:
+        #     pickle.dump(recomendation_ticker_list, f)
 
         # with open(f"tickers/recommendations_{self.name}.pkl", "rb") as f:
         #     og_rec_list = pickle.load(f)
+
+
+        return recomendation_ticker_list
 
 
 if __name__ =='__main__':
