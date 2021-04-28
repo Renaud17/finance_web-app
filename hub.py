@@ -40,6 +40,7 @@ from prophet.plot import plot_cross_validation_metric
 from prophet.diagnostics import performance_metrics, cross_validation
 from prophet.plot import plot_plotly, plot_components_plotly, add_changepoints_to_plot
 import requests
+import pickle
 import yfinance as yf
 from yahoo_fin import news
 import yahoo_fin.stock_info as si
@@ -80,8 +81,10 @@ indices_main = ['^OEX','^MID','^GSPC','^DJI','^NYA','^RUT','^W5000']
 day_gainers = list(si.get_day_gainers()['Symbol'])
 day_losers = list(si.get_day_losers()['Symbol'])
 day_most_active = list(si.get_day_most_active()['Symbol'])
-ULC = si.get_undervalued_large_caps()
-undervalued_large_caps = list(ULC['Symbol'])
+undervalued_large_caps = pd.read_pickle(saveTickers / f"undervalued_large_caps_ticker_lst.pkl")
+# with open("/home/gordon/gdp/code/portfolio/Forecasting_For_Friends/tickers/undervalued_large_caps_ticker_lst.pkl", "rb") as f:
+#     undervalued_large_caps = pickle.load(f)
+
 fool_composite = [
     'LMND','ZM','TTD','PINS','TEAM','SAM','DIS','ASML','ECL','NYT',
     'LRCX','NTDOY','PYPL','AMZN','ABNB','ATVI','ZM','SKLZ','SHOP', 'STAA',
@@ -264,7 +267,7 @@ sp500_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_SP500.pkl')
 day_gainers_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_day_gainers.pkl')
 day_losers_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_day_losers.pkl')
 day_most_active_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_day_most_active.pkl')
-undervalued_large_caps_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_undervalued_large_caps.pkl')
+undervalued_large_caps_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_undervalued_large_caps_ticker_lst.pkl')
 fool_composite_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_fool_composite.pkl')
 oxford_composite_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_oxford_composite.pkl')
 watch_lst_bulk_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_watch_lst_bulk.pkl')
