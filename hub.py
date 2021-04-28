@@ -289,16 +289,16 @@ fool_composite_analyst_buys1 = pd.read_pickle(saveTickers / f'rec1_fool_composit
 oxford_composite_analyst_buys1 = pd.read_pickle(saveTickers / f'rec1_oxford_composite.pkl')
 watch_lst_bulk_analyst_buys1 = pd.read_pickle(saveTickers / f'rec1_watch_lst_bulk.pkl')
 
-# dow_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_DOW.pkl')
-# sp100_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_SP100.pkl')
-# sp500_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_SP500.pkl')
-# day_gainers_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_day_gainers.pkl')
-# day_losers_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_day_losers.pkl')
-# day_most_active_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_day_most_active.pkl')
-# undervalued_large_caps_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_undervalued_large_caps.pkl')
-# fool_composite_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_fool_composite.pkl')
-# oxford_composite_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_oxford_composite.pkl')
-# watch_lst_bulk_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_watch_lst_bulk.pkl')
+dow_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_DOW.pkl')
+sp100_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_SP100.pkl')
+sp500_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_SP500.pkl')
+day_gainers_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_day_gainers.pkl')
+day_losers_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_day_losers.pkl')
+day_most_active_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_day_most_active.pkl')
+undervalued_large_caps_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_undervalued_large_caps.pkl')
+fool_composite_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_fool_composite.pkl')
+oxford_composite_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_oxford_composite.pkl')
+watch_lst_bulk_analyst_buys2 = pd.read_pickle(saveTickers / f'rec2_watch_lst_bulk.pkl')
 
 index_ticker_lists_A = [
   dow, sp100, sp500, 
@@ -307,11 +307,11 @@ index_ticker_lists_A = [
   
   dow_analyst_buys1, sp100_analyst_buys1, sp500_analyst_buys1, 
   watch_lst_bulk_analyst_buys1, fool_composite_analyst_buys1, oxford_composite_analyst_buys1, 
-  day_gainers_analyst_buys1, day_losers_analyst_buys1, day_most_active_analyst_buys1, undervalued_large_caps_analyst_buys1
+  day_gainers_analyst_buys1, day_losers_analyst_buys1, day_most_active_analyst_buys1, undervalued_large_caps_analyst_buys1,
 
-  # dow_analyst_buys2, sp100_analyst_buys2, sp500_analyst_buys2,
-  # watch_lst_bulk_analyst_buys2, fool_composite_analyst_buys2, oxford_composite_analyst_buys2,
-  # day_gainers_analyst_buys2, day_losers_analyst_buys2, day_most_active_analyst_buys2, undervalued_large_caps_analyst_buys2
+  dow_analyst_buys2, sp100_analyst_buys2, sp500_analyst_buys2,
+  watch_lst_bulk_analyst_buys2, fool_composite_analyst_buys2, oxford_composite_analyst_buys2,
+  day_gainers_analyst_buys2, day_losers_analyst_buys2, day_most_active_analyst_buys2, undervalued_large_caps_analyst_buys2
 ]
 index_ticker_lists_B = [
   'dow', 'sp100', 'sp500', 
@@ -320,15 +320,15 @@ index_ticker_lists_B = [
 
   'dow_analyst_buys1', 'sp100_analyst_buys1', 'sp500_analyst_buys1', 
   'watch_lst_bulk_analyst_buys1', 'fool_composite_analyst_buys1', 'oxford_composite_analyst_buys1', 
-  'day_gainers_analyst_buys1', 'day_losers_analyst_buys1', 'day_most_active_analyst_buys1', 'undervalued_large_caps_analyst_buys1'
+  'day_gainers_analyst_buys1', 'day_losers_analyst_buys1', 'day_most_active_analyst_buys1', 'undervalued_large_caps_analyst_buys1',
 
-  # 'dow_analyst_buys2', 'sp100_analyst_buys2', 'sp500_analyst_buys2',
-  # 'watch_lst_bulk_analyst_buys2', 'fool_composite_analyst_buys2', 'oxford_composite_analyst_buys2',
-  # 'day_gainers_analyst_buys2', 'day_losers_analyst_buys2', 'day_most_active_analyst_buys2', 'undervalued_large_caps_analyst_buys2'
+  'dow_analyst_buys2', 'sp100_analyst_buys2', 'sp500_analyst_buys2',
+  'watch_lst_bulk_analyst_buys2', 'fool_composite_analyst_buys2', 'oxford_composite_analyst_buys2',
+  'day_gainers_analyst_buys2', 'day_losers_analyst_buys2', 'day_most_active_analyst_buys2', 'undervalued_large_caps_analyst_buys2'
 ]
 
-# for r in range(len(index_ticker_lists_A)):
-#   index_ticker_lists_A[r] = clean(index_ticker_lists_A[r])
+for r in range(len(index_ticker_lists_A)):
+  index_ticker_lists_A[r] = clean(index_ticker_lists_A[r])
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1035,8 +1035,9 @@ if(systemStage == '5-Financial_Forecasting'):
   st.title('Forecasting Price Points - Home Page')
   st.subheader("Use The Side Bar via the Arrow ('>') on the upper left corner of the screen")
 
-  models = ['-Select-A-Model-', 'Prophet Model', 'Stocker Analysis', 'Regression', 'S.A.R.I.M.A', 'Monte Carlo Simulation', 'Univariate Analysis']
-      # 'A.R.I.M.A'
+  models = [
+    '-Select-A-Model-', 'Prophet Model', 'Stocker Analysis', 'Regression', 'A.R.I.M.A','S.A.R.I.M.A', 'Monte Carlo Simulation', 'Univariate Analysis'
+  ] 
   
   st.sidebar.header('[Step # 2]')
   st.sidebar.subheader('Select Model To Run')
@@ -1222,15 +1223,15 @@ if(systemStage == '5-Financial_Forecasting'):
 #       *       *       *       *       *       *       *       *                                > model: [ A.R.I.M.A ]
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-  # if(model=='A.R.I.M.A'):
-  #   st.title('(A.R.I.M.A)')
-  #   st.header('Auto Regression Integrated Moving Average')
+  if(model=='A.R.I.M.A'):
+    st.title('(A.R.I.M.A)')
+    st.header('Auto Regression Integrated Moving Average')
 
-  #   if stock_ticker:
-  #     run_strategy_arima = st.button("Run ARIMA")
-  #     if run_strategy_arima:
-  #       f1.Web_Arima(stock_ticker).full_build()
-  #       f1.The_Arima_Model(stock_ticker).arima_model()          
+    if stock_ticker:
+      run_strategy_arima = st.button("Run ARIMA")
+      if run_strategy_arima:
+        f1.Arima2(stock_ticker).runArima()
+        f1.The_Arima_Model(stock_ticker).arima_model()
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1369,7 +1370,7 @@ if(systemStage=='6-Trading_Strategies'):
     if stock_ticker:
       run_strategy_movAvg_B = st.sidebar.button("Run Strategy II")
       if run_strategy_movAvg_B:
-        f2.runRun(stock_ticker)
+        f2.trading_technicals(stock_ticker)
         fin = True
 
     if fin:
@@ -1432,25 +1433,6 @@ if(systemStage=='6-Trading_Strategies'):
     if fin:
       st.write(' *'*25)
       st.title('Model Render Complete')      
-
-
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#       *       *       *       *       *       *       *       *                        > model: [ MOVING-AVERAGE: B ]
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-  # if(model=='Moving Averages - B'):
-  #   st.title('Moving Average 0')
-  #   fin = False
-
-  #   if stock_ticker:
-  #     run_strategy_movAvg_B = st.sidebar.button("Run Moving Average-B (Double)")
-  #     if run_strategy_movAvg_B:
-  #       f2.ST_Trading_signals(stock_ticker)
-  #       fin = True
-
-  #   if fin:
-  #     st.write(' *'*25)
-  #     st.title('Model Render Complete')              
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1526,9 +1508,19 @@ if(systemStage=='7-Backtesting_Returns'):
         st.write('details')
 
         st.sidebar.subheader('> Step #3')
-        Em = str(st.sidebar.selectbox('Pick Ticker Lists:',['Pick-Em','Pick From Ticker Lists']))
+        Em = str(st.sidebar.selectbox('Pick Ticker Lists:',['Pick From Ticker Lists', 'Pick-Em']))
 
         if Em:
+
+          if Em == 'Pick From Ticker Lists':
+            stockS = st.sidebar.selectbox('Choose Ticker List: ', index_ticker_lists_B)
+            for idx, num in enumerate(index_ticker_lists_B):
+              if num == stockS:
+                st.sidebar.subheader('> Step #4 - Run Optimization')
+                buttonB = st.sidebar.button('Run Optimizer B')
+                if buttonB:
+                  f4.Analize_Portfolio(index_ticker_lists_A[idx], num).situation()
+                  fin = True                      
   
           if Em == 'Pick-Em':
             stock_tickers = st.sidebar.text_input('Enter Ticker List Here: (ex. DIS ECL PLNT NYT)')
@@ -1543,15 +1535,7 @@ if(systemStage=='7-Backtesting_Returns'):
                 f4.Analize_Portfolio(stock_tickers, 'Pick_EM_Portfolio').situation()
                 fin = True
 
-          if Em == 'Pick From Ticker Lists':
-            stockS = st.sidebar.selectbox('Choose Ticker List: ', index_ticker_lists_B)
-            for idx, num in enumerate(index_ticker_lists_B):
-              if num == stockS:
-                st.sidebar.subheader('> Step #4 - Run Optimization')
-                buttonB = st.sidebar.button('Run Optimizer B')
-                if buttonB:
-                  f4.Analize_Portfolio(index_ticker_lists_A[idx], num).situation()
-                  fin = True            
+
 
         if fin:
           st.write(' *'*25)

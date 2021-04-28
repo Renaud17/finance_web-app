@@ -58,7 +58,7 @@ class MovingAverage(object):
         histogram = MACD_line - signal_line
         return MACD_line, signal_line, histogram
 
-def runRun(ticker_stock):
+def trading_technicals(ticker_stock):
     stock_ticker = Ticker(ticker_stock)
     df = stock_ticker.history(period='1y',parsed_dates=True)
 
@@ -246,4 +246,4 @@ def runRun(ticker_stock):
 
 
 if __name__ == '__main__':
-    runRun('AAPL')
+    trading_technicals('AAPL')

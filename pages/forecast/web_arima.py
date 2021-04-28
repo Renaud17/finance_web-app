@@ -168,6 +168,8 @@ class Web_Arima(object):
         plt.tight_layout()
         st.pyplot(fig)
 
+        model_aArima = Arima()
+
         model_autoARIMA = auto_arima(
             train_data, 
             start_p=0, 

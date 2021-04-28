@@ -12,23 +12,6 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 from scipy.stats import spearmanr
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import MinMaxScaler
-import tensorflow as tf
-from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, LSTM
-from tensorflow import keras
-
-gpu_devices = tf.config.experimental.list_physical_devices('GPU')
-if gpu_devices:
-    print('Using GPU')
-    tf.config.experimental.set_memory_growth(gpu_devices[0], True)
-    tf.config.experimental.set_synchronous_execution(enable=True)
-    tf.config.experimental.enable_mlir_bridge()
-    tf.config.experimental.enable_tensor_float_32_execution(enabled=True)
-    tf.config.threading.get_inter_op_parallelism_threads()
-    tf.config.threading.set_inter_op_parallelism_threads(0)
-else:
-    print('Using CPU')
     
 
 class Analize_Portfolio(object):
@@ -52,9 +35,9 @@ class Analize_Portfolio(object):
         returns = pd.DataFrame({})
         for t in portfolio_composition:
             name = t[0]
-            # ticker = yf.Ticker(name)
-            # data = ticker.history(interval="1d",start="2010-01-01",end="2019-12-31")
-            data = yf.download(name, start="2020-01-01")
+            ticker = yf.Ticker(name)
+            data = ticker.history(interval="1d",start="2010-01-01",end="2020-12-31")
+            # data = yf.download(name, start="2020-01-01")
             data['return_%s' % (name)] = data['Close'].pct_change(1)
 
             returns = returns.join(data[['return_%s' % (name)]],how="outer").dropna()
@@ -154,8 +137,6 @@ class Analize_Portfolio(object):
         plt.grid()
         plt.legend()
         plt.tight_layout()
-        # plt.savefig(savePlot / f'portfolio_analysis_{self.sName}-1.png', dpi=134)
-        # plt.close(fig)
         st.pyplot(fig)
 
         target_return = 0.02
@@ -175,8 +156,6 @@ class Analize_Portfolio(object):
         plt.ylabel("Probability of return >= %.2f" % (target_return))
         plt.grid()
         plt.tight_layout()
-        # plt.savefig(savePlot / f'portfolio_analysis_{self.sName}-2.png', dpi=134)
-        # plt.close(fig)
         st.pyplot(fig)
 
         sharpe_indices = simulated_portfolios.apply(lambda x : np.mean(x)/np.std(x))
@@ -185,8 +164,6 @@ class Analize_Portfolio(object):
         plt.hist(sharpe_indices,bins="rice")
         plt.xlabel("Sharpe ratio")
         plt.tight_layout()
-        # plt.savefig(savePlot / f'portfolio_analysis_{self.sName}-3.png', dpi=134)
-        # plt.close(fig)
         st.pyplot(fig)
 
         df = pd.DataFrame(portfolio_composition)
