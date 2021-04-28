@@ -32,6 +32,7 @@ from datetime import datetime
 today = str(datetime.now())[:10]
 
 import streamlit as st
+st.set_option('deprecation.showPyplotGlobalUse', False)
 from scipy.stats import spearmanr
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import MinMaxScaler

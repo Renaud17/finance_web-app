@@ -4,15 +4,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 from datetime import datetime
-# today = str(datetime.now())[:10]
-# savePlot = Path(f'report/portfolio_{today}/IIIII_evaluate')
-# if not savePlot.exists():
-#     savePlot.mkdir(parents=True)
-# saveData = Path('data/raw')
 import random
 num_portfolios = 5000
 risk_free_rate = 0.0178
 import streamlit as st
+st.set_option('deprecation.showPyplotGlobalUse', False)
 from scipy.stats import spearmanr
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import MinMaxScaler

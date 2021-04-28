@@ -40,6 +40,7 @@ import pyfolio as pf
 import backtrader as bt
 from backtrader.feeds import PandasData
 import streamlit as st
+st.set_option('deprecation.showPyplotGlobalUse', False)
 
 
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

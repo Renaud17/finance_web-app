@@ -5,6 +5,7 @@ import yfinance as yf
 from pandas_datareader import DataReader
 import numpy as np
 import streamlit as st
+st.set_option('deprecation.showPyplotGlobalUse', False)
 from pathlib import Path
 import pickle
 
@@ -53,8 +54,6 @@ class Recommendations1(object):
 
         # with open(f"tickers/recommendations_{self.name}.pkl", "rb") as f:
         #     og_rec_list = pickle.load(f)
-
-        return recomendation_ticker_list
 
 
 if __name__ =='__main__':

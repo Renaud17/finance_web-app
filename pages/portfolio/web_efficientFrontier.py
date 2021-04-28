@@ -27,6 +27,7 @@ plt.rc('figure', titlesize = lg)  # fontsize of the figure title
 plt.rc('axes', linewidth=2)       # linewidth of plot lines
 
 import streamlit as st
+st.set_option('deprecation.showPyplotGlobalUse', False)
 from pathlib import Path
 path = str(Path.cwd()) + '/'
 from datetime import datetime

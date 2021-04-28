@@ -38,6 +38,7 @@ from scipy.stats import spearmanr
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import MinMaxScaler
 import streamlit as st
+st.set_option('deprecation.showPyplotGlobalUse', False)
     
     
 class The_Strategy_2(object):

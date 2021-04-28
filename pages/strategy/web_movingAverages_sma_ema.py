@@ -23,6 +23,7 @@ import warnings
 warnings.filterwarnings('ignore')
 import pandas_datareader.data as web
 import streamlit as st
+st.set_option('deprecation.showPyplotGlobalUse', False)
 import yfinance as yf
 import requests
 

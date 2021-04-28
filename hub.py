@@ -26,6 +26,8 @@ plt.rcParams['figure.figsize'] = [18, 10]
 plt.rcParams['figure.dpi'] = 150
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
+import plotly.express as px
+color_discrete_sequence=px.colors.qualitative.G10
 import pandas as pd
 pd.options.display.max_columns = 15
 import numpy as np
@@ -54,9 +56,8 @@ from pages import recommendation as f5
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#       *       *       *       *       *       *       *       *                                                    > stage: [ STOCK TICKER LIST IMPORTS ]
+#       *       *       *       *       *       *       *       *                                                > stage: [ STOCK TICKER LIST IMPORTS (A) ]
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 
 def clean(listA):
     lst = list(set(listA))
@@ -107,37 +108,6 @@ oxford_composite = [
   'EGHT','BZUN','TTWO','EBAY','FTNT','SAIL','BABA','SAM','COLM','DPZ',
   'EXPE','NUVA','EA','HSY','HAS','NFLX','SIX'
 ]
-dow_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_DOW.pkl')
-sp100_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_SP100.pkl')
-sp500_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_SP500.pkl')
-day_gainers_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_day_gainers.pkl')
-day_losers_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_day_losers.pkl')
-day_most_active_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_day_most_active.pkl')
-undervalued_large_caps_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_undervalued_large_caps.pkl')
-fool_composite_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_fool_composite.pkl')
-oxford_composite_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_oxford_composite.pkl')
-watch_lst_bulk_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_watch_lst_bulk.pkl')
-
-index_ticker_lists_A = [
-  dow, sp100, sp500, indices_main, watch_lst_bulk, fool_composite, oxford_composite,
-  day_gainers, day_losers, day_most_active, undervalued_large_caps
-
-  # ,dow_analyst_buys1, sp100_analyst_buys1, sp500_analyst_buys1, day_gainers_analyst_buys1, 
-  # day_losers_analyst_buys1, day_most_active_analyst_buys1, undervalued_large_caps_analyst_buys1,
-  # fool_composite_analyst_buys1, oxford_composite_analyst_buys1, watch_lst_bulk_analyst_buys1
-]
-
-index_ticker_lists_B = [
-  'dow', 'sp100', 'sp500', 'indices_main', 'watch_lst_bulk', 'fool_composite', 'oxford_composite',
-  'day_gainers', 'day_losers', 'day_most_active', 'undervalued_large_caps'
-  
-  # ,'dow_analyst_buys1', 'sp100_analyst_buys1', 'sp500_analyst_buys1', 'day_gainers_analyst_buys1', 
-  # 'day_losers_analyst_buys1', 'day_most_active_analyst_buys1', 'undervalued_large_caps_analyst_buys1', 
-  # 'fool_composite_analyst_buys1', 'oxford_composite_analyst_buys1', 'watch_lst_bulk_analyst_buys1'
-]
-
-for r in range(len(index_ticker_lists_A)):
-  index_ticker_lists_A[r] = clean(index_ticker_lists_A[r])
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -180,6 +150,7 @@ if(systemStage=='-Home-'):
   st.subheader("> All Interaction will operate through the side-pannel")
   st.write("* The side-pannel can be accessed via the '>' icon in the upper-left corner")
   st.write("* Follow the Steps on the side pannel for each model.")
+  st.write("* Each graph can be maximized to full screen by clicking the icon off to the upper-right of the graph")
   st.write(' *'*25)
   st.write("* [STEP 1] Begin by selecting the STAGE (0-7) - by locating the '>' in the upper LEFT hand corner.\n")
   st.write("* [STEP 2] Selecting the models in the Stage\n")
@@ -200,9 +171,8 @@ if(systemStage=='-Home-'):
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#               *               *               *               *               *                                              > stage: [ RECOMMENDATIONS ]
+#               *               *               *               *               *                                           > stage: [ 0) RECOMMENDATIONS ]
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 
 if(systemStage == '0-Recommendations'):
   st.title('Recomendations & Ratings')
@@ -214,6 +184,21 @@ if(systemStage == '0-Recommendations'):
   models = ['-Select-Model-', 'Recommender-1', 'Recommender-2']
   st.sidebar.subheader('> Step # 2')
   model = st.sidebar.selectbox('Choose A Model', models)
+  st.write(' *'*25)
+
+  st.title("Instructions")
+  st.subheader("> All Interaction will operate through the side-pannel")
+  st.write("* The side-pannel can be accessed via the '>' icon in the upper-left corner")
+  st.write("* Follow the Steps on the side pannel for each model.")
+  st.write("* Each graph can be maximized to full screen by clicking the icon off to the upper-right of the graph")
+  st.write(' *'*25)
+  st.write("* [STEP 1] Begin by selecting the STAGE (0-7) - by locating the '>' in the upper LEFT hand corner.\n")
+  st.write("* [STEP 2] Selecting the models in the Stage\n")
+  st.write("* [STEP 3] Each model will have their own criteria either asking for a single ticker or ticker list\n")
+  st.write("* [STEP 4] When the model is ready to run a 'RUN' button will appear - click it to start the model")
+  st.write(' *'*25)
+  st.write("* To change STAGES use the [STEP 1] dropdown on the sidepannel.")
+  st.write("* To change MODELS use the [STEP 2] dropdown on the sidepannel.")
   st.write(' *'*25)
 
 
@@ -243,26 +228,16 @@ if(systemStage == '0-Recommendations'):
       'dow_analyst_buys', 'sp100_analyst_buys', 'sp500_analyst_buys', 'day_gainers_analyst_buys', 'day_losers_analyst_buys', 'day_most_active_analyst_buys',
       'undervalued_large_caps_analyst_buys', 'fool_composite_analyst_buys', 'oxford_composite_analyst_buys', 'watch_lst_bulk_analyst_buys'
     ]
-    index_ticker_lists_B = index_ticker_lists_B + nameZ    
-    new_money_lst = []
 
     run_button_rec1 = st.sidebar.button("RUN Recommender-1")
     if run_button_rec1:
       for a in range(len(all_ticker_lists_1)):
-        abc = f5.Recommendations1(all_ticker_lists_1[a], all_ticker_list_names_1[a]).run_rec1()
-        new_money_lst.append(abc)
-
-      st.title("Polished Lists:")
-      for r in range(len(new_money_lst)):
-        new_money_lst[r] = clean(new_money_lst[r])
-        index_ticker_lists_A.append(new_money_lst[r])
-        st.text(new_money_lst[r])
+        f5.Recommendations1(all_ticker_lists_1[a], all_ticker_list_names_1[a]).run_rec1()
         
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 #       *       *       *       *       *       *       *       *                            > model: [ Recommender-2 ]
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 
   if(model=='Recommender-2'):
     st.title('Recommender-2')
@@ -279,12 +254,44 @@ if(systemStage == '0-Recommendations'):
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                                                > stage: [ STOCK TICKER LIST IMPORTS (B) ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+dow_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_DOW.pkl')
+sp100_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_SP100.pkl')
+sp500_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_SP500.pkl')
+day_gainers_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_day_gainers.pkl')
+day_losers_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_day_losers.pkl')
+day_most_active_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_day_most_active.pkl')
+undervalued_large_caps_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_undervalued_large_caps.pkl')
+fool_composite_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_fool_composite.pkl')
+oxford_composite_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_oxford_composite.pkl')
+watch_lst_bulk_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_watch_lst_bulk.pkl')
+
+index_ticker_lists_A = [
+  dow, sp100, sp500, indices_main, watch_lst_bulk, fool_composite, oxford_composite,
+  day_gainers, day_losers, day_most_active, undervalued_large_caps
+  ,dow_analyst_buys1, sp100_analyst_buys1, sp500_analyst_buys1, day_gainers_analyst_buys1, 
+  day_losers_analyst_buys1, day_most_active_analyst_buys1, undervalued_large_caps_analyst_buys1,
+  fool_composite_analyst_buys1, oxford_composite_analyst_buys1, watch_lst_bulk_analyst_buys1
+]
+index_ticker_lists_B = [
+  'dow', 'sp100', 'sp500', 'indices_main', 'watch_lst_bulk', 'fool_composite', 'oxford_composite',
+  'day_gainers', 'day_losers', 'day_most_active', 'undervalued_large_caps'
+  ,'dow_analyst_buys1', 'sp100_analyst_buys1', 'sp500_analyst_buys1', 'day_gainers_analyst_buys1', 
+  'day_losers_analyst_buys1', 'day_most_active_analyst_buys1', 'undervalued_large_caps_analyst_buys1', 
+  'fool_composite_analyst_buys1', 'oxford_composite_analyst_buys1', 'watch_lst_bulk_analyst_buys1'
+]
+for r in range(len(index_ticker_lists_A)):
+  index_ticker_lists_A[r] = clean(index_ticker_lists_A[r])
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 #               *               *               *               *               *                                         > stage: [ 1) WIDE-MARKET-SCOPE ]
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 if(systemStage == '1-Wide_Market_Scope'):
-  st.title('Wide Market Scope To Observe Macro Scale')
-  st.write("A look At Today's Active Stock Screeners")
+  st.title('Wide Market Scope [Macro Scale]')
+  st.write("\n* A look At Today's Active Stock Screeners")
     
   for r in range(1):
     try:
@@ -342,6 +349,20 @@ if(systemStage == '1-Wide_Market_Scope'):
     except Exception:
       pass
 
+  st.title("Instructions")
+  st.subheader("> All Interaction will operate through the side-pannel")
+  st.write("* The side-pannel can be accessed via the '>' icon in the upper-left corner")
+  st.write("* Follow the Steps on the side pannel for each model.")
+  st.write("* Each graph can be maximized to full screen by clicking the icon off to the upper-right of the graph")
+  st.write(' *'*25)
+  st.write("* [STEP 1] Begin by selecting the STAGE (0-7) - by locating the '>' in the upper LEFT hand corner.\n")
+  st.write("* [STEP 2] Selecting the models in the Stage\n")
+  st.write("* [STEP 3] Each model will have their own criteria either asking for a single ticker or ticker list\n")
+  st.write("* [STEP 4] When the model is ready to run a 'RUN' button will appear - click it to start the model")
+  st.write(' *'*25)
+  st.write("* To change STAGES use the [STEP 1] dropdown on the sidepannel.")
+  st.write("* To change MODELS use the [STEP 2] dropdown on the sidepannel.")
+  st.write(' *'*25)
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 #               *               *               *               *               *                                         > stage: \ FUNDAMENTAL ANALYSIS ]
@@ -475,6 +496,7 @@ if(systemStage == '2-Fundamental-Analysis'):
 
       for i in range(1):
         st.header('Analysis Info')
+        st.write("* hold cursor over cells to see full output")
         try:
           st.dataframe(pd.DataFrame(si.get_analysts_info(ticker).items()))
         except Exception:
@@ -501,13 +523,14 @@ if(systemStage == '2-Fundamental-Analysis'):
 
       for i in range(1):
           st.subheader('Company_News')
+          st.write("* hold cursor over cells to see full output")
           try:
               st.dataframe(pd.DataFrame(news.get_yf_rss(ticker)).set_index('title'))
           except Exception:
               pass
 
       for i in range(1):
-          st.subheader('Company_splits')
+          st.subheader('Company_Stats')
           try:
               stats = si.get_stats(ticker)
               stats.set_index('Attribute',inplace=True)
@@ -525,7 +548,7 @@ if(systemStage == '2-Fundamental-Analysis'):
               pass        
 
       for i in range(1):
-          st.subheader('Company_splits')
+          st.subheader('get_quote_table')
           try:
               qt = pd.DataFrame(si.get_quote_table(ticker).items())
               qt.columns = ['quote title','result']
@@ -537,7 +560,9 @@ if(systemStage == '2-Fundamental-Analysis'):
       for i in range(1):
           st.subheader('Key Statistics')
           try:
-              st.dataframe(si.get_stats(ticker))      
+              z = pd.DataFrame(si.get_stats(ticker))
+              z.set_index('Attribute',inplace=True)
+              st.dataframe(z)
           except Exception:
               pass
 
@@ -586,16 +611,23 @@ if(systemStage == '2-Fundamental-Analysis'):
           df.set_index('startdatetime',inplace=True)
           df.index = pd.to_datetime(df.index)
           st.dataframe(df)
-          fig, ax = plt.subplots()
-          df[['epsestimate', 'epsactual']].plot()
-          st.pyplot(fig)
         except Exception:
           pass          
 
-      st.subheader('- To Work In A Different Analysis Category:')
-      st.write('* Go To Step #1')
-      st.subheader('- To Use Other Models Within This Same Analysis Category:')
-      st.write('* Go To Step #2')      
+      st.title("Instructions")
+      st.subheader("> All Interaction will operate through the side-pannel")
+      st.write("* The side-pannel can be accessed via the '>' icon in the upper-left corner")
+      st.write("* Follow the Steps on the side pannel for each model.")
+      st.write("* Each graph can be maximized to full screen by clicking the icon off to the upper-right of the graph")
+      st.write(' *'*25)
+      st.write("* [STEP 1] Begin by selecting the STAGE (0-7) - by locating the '>' in the upper LEFT hand corner.\n")
+      st.write("* [STEP 2] Selecting the models in the Stage\n")
+      st.write("* [STEP 3] Each model will have their own criteria either asking for a single ticker or ticker list\n")
+      st.write("* [STEP 4] When the model is ready to run a 'RUN' button will appear - click it to start the model")
+      st.write(' *'*25)
+      st.write("* To change STAGES use the [STEP 1] dropdown on the sidepannel.")
+      st.write("* To change MODELS use the [STEP 2] dropdown on the sidepannel.")
+      st.write(' *'*25)      
       
 
 else:
@@ -634,7 +666,6 @@ if(systemStage == '3-Technical-Analysis'):
   st.header('General Analysis Notes')
   st.write("https://www.investopedia.com/terms/t/technicalanalysis.asp")
   st.write(' *'*25)
-
   st.subheader('Definition:')
   st.write('* Technical analysis is a trading discipline employed to evaluate investments and identify trading opportunities by analyzing statistical \
     trends gathered from trading activity, such as price movement and volume. ... Technical analysis can be used on any security with historical trading data.')
@@ -643,7 +674,6 @@ if(systemStage == '3-Technical-Analysis'):
   st.write("* Technical analysis is concerned with price action, which gives clues as to the stock's supply and demand dynamics\
      – which is what ultimately determines the stock price.")
   st.write(' *'*25)
-
   st.subheader('Examples of technical analysis tools include:')
   st.write('* All of the tools have the same purpose: to make understanding chart movements and identifying trends easier for technical traders.')
   st.write('* moving averages')
@@ -652,14 +682,12 @@ if(systemStage == '3-Technical-Analysis'):
   st.write('* and more')
   st.write("https://www.investopedia.com/top-7-technical-analysis-tools-4773275")
   st.write(' *'*25)
-
   st.subheader('KEY TAKEAWAYS')
   st.write("* Technical analysis, or using charts to identify trading signals and price patterns, may seem overwhelming or esoteric at first.")
   st.write("* Beginners should first understand why technical analysis works as a window into market psychology to identify opportunities to profit.")
   st.write("* Focus on a particular trading approach and develop a disciplined strategy that you can follow without letting emotions or second-guessing get in the way.")
   st.write("* Find a broker that can help you execute your plan affordably while also providing a trading platform with the right suite of tools you'll need.")
   st.write(' *'*25)
-
   st.header('Model Results Below:')
   st.sidebar.subheader('> Step #2')
   ticker = st.sidebar.text_input('Enter Stock Ticker IN ALL CAPS')
@@ -694,7 +722,7 @@ if(systemStage == '3-Technical-Analysis'):
         df_ma = calcMovingAverage(dataMA, windowSizeMA)
         df_ma = df_ma.reset_index()
 
-        figMA = go.Figure()    
+        figMA = go.Figure()
         figMA.add_trace(go.Scatter(x=df_ma['Date'], y=df_ma['Adj Close'], name="Prices Over Last "+str(numYearMA)+" Year(s)"))    
         figMA.add_trace(go.Scatter(x=df_ma['Date'], y=df_ma['sma'], name="SMA"+str(windowSizeMA)+" Over Last "+str(numYearMA)+" Year(s)"))
         figMA.add_trace(go.Scatter(x=df_ma['Date'], y=df_ma['ema'], name="EMA"+str(windowSizeMA)+" Over Last "+str(numYearMA)+" Year(s)"))
@@ -742,10 +770,20 @@ if(systemStage == '3-Technical-Analysis'):
         figBoll.update_yaxes(tickprefix="$")
         st.plotly_chart(figBoll, use_container_width=True)
         st.write(' *'*25)
-        st.subheader('- To Work In A Different Analysis Category:')
-        st.write('* Go To Step #1')
-        st.subheader('- To Use Other Models Within This Same Analysis Category:')
-        st.write('* Go To Step #2')
+        st.title("Instructions")
+        st.subheader("> All Interaction will operate through the side-pannel")
+        st.write("* The side-pannel can be accessed via the '>' icon in the upper-left corner")
+        st.write("* Follow the Steps on the side pannel for each model.")
+        st.write("* Each graph can be maximized to full screen by clicking the icon off to the upper-right of the graph")
+        st.write(' *'*25)
+        st.write("* [STEP 1] Begin by selecting the STAGE (0-7) - by locating the '>' in the upper LEFT hand corner.\n")
+        st.write("* [STEP 2] Selecting the models in the Stage\n")
+        st.write("* [STEP 3] Each model will have their own criteria either asking for a single ticker or ticker list\n")
+        st.write("* [STEP 4] When the model is ready to run a 'RUN' button will appear - click it to start the model")
+        st.write(' *'*25)
+        st.write("* To change STAGES use the [STEP 1] dropdown on the sidepannel.")
+        st.write("* To change MODELS use the [STEP 2] dropdown on the sidepannel.")
+        st.write(' *'*25)
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -797,6 +835,22 @@ if(systemStage=='4-Portfolio_Construction'):
   st.sidebar.subheader('> Step # 2')
   model = st.sidebar.selectbox('Choose A Model', models)
   st.sidebar.write(' *'*25)
+
+  st.write(' *'*25)
+  st.title("Instructions")
+  st.subheader("> All Interaction will operate through the side-pannel")
+  st.write("* The side-pannel can be accessed via the '>' icon in the upper-left corner")
+  st.write("* Follow the Steps on the side pannel for each model.")
+  st.write("* Each graph can be maximized to full screen by clicking the icon off to the upper-right of the graph")
+  st.write(' *'*25)
+  st.write("* [STEP 1] Begin by selecting the STAGE (0-7) - by locating the '>' in the upper LEFT hand corner.\n")
+  st.write("* [STEP 2] Selecting the models in the Stage\n")
+  st.write("* [STEP 3] Each model will have their own criteria either asking for a single ticker or ticker list\n")
+  st.write("* [STEP 4] When the model is ready to run a 'RUN' button will appear - click it to start the model")
+  st.write(' *'*25)
+  st.write("* To change STAGES use the [STEP 1] dropdown on the sidepannel.")
+  st.write("* To change MODELS use the [STEP 2] dropdown on the sidepannel.")
+  st.write(' *'*25)
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -891,7 +945,7 @@ if(systemStage=='4-Portfolio_Construction'):
     fin = False
 
     st.sidebar.subheader('> Step #3')
-    Em = str(st.sidebar.selectbox('Pick Ticker Lists:',['Pick-Em','Pick From Ticker Lists']))
+    Em = str(st.sidebar.selectbox('Pick Ticker Lists:',['Pick From Ticker Lists', 'Pick-Em']))
 
     if Em:
 
@@ -899,6 +953,9 @@ if(systemStage=='4-Portfolio_Construction'):
         stockS = st.sidebar.selectbox('Choose Ticker List: ', index_ticker_lists_B)
         for idx, num in enumerate(index_ticker_lists_B):
           if num == stockS:
+            st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
+            st.sidebar.markdown(index_ticker_lists_A[idx])
+            st.sidebar.write(' *'*25)
             st.sidebar.subheader('> Step #4 - Run Optimization')
             buttonB = st.sidebar.button('Run Optimizer B')
             if buttonB:
@@ -907,7 +964,7 @@ if(systemStage=='4-Portfolio_Construction'):
 
       if Em == 'Pick-Em':
         stock_tickers = st.sidebar.text_input('Enter Ticker List Here: (ex. DIS ECL PLNT NYT)')
-        # stock_tickers = stock_tickers.split()
+        stock_tickers = stock_tickers.split()
         if type(stock_tickers)==list:
           st.sidebar.subheader('ticker list entered in good order')
           st.sidebar.markdown(stock_tickers)
@@ -1456,7 +1513,6 @@ if(systemStage=='7-Backtesting_Returns'):
         Em = str(st.sidebar.selectbox('Pick Ticker Lists:',['Pick-Em','Pick From Ticker Lists']))
 
         if Em:
-
           if Em == 'Pick-Em':
             stock_tickers = st.sidebar.text_input('Enter Ticker List Here: (ex. DIS ECL PLNT NYT)')
             stock_tickers = stock_tickers.split()
@@ -1502,7 +1558,6 @@ if(systemStage=='7-Backtesting_Returns'):
 #       *       *       *       *       *       *       *       *                             > model: [ BACKTEST-SMA ]
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-
   for r in range(1):
     try:
       if(model=='Backtrader_SMA'):
@@ -1526,7 +1581,6 @@ if(systemStage=='7-Backtesting_Returns'):
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 #       *       *       *       *       *       *       *       *                > model: [ BACKTRADER - SMA_STRATEGY ]
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 
   for r in range(1):
     try:

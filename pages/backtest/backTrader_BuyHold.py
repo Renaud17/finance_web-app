@@ -4,13 +4,10 @@ import matplotlib.pyplot as plt
 plt.rcParams['figure.figsize'] = [15, 7]
 plt.rcParams['figure.dpi'] = 150
 import streamlit as st
-
+st.set_option('deprecation.showPyplotGlobalUse', False)
 from pathlib import Path
 from datetime import datetime
-today = str(datetime.now())[:10]
-savePlot = Path(f'report/portfolio_{today}/IIIII_evaluate')
-if not savePlot.exists():
-    savePlot.mkdir(parents=True)
+
 
 class BuyAndHold_Buy(bt.Strategy):
     def start(self):       # set the starting cash
@@ -48,8 +45,6 @@ def xavier(stock, start=datetime(2021, 1, 1), end=datetime.now()):
               )
       )              
         
-    #   plt.savefig(savePlot / f'{stock}_bt_buyHold.png')
-
 
 if __name__ == '__main__':
       xavier(stock='GM')

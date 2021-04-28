@@ -3,11 +3,9 @@ import warnings
 warnings.filterwarnings('ignore')
 import numpy as np
 import pandas as pd
-
 import matplotlib
 import matplotlib as mpl
-matplotlib.use('Agg')
-from matplotlib import style
+mfrom matplotlib import style
 from matplotlib import pyplot as plt
 plt.style.use('ggplot')
 sm, med, lg = 10, 15, 20
@@ -32,6 +30,7 @@ import numpy as np
 from datetime import datetime
 import yfinance as yf
 import streamlit as st
+st.set_option('deprecation.showPyplotGlobalUse', False)
 
 
 #  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

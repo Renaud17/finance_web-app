@@ -37,6 +37,7 @@ import yfinance as yf
 from yfinance import Ticker
 import requests
 import streamlit as st
+st.set_option('deprecation.showPyplotGlobalUse', False)
 print('SYSTEM LOAD COMPLETE')
 
 

@@ -1,30 +1,19 @@
-# [theme]
-# primaryColor = "#d33682"
-# backgroundColor = "#002b36"
-# secondaryBackgroundColor = "#586e75"
-# textColor = "#fafafa"
-# font = "sans serif"
-
-
 import warnings
 warnings.filterwarnings('ignore')
 from datetime import datetime, date, timedelta
 from pathlib import Path
 today = str(datetime.now())[:10]
-
 import pandas as pd
 pd.plotting.register_matplotlib_converters()
 import numpy as np
-
 import matplotlib
 import matplotlib.patches as mpatches
 from matplotlib.font_manager import FontProperties
 import matplotlib as mpl
-matplotlib.use('Agg')
+# matplotlib.use('Agg')
 from matplotlib import style
 from matplotlib import pyplot as plt
 plt.style.use('ggplot')
-
 sm, med, lg = '20', '25', '30'
 plt.rcParams['font.size'] = sm  # controls default text sizes
 plt.rc('axes', titlesize = med)   # fontsize of the axes title
@@ -42,6 +31,7 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import itertools
 import streamlit as st
+st.set_option('deprecation.showPyplotGlobalUse', False)
 from dask.distributed import Client
 from prophet.plot import plot_cross_validation_metric
 from prophet.diagnostics import performance_metrics

@@ -7,8 +7,9 @@ import datetime
 import time
 yf.pdr_override()
 import streamlit as st
+st.set_option('deprecation.showPyplotGlobalUse', False)
 from pathlib import Path
-saveTickers = Path('tickers/')
+saveTickers = Path('pages/recommendation/test_env/')
 
 
 class Recommendations2(object):
