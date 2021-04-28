@@ -22,7 +22,7 @@ class Recommendations2(object):
     
 
   def run_rec2(self):   
-    exportList = pd.DataFrame(columns=['Stock', "RS_Rating", "50 Day MA", "150 Day Ma", "200 Day MA", "52 Week Low", "52 week High"])
+    exportList = pd.DataFrame(columns=['Stock', "RS_Rating", "20 Day MA", "50 Day Ma", "200 Day MA", "52 Week Low", "52 week High"])
     returns_multiples = []
 
   # Index Returns  - index_df = yf.download(self.index_name, period='1y')
@@ -77,16 +77,16 @@ class Recommendations2(object):
             except Exception:
                 moving_average_200_20 = 0
 
-          # Condition 1: Current Price > 150 SMA and > 200 SMA
+          # Condition 1: Current Price > 50 SMA and > 200 SMA
             condition_1 = currentClose > moving_average_50 > moving_average_200
             
-          # Condition 2: 150 SMA and > 200 SMA
+          # Condition 2: 50 SMA and > 200 SMA
             condition_2 = moving_average_50 > moving_average_200
 
           # Condition 3: 200 SMA trending up for at least 1 month
             condition_3 = moving_average_200 > moving_average_200_20
             
-          # Condition 4: 50 SMA> 150 SMA and 50 SMA> 200 SMA
+          # Condition 4: 50 SMA>50 SMA and 50 SMA> 200 SMA
             condition_4 = moving_average_20 > moving_average_50 > moving_average_200
             
           # Condition 5: Current Price > 50 SMA
