@@ -1,4 +1,5 @@
 import os
+import itertools
 import warnings
 warnings.filterwarnings('ignore')
 import numpy as np
@@ -20,9 +21,14 @@ plt.rc('axes', linewidth=2)       # linewidth of plot lines
 plt.rcParams['figure.figsize'] = [18, 10]
 plt.rcParams['figure.dpi'] = 250
 
+from scipy import signal
+from scipy import stats
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.seasonal import seasonal_decompose
-from statsmodels.tsa.arima_model import ARIMA
+from statsmodels.tsa.arima_model import ARIMA, ARIMAResults
+from statsmodels.tsa.arima_process import ArmaProcess
+from statsmodels.stats.diagnostic import acorr_ljungbox
+from statsmodels.tsa.statespace.sarimax import SARIMAX
 from pmdarima.arima import auto_arima
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import math
