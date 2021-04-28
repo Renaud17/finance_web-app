@@ -1,2 +1,2 @@
-from .recomendation_1 import Recommendations1
-from .recomendation_2 import Recommendations2
+from .recommender_1 import Recommendations1
+from .recommender_2 import Recommendations2

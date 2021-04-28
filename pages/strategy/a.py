@@ -31,7 +31,6 @@ import streamlit as st
 import yfinance as yf
 import requests
 
-# from optimal_double_sma import The_Strategy_2
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
@@ -106,7 +105,7 @@ class The_Strategy_2(object):
 
     def grab_data(self):
         ticker = yf.Ticker(self.tic)
-        self.raw0 = ticker.history(period='5y')
+        self.raw0 = ticker.history(period='2y')
         self.raw = pd.DataFrame(self.raw0)
         self.raw.columns = ['Open', 'High', 'Low', self.sName, 'Volume', 'Dividends', 'Stock Splits']
         SMA1 = 2

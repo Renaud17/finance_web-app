@@ -1,3 +1,7 @@
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                                                               > stage: [ Library Import ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
 import warnings
 warnings.filterwarnings('ignore')
 from datetime import datetime, date, timedelta
@@ -49,9 +53,9 @@ from pages import backtest as f4
 from pages import recommendation as f5
 
 
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                                                    > stage: [ STOCK TICKER LIST IMPORTS ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
 def clean(listA):
@@ -103,22 +107,42 @@ oxford_composite = [
   'EGHT','BZUN','TTWO','EBAY','FTNT','SAIL','BABA','SAM','COLM','DPZ',
   'EXPE','NUVA','EA','HSY','HAS','NFLX','SIX'
 ]
+dow_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_DOW.pkl')
+sp100_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_SP100.pkl')
+sp500_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_SP500.pkl')
+day_gainers_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_day_gainers.pkl')
+day_losers_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_day_losers.pkl')
+day_most_active_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_day_most_active.pkl')
+undervalued_large_caps_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_undervalued_large_caps.pkl')
+fool_composite_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_fool_composite.pkl')
+oxford_composite_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_oxford_composite.pkl')
+watch_lst_bulk_analyst_buys1 = pd.read_pickle(saveTickers / f'recommendations_watch_lst_bulk.pkl')
+
 index_ticker_lists_A = [
   dow, sp100, sp500, indices_main, watch_lst_bulk, fool_composite, oxford_composite,
   day_gainers, day_losers, day_most_active, undervalued_large_caps
+
+  # ,dow_analyst_buys1, sp100_analyst_buys1, sp500_analyst_buys1, day_gainers_analyst_buys1, 
+  # day_losers_analyst_buys1, day_most_active_analyst_buys1, undervalued_large_caps_analyst_buys1,
+  # fool_composite_analyst_buys1, oxford_composite_analyst_buys1, watch_lst_bulk_analyst_buys1
 ]
+
 index_ticker_lists_B = [
-  'dow', 'sp100', 'sp500', 'indices_main','watch_lst_bulk', 'fool_composite', 'oxford_composite',
+  'dow', 'sp100', 'sp500', 'indices_main', 'watch_lst_bulk', 'fool_composite', 'oxford_composite',
   'day_gainers', 'day_losers', 'day_most_active', 'undervalued_large_caps'
+  
+  # ,'dow_analyst_buys1', 'sp100_analyst_buys1', 'sp500_analyst_buys1', 'day_gainers_analyst_buys1', 
+  # 'day_losers_analyst_buys1', 'day_most_active_analyst_buys1', 'undervalued_large_caps_analyst_buys1', 
+  # 'fool_composite_analyst_buys1', 'oxford_composite_analyst_buys1', 'watch_lst_bulk_analyst_buys1'
 ]
+
 for r in range(len(index_ticker_lists_A)):
   index_ticker_lists_A[r] = clean(index_ticker_lists_A[r])
 
 
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#               *               *               *               *               *                                                    > stage: [ HOME PAGE ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 st.sidebar.subheader('> Step #1')
 systemStage = st.sidebar.selectbox('Select Analysis Category:',
@@ -130,35 +154,133 @@ systemStage = st.sidebar.selectbox('Select Analysis Category:',
 st.sidebar.write(' *'*25)
 if(systemStage=='-Home-'):
   st.title("Welcome To The 'Fin-Web-App'")
-  st.write("* A web application designed specifically with the goal to bring the benefit of complex machine learning models & techniques to the average individual.\
-    This program provides a wide range of analytical data analysis tools to uncover what information resides within the underlying data to more accurately interpret the \
-      market.  In doing so and imploring the principal concepts at the heart of data science this application attempts to narrow the field of potential investments\
-         from the entire stock market down to a targeted selection of securities with the aim to outperform the broader market index.")
-  st.header("This web application is broken into several Stages:")
-  st.subheader('1) Wide-View Market Analysis')
-  st.subheader('2) Fundamental Analysis')
-  st.subheader('3) Technical Analysis')
-  st.subheader('4) Portfolio Theory & Construction')
-  st.subheader('5) Forecasting Techniques')
-  st.subheader('6) Trading Strategies')
-  st.subheader('7) Backtesting Methods')
+  st.write(
+    "* A web application designed specifically with the goal to bring the benefit of complex machine learning \
+    models & techniques to the average individual. This program provides a wide range of analytical data analysis tools \
+      to uncover what information resides within the underlying data to more accurately interpret the market. \
+        In doing so and imploring the principal concepts at the heart of data science this application attempts to \
+          narrow the field of potential investments from the entire stock market down to a targeted selection \
+            of securities with the aim to outperform the broader market index."
+  )
+  st.write(' *'*25)
 
-  st.title("To begin using the models within this web-app, locate the '>' in the upper LEFT hand corner of the screen\n\n")
-  st.subheader("All Interaction & Inputs will work through the side-pannel that will pop up when you click on the '>'\n")
-  st.write("* Follow the Steps down the side pannel for each model and it will indicate you to hit a 'RUN' button at the bottom")
-  st.write("* When your are ready to Access, Configure, & Run the models in each stage, Select A Stage in Step #1 on the Side Bar to the left.")
+  st.title("Financial Web Application Stages")
+  st.subheader("> This web application is broken into several Stages:")
+  st.write('0) Recommender')
+  st.write('1) Wide-View Market Analysis')
+  st.write('2) Fundamental Analysis')
+  st.write('3) Technical Analysis')
+  st.write('4) Portfolio Theory & Construction')
+  st.write('5) Forecasting Techniques')
+  st.write('6) Trading Strategies')
+  st.write('7) Backtesting Methods')
+  st.write(' *'*25)
 
-  st.header('Financial Disclosure:')
-  st.write("NO INVESTMENT ADVICE Nothing in the Site constitutes professional and/or financial advice, \
+  st.title("Instructions")
+  st.subheader("> All Interaction will operate through the side-pannel")
+  st.write("* The side-pannel can be accessed via the '>' icon in the upper-left corner")
+  st.write("* Follow the Steps on the side pannel for each model.")
+  st.write(' *'*25)
+  st.write("* [STEP 1] Begin by selecting the STAGE (0-7) - by locating the '>' in the upper LEFT hand corner.\n")
+  st.write("* [STEP 2] Selecting the models in the Stage\n")
+  st.write("* [STEP 3] Each model will have their own criteria either asking for a single ticker or ticker list\n")
+  st.write("* [STEP 4] When the model is ready to run a 'RUN' button will appear - click it to start the model")
+  st.write(' *'*25)
+  st.write("* To change STAGES use the [STEP 1] dropdown on the sidepannel.")
+  st.write("* To change MODELS use the [STEP 2] dropdown on the sidepannel.")
+  st.write(' *'*25)
+
+  st.title('Financial Disclosure:')
+  st.write(
+    "NO INVESTMENT ADVICE Nothing in the Site constitutes professional and/or financial advice, \
     nor does any information on the Site constitute a comprehensive or complete statement of the matters \
-      discussed or the law relating thereto. The Creator of this application is not a fiduciary by virtue of any person's use of or \
-        access to the Site or Content.")
+      discussed or the law relating thereto. The Creator of this application is not a fiduciary by virtue \
+        of any person's use of or access to the Site or Content."
+  )
 
 
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#               *               *               *               *               *                                              > stage: [ RECOMMENDATIONS ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+
+if(systemStage == '0-Recommendations'):
+  st.title('Recomendations & Ratings')
+  st.write(' *'*25)
+  st.write('* The 2 Models Contained Within This Section Generate Stock Ticker Recommendation Lists')
+  st.subheader('* * * PLEASE BE ADVISED * * * ')
+  st.write('* All Models In This Section Take Several Minutes To Run')
+
+  models = ['-Select-Model-', 'Recommender-1', 'Recommender-2']
+  st.sidebar.subheader('> Step # 2')
+  model = st.sidebar.selectbox('Choose A Model', models)
+  st.write(' *'*25)
+
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                            > model: [ Recommender-1 ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+  if(model == 'Recommender-1'):
+    st.title('Recommender-1')
+    st.write('* This Model will take SEVERAL minutes to complete - be patient and do not leave this page once it starts running')
+    
+    st.subheader("> Scale:")
+    st.write("> 1 = Strong Buy")
+    st.write("> 2 = Buy")
+    st.write("> 3 = Hold")
+    st.write("> 4 = Sell")
+    st.write("> 5 = Strong Sell")
+    st.write(' *'*25)
+
+    all_ticker_lists_1 = [
+      dow, sp100, sp500, day_gainers, day_losers, day_most_active, undervalued_large_caps, fool_composite, oxford_composite, watch_lst_bulk
+    ]
+    all_ticker_list_names_1 = [
+      'DOW', 'SP100', 'SP500', 'day_gainers', 'day_losers', 'day_most_active', 'undervalued_large_caps', 'fool_composite', 'oxford_composite', 'watch_lst_bulk'
+    ]
+    nameZ = [
+      'dow_analyst_buys', 'sp100_analyst_buys', 'sp500_analyst_buys', 'day_gainers_analyst_buys', 'day_losers_analyst_buys', 'day_most_active_analyst_buys',
+      'undervalued_large_caps_analyst_buys', 'fool_composite_analyst_buys', 'oxford_composite_analyst_buys', 'watch_lst_bulk_analyst_buys'
+    ]
+    index_ticker_lists_B = index_ticker_lists_B + nameZ    
+    new_money_lst = []
+
+    run_button_rec1 = st.sidebar.button("RUN Recommender-1")
+    if run_button_rec1:
+      for a in range(len(all_ticker_lists_1)):
+        abc = f5.Recommendations1(all_ticker_lists_1[a], all_ticker_list_names_1[a]).run_rec1()
+        new_money_lst.append(abc)
+
+      st.title("Polished Lists:")
+      for r in range(len(new_money_lst)):
+        new_money_lst[r] = clean(new_money_lst[r])
+        index_ticker_lists_A.append(new_money_lst[r])
+        st.text(new_money_lst[r])
+        
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                            > model: [ Recommender-2 ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+  if(model=='Recommender-2'):
+    st.title('Recommender-2')
+    st.subheader('This Model will take SEVERAL minutes to complete - be patient and do not leave this page once it starts running')        
+
+    all_ticker_lists_2 = [dow, sp500, undervalued_large_caps, fool_composite, oxford_composite, watch_lst_bulk]
+    all_ticker_list_names_2 = ['DOW', 'SP500', 'undervalued_large_caps', 'fool_composite', 'oxford_composite', 'watch_lst_bulk']
+
+    run_button_rec2 = st.sidebar.button("RUN Recommender-2")
+    
+    if run_button_rec2:    
+      for a in range(len(all_ticker_lists_2)):
+        f5.Recommendations2(all_ticker_lists_2[a], all_ticker_list_names_2[a]).run_rec2()
+
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#               *               *               *               *               *                                         > stage: [ 1) WIDE-MARKET-SCOPE ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 if(systemStage == '1-Wide_Market_Scope'):
   st.title('Wide Market Scope To Observe Macro Scale')
@@ -221,10 +343,9 @@ if(systemStage == '1-Wide_Market_Scope'):
       pass
 
 
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#               *               *               *               *               *                                         > stage: \ FUNDAMENTAL ANALYSIS ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 if(systemStage == '2-Fundamental-Analysis'):
   st.title('Fundamental Analysis Home Page')
@@ -501,9 +622,9 @@ else:
       df.dropna(inplace=True)
       return df
 
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#               *               *               *               *               *                                           > stage: [ TECHNICAL ANALYSIS ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
  
 if(systemStage == '3-Technical-Analysis'):
@@ -627,10 +748,9 @@ if(systemStage == '3-Technical-Analysis'):
         st.write('* Go To Step #2')
 
 
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#               *               *               *               *               *                                       > stage: [ PORTFOLIO CONSTRUCTION ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 if(systemStage=='4-Portfolio_Construction'):
   st.title('Portfolio Allocation & Optimization')
@@ -679,9 +799,9 @@ if(systemStage=='4-Portfolio_Construction'):
   st.sidebar.write(' *'*25)
 
 
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#               *               *               *                       > model: [ PRINCIPAL COMPONENT ANALYSIS (PCA) ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   if(model=='Principal Component Analysis'):
     st.title('(1) Principal Component Analysis (PCA)')
@@ -711,9 +831,9 @@ if(systemStage=='4-Portfolio_Construction'):
       st.title('Model Render Complete')
 
 
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#               *               *               *                                       > model: [ EFFICIENT FRONTIER ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   if(model=='Efficient Frontier'):
     st.title('(2) Efficient Frontier')
@@ -761,9 +881,9 @@ if(systemStage=='4-Portfolio_Construction'):
       st.title('Model Render Complete')
 
 
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#                                                                                   > model: [ PORTFOLIO_OPTIMIZATION ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   if(model=='Portfolio Optimizer'):
     st.title('Portfolio Optimizer')
@@ -775,9 +895,19 @@ if(systemStage=='4-Portfolio_Construction'):
 
     if Em:
 
+      if Em == 'Pick From Ticker Lists':
+        stockS = st.sidebar.selectbox('Choose Ticker List: ', index_ticker_lists_B)
+        for idx, num in enumerate(index_ticker_lists_B):
+          if num == stockS:
+            st.sidebar.subheader('> Step #4 - Run Optimization')
+            buttonB = st.sidebar.button('Run Optimizer B')
+            if buttonB:
+              f3.The_Portfolio_Optimizer(index_ticker_lists_A[idx], num).optimize()
+              fin = True      
+
       if Em == 'Pick-Em':
         stock_tickers = st.sidebar.text_input('Enter Ticker List Here: (ex. DIS ECL PLNT NYT)')
-        stock_tickers = stock_tickers.split()
+        # stock_tickers = stock_tickers.split()
         if type(stock_tickers)==list:
           st.sidebar.subheader('ticker list entered in good order')
           st.sidebar.markdown(stock_tickers)
@@ -788,25 +918,14 @@ if(systemStage=='4-Portfolio_Construction'):
             f3.The_Portfolio_Optimizer(stock_tickers, 'Pick_EM_Portfolio').optimize()
             fin = True
 
-      if Em == 'Pick From Ticker Lists':
-        stockS = st.sidebar.selectbox('Choose Ticker List: ', index_ticker_lists_B)
-        for idx, num in enumerate(index_ticker_lists_B):
-          if num == stockS:
-            st.sidebar.subheader('> Step #4 - Run Optimization')
-            buttonB = st.sidebar.button('Run Optimizer B')
-            if buttonB:
-              f3.The_Portfolio_Optimizer(index_ticker_lists_A[idx], num).optimize()
-              fin = True
-
     if fin:
       st.write(' *'*25)
       st.title('Model Render Complete')
 
 
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                                                        > stage: [ FINANCIAL FORECASTING ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 if(systemStage == '5-Financial_Forecasting'):
   st.title('Forecasting Price Points - Home Page')
@@ -827,9 +946,9 @@ if(systemStage == '5-Financial_Forecasting'):
   st.sidebar.write(' *'*25)
 
 
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                                  > model: [ PROPHET ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   if(model == 'Prophet Model'):
     st.title('Prophet Model Forecasting')
@@ -868,9 +987,9 @@ if(systemStage == '5-Financial_Forecasting'):
         st.title('Model-B Render Complete')
 
 
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                                  > model: [ STOCKER ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   if(model=='Stocker Analysis'):
     st.title('STOCKER MODELING')
@@ -882,9 +1001,9 @@ if(systemStage == '5-Financial_Forecasting'):
         st.title('Model Render Complete')
 
 
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                               > model: [ REGRESSION ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   if(model=='Regression'):
     st.title('Regression Modeling')
@@ -907,13 +1026,12 @@ if(systemStage == '5-Financial_Forecasting'):
             Regression_Model(stock_ticker).quadratic_regression_3(dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days)
         if modName == 'knn':
             Regression_Model(stock_ticker).knn(dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days)        
-
       st.title('Model Render Complete')        
 
 
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                              > model: [ S.A.R.I.M.A ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   if(model=='S.A.R.I.M.A'):
     st.title('(S.A.R.I.M.A)')
@@ -960,9 +1078,9 @@ if(systemStage == '5-Financial_Forecasting'):
         st.title('Model Render Complete')
 
 
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                   > model: [ MONTE CARLO SIMULATION ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   if(model == 'Monte Carlo Simulation'):
     st.title('Monte Carlo Simulations')
@@ -978,9 +1096,9 @@ if(systemStage == '5-Financial_Forecasting'):
         st.title('Model Render Complete')      
 
 
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                   > model: [ MONTE CARLO SIMULATION ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   if(model=='Univariate Analysis'):
     st.title('UNIVARIATE TIME-SERIES MODELING & FORCASTS')
@@ -999,9 +1117,9 @@ if(systemStage == '5-Financial_Forecasting'):
           st.title('Model Render Complete')
 
 
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                                > model: [ A.R.I.M.A ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   # if(model=='A.R.I.M.A'):
   #   st.title('(A.R.I.M.A)')
@@ -1014,10 +1132,9 @@ if(systemStage == '5-Financial_Forecasting'):
   #       f1.The_Arima_Model(stock_ticker).arima_model()          
 
 
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#               *               *               *               *               *                                           > stage: [ TRADING STRATEGIES ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 if(systemStage=='6-Trading_Strategies'): 
   st.title('Strategy Home Page')
@@ -1084,9 +1201,9 @@ if(systemStage=='6-Trading_Strategies'):
   strategy_company = get_strategy_symbol(stock_ticker)
 
 
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *              > model: [ MOVING AVERAGES - SMA & EMA ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   if(model=='Moving Averages - SMA & EMA'):
     st.write(' *'*25)
@@ -1140,9 +1257,9 @@ if(systemStage=='6-Trading_Strategies'):
       st.title('Model Render Complete')      
 
 
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                              > model: [ STRATEGY II ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   if(model=='Strategy II'):
     st.title('Strategy II')
@@ -1159,9 +1276,9 @@ if(systemStage=='6-Trading_Strategies'):
       st.title('Model Render Complete')        
 
 
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                     > model: [ SUPPORT & RESISTANCE ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   if(model=='Support & Resistance Lines'):
     st.title('Support & Resistance Lines')
@@ -1178,9 +1295,9 @@ if(systemStage=='6-Trading_Strategies'):
       st.title('Model Render Complete')
 
 
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                  > model: [ OVER-BOUGHT & OVER-SOLD ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   if(model=='overBought_overSold'):
     st.title('Over Bought & Over Sold Analysis')
@@ -1197,9 +1314,9 @@ if(systemStage=='6-Trading_Strategies'):
       st.title('Model Render Complete')      
 
 
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                        > model: [ MOVING-AVERAGE: B ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   # if(model=='Moving Averages - B'):
   #   st.title('Moving Average 0')
@@ -1216,10 +1333,9 @@ if(systemStage=='6-Trading_Strategies'):
   #     st.title('Model Render Complete')              
 
 
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#               *               *               *               *               *                                          > stage: [ BACKTESTING RETURNS ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 if(systemStage=='7-Backtesting_Returns'):
   st.title('Backtesting Home Page')
@@ -1234,22 +1350,19 @@ if(systemStage=='7-Backtesting_Returns'):
   st.write(' *'*25)
   
   st.title('> General Analysis Definitions')
-  models = [
-    '-Select-Model-', 'BackTesting-LongTerm', 'Portfolio Analysis','Vectorized Backtest',
-    'Backtrader_SMA', 'Backtrader - SMA Strategy'
-  ]
+  models = ['-Select-Model-', 'BackTesting-LongTerm', 'Portfolio Analysis','Vectorized Backtest','Backtrader_SMA', 'Backtrader - SMA Strategy']
 
   st.sidebar.subheader('> Step #2')
   model = st.sidebar.selectbox('Choose A Model', models)
   st.sidebar.write(' *'*25)
 
 
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                              > model: [ BACKTEST-LT ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   for r in range(1):
     try:
-
       if(model=='BackTesting-LongTerm'):
         fin = False
         st.title('BackTesting - 1')
@@ -1260,7 +1373,6 @@ if(systemStage=='7-Backtesting_Returns'):
         st.sidebar.write(' *'*25)
 
         if stock_ticker:
-
           def get_backtest_symbol(symbol):
               url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
               result = requests.get(url).json()
@@ -1268,8 +1380,8 @@ if(systemStage=='7-Backtesting_Returns'):
                   if x['symbol'] == symbol:
                       return x['name']
           backtest_company = get_backtest_symbol(stock_ticker) 
-
           run_strategy_backtesting1 = st.sidebar.button("Run Backtest 1")
+
           if run_strategy_backtesting1:
             f4.Web_One(stock_ticker)
             fin = True
@@ -1282,13 +1394,12 @@ if(systemStage=='7-Backtesting_Returns'):
       pass
 
 
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                       > model: [ PORTFOLIO ANALYSIS ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   for r in range(1):
     try:
-
       if(model=='Portfolio Analysis'):
         fin = False
         st.title('Portfolio Analysis')
@@ -1298,7 +1409,7 @@ if(systemStage=='7-Backtesting_Returns'):
         Em = str(st.sidebar.selectbox('Pick Ticker Lists:',['Pick-Em','Pick From Ticker Lists']))
 
         if Em:
-
+  
           if Em == 'Pick-Em':
             stock_tickers = st.sidebar.text_input('Enter Ticker List Here: (ex. DIS ECL PLNT NYT)')
             stock_tickers = stock_tickers.split()
@@ -1330,14 +1441,12 @@ if(systemStage=='7-Backtesting_Returns'):
       pass
 
 
-
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                      > model: [ VECTORIZED BACKTEST ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   for r in range(1):
     try:
-
       if(model=='Vectorized Backtest'):
         fin = False
         st.title('Vectorized Backtest')
@@ -1389,8 +1498,9 @@ if(systemStage=='7-Backtesting_Returns'):
       pass
 
 
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *        
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                             > model: [ BACKTEST-SMA ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
   for r in range(1):
@@ -1413,8 +1523,9 @@ if(systemStage=='7-Backtesting_Returns'):
       pass
 
 
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#       *       *       *       *       *       *       *       *                > model: [ BACKTRADER - SMA_STRATEGY ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
   for r in range(1):
@@ -1435,14 +1546,8 @@ if(systemStage=='7-Backtesting_Returns'):
           st.title('Model Render Complete')        
     except Exception:
       pass    
-      
 
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-  # for r in range(1):
-  #   try:
-
-  #   except Exception:
-  #     pass
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#               *               *               *               *               *                                                          > stage: [ END ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

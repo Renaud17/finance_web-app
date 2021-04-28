@@ -6,6 +6,7 @@ from pandas_datareader import DataReader
 import numpy as np
 import streamlit as st
 from pathlib import Path
+import pickle
 
 
 class Recommendations1(object):
@@ -32,23 +33,31 @@ class Recommendations1(object):
             except:
                 recommendation = 6
             recommendations.append(recommendation)
-            #time.sleep(0.5)
             
         dataframe = pd.DataFrame(list(zip(self.tickers, recommendations)), columns =['Company', 'Recommendations']) 
         dataframe = dataframe.set_index('Company')
-        dataframe.to_pickle(f'tickers/recommendations_{self.name}.pkl')
-
         dataframe['Recommendations']=dataframe['Recommendations'].astype(float)
         dataframe = dataframe.sort_values('Recommendations')
-        st.title(f'Analyst Recommendations - {self.name}')
+        st.header(f'Analyst Recommendations - {self.name}')
         st.dataframe(dataframe)
+
+        dataframe = dataframe[dataframe['Recommendations'] < 2.5]
         recomendation_ticker_list = list(dataframe.index)
+        st.subheader("The Below List contains Only The Stocks With A 'Buy' or 'Strong-Buy' Rating")
+        st.write(f"* Total Stocks In Buy/Strong-Buy Territory = {len(recomendation_ticker_list)} / {len(self.tickers)}")
+        st.text(recomendation_ticker_list)
+        st.write(' *'*25)
+        
+        with open(f"tickers/recommendations_{self.name}.pkl", "wb") as f:
+            pickle.dump(recomendation_ticker_list, f)
+
+        # with open(f"tickers/recommendations_{self.name}.pkl", "rb") as f:
+        #     og_rec_list = pickle.load(f)
+
+        return recomendation_ticker_list
 
 
 if __name__ =='__main__':
-
-    st.title('Recomendations & Ratings')
-    st.subheader('This Model will take SEVERAL minutes to complete - be patient and do not leave this page once it starts running')    
 
     dow_ticker_lst = pd.read_pickle('tickers/dow_ticker_lst.pkl')
     sp100_ticker_lst = pd.read_pickle('tickers/sp100_ticker_lst.pkl')
@@ -66,6 +75,8 @@ if __name__ =='__main__':
         'Chuck Merged Ticker List', 'Jayci Ticker List', 'Watching Ticker List'
     ]    
 
-    for a in range(len(all_ticker_lists)):
-        Recommendations1(all_ticker_lists[a], all_ticker_list_names[a]).run_rec1()
-    st.title('- Model Render Complete - ')
+    run = False
+
+    if run:
+        for a in range(len(all_ticker_lists)):
+            Recommendations1(all_ticker_lists[a], all_ticker_list_names[a]).run_rec1()
