@@ -80,7 +80,8 @@ indices_main = ['^OEX','^MID','^GSPC','^DJI','^NYA','^RUT','^W5000']
 day_gainers = list(si.get_day_gainers()['Symbol'])
 day_losers = list(si.get_day_losers()['Symbol'])
 day_most_active = list(si.get_day_most_active()['Symbol'])
-undervalued_large_caps = list(si.get_undervalued_large_caps()['Symbol'])
+ULC = si.get_undervalued_large_caps()
+undervalued_large_caps = list(ULC['Symbol'])
 fool_composite = [
     'LMND','ZM','TTD','PINS','TEAM','SAM','DIS','ASML','ECL','NYT',
     'LRCX','NTDOY','PYPL','AMZN','ABNB','ATVI','ZM','SKLZ','SHOP', 'STAA',
