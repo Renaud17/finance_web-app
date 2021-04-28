@@ -27,13 +27,14 @@ class Recommendations2(object):
         returns_multiples = []
 
       # Index Returns
-        index_df = yf.download(self.index_name, start=self.start_date, end=self.end_date)
+        # index_df = yf.download(self.index_name, start=self.start_date, end=self.end_date)
+        index_df = yf.download(self.index_name, period='1y')
         index_df['Percent Change'] = index_df['Adj Close'].pct_change()
         index_return = (index_df['Percent Change'] + 1).cumprod()[-1]
 
       # Find top 30% performing stocks (relative to the S&P 500)
         for ticker in self.tickers:
-            df = yf.download(ticker, start=self.start_date, end=self.end_date)
+            df = yf.download(ticker, period='1y')
             df.to_csv(saveTickers / f'{ticker}.csv')
 
           # Calculating returns relative to the market (returns multiple)
@@ -106,3 +107,4 @@ class Recommendations2(object):
         exportList.set_index('Stock',inplace=True)
         st.header(f"Ratings Analysis - {self.sName}")
         st.dataframe(exportList)
+        return

@@ -70,11 +70,6 @@ my_positions = pd.read_pickle(saveTickers / f'chuck_merged_ticker_lst.pkl')
 watch_lst0 = pd.read_pickle(saveTickers / f'watch_merged_ticker_lst.pkl')
 watch_lst_bulk = list(set(my_positions + watch_lst0))
 dow = pd.read_pickle(saveTickers / f'dow_ticker_lst.pkl')
-dow_sell = ['AXP', 'CRM', 'DIS', 'INTC', 'MRK', 'NKE', 'WMT']
-dow_buy = [
-  'AAPL', 'AMGN', 'BA', 'CAT', 'CSCO', 'CVX', 'DOW', 'GS', 'HD', 'HON', 'IBM', 
-  'JNJ', 'JPM', 'KO', 'MCD', 'MMM', 'MSFT', 'PG', 'TRV', 'UNH', 'V', 'VZ', 'WBA'
-  ]
 sp100 = pd.read_pickle(saveTickers / f'sp100_ticker_lst.pkl')
 sp500 = pd.read_pickle(saveTickers / f'sp500_ticker_lst.pkl')
 indices_main = ['^OEX','^MID','^GSPC','^DJI','^NYA','^RUT','^W5000']
@@ -82,8 +77,6 @@ day_gainers = list(si.get_day_gainers()['Symbol'])
 day_losers = list(si.get_day_losers()['Symbol'])
 day_most_active = list(si.get_day_most_active()['Symbol'])
 undervalued_large_caps = pd.read_pickle(saveTickers / f"undervalued_large_caps_ticker_lst.pkl")
-# with open("/home/gordon/gdp/code/portfolio/Forecasting_For_Friends/tickers/undervalued_large_caps_ticker_lst.pkl", "rb") as f:
-#     undervalued_large_caps = pickle.load(f)
 
 fool_composite = [
     'LMND','ZM','TTD','PINS','TEAM','SAM','DIS','ASML','ECL','NYT',
@@ -125,6 +118,7 @@ systemStage = st.sidebar.selectbox('Select Analysis Category:',
     '4-Portfolio_Construction','5-Financial_Forecasting','6-Trading_Strategies','7-Backtesting_Returns'
   ]
 )
+
 st.sidebar.write(' *'*25)
 if(systemStage=='-Home-'):
   st.title("Welcome To The 'Fin-Web-App'")
@@ -137,7 +131,6 @@ if(systemStage=='-Home-'):
             of securities with the aim to outperform the broader market index."
   )
   st.write(' *'*25)
-
   st.title("Financial Web Application Stages")
   st.subheader("> This web application is broken into several Stages:")
   st.write('0) Recommender')
@@ -237,7 +230,7 @@ if(systemStage == '0-Recommendations'):
     if run_button_rec1:
       for a in range(len(all_ticker_lists_1)):
         f5.Recommendations1(all_ticker_lists_1[a], all_ticker_list_names_1[a]).run_rec1()
-        
+
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 #       *       *       *       *       *       *       *       *                            > model: [ Recommender-2 ]
@@ -245,16 +238,71 @@ if(systemStage == '0-Recommendations'):
 
   if(model=='Recommender-2'):
     st.title('Recommender-2')
-    st.subheader('This Model will take SEVERAL minutes to complete - be patient and do not leave this page once it starts running')        
-
-    all_ticker_lists_2 = [dow, sp500, undervalued_large_caps, fool_composite, oxford_composite, watch_lst_bulk]
-    all_ticker_list_names_2 = ['DOW', 'SP500', 'undervalued_large_caps', 'fool_composite', 'oxford_composite', 'watch_lst_bulk']
-
-    run_button_rec2 = st.sidebar.button("RUN Recommender-2")
+    st.subheader('This Model will take SEVERAL minutes to complete - be patient and do not leave this page once it starts running')
+    st.write(' *'*25)
     
-    if run_button_rec2:    
-      for a in range(len(all_ticker_lists_2)):
-        f5.Recommendations2(all_ticker_lists_2[a], all_ticker_list_names_2[a]).run_rec2()
+    st.sidebar.subheader('> Step #3')
+    b1 = st.sidebar.button("dow")
+    b2 = st.sidebar.button("sp100")
+    b3 = st.sidebar.button("sp500")
+    b4 = st.sidebar.button("day_most_active")
+    b5 = st.sidebar.button("undervalued_large_caps")
+    b6 = st.sidebar.button("watch_lst_bulk")
+    b7 = st.sidebar.button("fool_composite")
+    b8 = st.sidebar.button("oxford_composite")
+    b9 = st.sidebar.button("day_gainers")
+    b10 = st.sidebar.button("day_losers")
+
+    if b1:
+      st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
+      st.sidebar.markdown(dow)
+      st.sidebar.write(' *'*25)
+      f5.Recommendations2(dow, 'dow').run_rec2()
+    if b2:
+      st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
+      st.sidebar.markdown(sp100)
+      st.sidebar.write(' *'*25)
+      f5.Recommendations2(sp100, 'sp100').run_rec2()
+    if b3:
+      st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
+      st.sidebar.markdown(sp500)
+      st.sidebar.write(' *'*25)
+      f5.Recommendations2(sp500, 'sp500').run_rec2()            
+    if b4:
+      st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
+      st.sidebar.markdown(day_most_active)
+      st.sidebar.write(' *'*25)
+      f5.Recommendations2(day_most_active, 'day_most_active').run_rec2()     
+    if b5:
+      st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
+      st.sidebar.markdown(undervalued_large_caps)
+      st.sidebar.write(' *'*25)
+      f5.Recommendations2(undervalued_large_caps, 'undervalued_large_caps').run_rec2()
+    if b6:
+      st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
+      st.sidebar.markdown(watch_lst_bulk)
+      st.sidebar.write(' *'*25)
+      f5.Recommendations2(watch_lst_bulk, 'watch_lst_bulk').run_rec2()
+    if b7:
+      st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
+      st.sidebar.markdown(fool_composite)
+      st.sidebar.write(' *'*25)
+      f5.Recommendations2(fool_composite, 'fool_composite').run_rec2()
+    if b8:
+      st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
+      st.sidebar.markdown(oxford_composite)
+      st.sidebar.write(' *'*25)
+      f5.Recommendations2(oxford_composite, 'oxford_composite').run_rec2()
+    if b9:
+      st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
+      st.sidebar.markdown(day_gainers)
+      st.sidebar.write(' *'*25)
+      f5.Recommendations2(day_gainers, 'day_gainers').run_rec2()
+    if b10:
+      st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
+      st.sidebar.markdown(day_losers)
+      st.sidebar.write(' *'*25)
+      f5.Recommendations2(day_losers, 'day_losers').run_rec2()    
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -288,6 +336,7 @@ index_ticker_lists_B = [
 ]
 for r in range(len(index_ticker_lists_A)):
   index_ticker_lists_A[r] = clean(index_ticker_lists_A[r])
+
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 #               *               *               *               *               *                                         > stage: [ 1) WIDE-MARKET-SCOPE ]
