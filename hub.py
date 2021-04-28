@@ -3,7 +3,6 @@ warnings.filterwarnings('ignore')
 from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 from pathlib import Path
-# today = str(datetime.now())[:10]
 import matplotlib
 import matplotlib as mpl
 matplotlib.use('Agg')
@@ -23,7 +22,6 @@ plt.rcParams['figure.figsize'] = [18, 10]
 plt.rcParams['figure.dpi'] = 150
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
-
 import pandas as pd
 pd.options.display.max_columns = 15
 import numpy as np
@@ -48,10 +46,13 @@ from pages import forecast as f1
 from pages import strategy as f2
 from pages import portfolio as f3
 from pages import backtest as f4
+from pages import recommendation as f5
+
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
 
 def clean(listA):
     lst = list(set(listA))
@@ -62,7 +63,6 @@ saveTickers = Path('tickers/')
 my_positions = pd.read_pickle(saveTickers / f'chuck_merged_ticker_lst.pkl')
 watch_lst0 = pd.read_pickle(saveTickers / f'watch_merged_ticker_lst.pkl')
 watch_lst_bulk = list(set(my_positions + watch_lst0))
-
 dow = pd.read_pickle(saveTickers / f'dow_ticker_lst.pkl')
 dow_sell = ['AXP', 'CRM', 'DIS', 'INTC', 'MRK', 'NKE', 'WMT']
 dow_buy = [
@@ -123,7 +123,7 @@ for r in range(len(index_ticker_lists_A)):
 st.sidebar.subheader('> Step #1')
 systemStage = st.sidebar.selectbox('Select Analysis Category:',
   [
-    '-Home-','1-Wide_Market_Scope', '2-Fundamental-Analysis', '3-Technical-Analysis',
+    '-Home-','0-Recommendations', '1-Wide_Market_Scope', '2-Fundamental-Analysis', '3-Technical-Analysis',
     '4-Portfolio_Construction','5-Financial_Forecasting','6-Trading_Strategies','7-Backtesting_Returns'
   ]
 )
@@ -143,10 +143,8 @@ if(systemStage=='-Home-'):
   st.subheader('6) Trading Strategies')
   st.subheader('7) Backtesting Methods')
 
-  st.title("To begin using the models within this web-app, locate the '>' in the upper LEFT hand corner of the screen")
-  st.write('\n\n')
-  st.subheader("All Interaction & Inputs will work through the side-pannel that will pop up when you click on the '>'")
-  st.write('')
+  st.title("To begin using the models within this web-app, locate the '>' in the upper LEFT hand corner of the screen\n\n")
+  st.subheader("All Interaction & Inputs will work through the side-pannel that will pop up when you click on the '>'\n")
   st.write("* Follow the Steps down the side pannel for each model and it will indicate you to hit a 'RUN' button at the bottom")
   st.write("* When your are ready to Access, Configure, & Run the models in each stage, Select A Stage in Step #1 on the Side Bar to the left.")
 
@@ -161,6 +159,7 @@ if(systemStage=='-Home-'):
 # *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+
 if(systemStage == '1-Wide_Market_Scope'):
   st.title('Wide Market Scope To Observe Macro Scale')
   st.write("A look At Today's Active Stock Screeners")
@@ -169,28 +168,55 @@ if(systemStage == '1-Wide_Market_Scope'):
     try:
       st.header("Today's Top Stock Gainers")
       st.dataframe(si.get_day_gainers().set_index('Symbol'))
+    except Exception:
+      pass
 
+  for r in range(1):
+    try:
       st.header("Today's Top Stock Losers")
       st.dataframe(si.get_day_losers().set_index('Symbol'))
+    except Exception:
+      pass
 
+  for r in range(1):
+    try:
       st.header("Today's Top Active Stocks")
       st.dataframe(si.get_day_most_active().set_index('Symbol'))
+    except Exception:
+      pass
 
-      # st.header("Top Trending Tickers")
-      # st.dataframe(si.si.get_trending_tickers().set_index('Symbol'))      
+  for r in range(1):
+    try:
+      st.header("Top Trending Tickers")
+      st.dataframe(si.si.get_trending_tickers().set_index('Symbol'))      
+    except Exception:
+      pass
 
+  for r in range(1):
+    try:
       st.header("Current Undervalued Large Cap Stocks")
       st.dataframe(si.get_undervalued_large_caps().set_index('Symbol'))
+    except Exception:
+      pass
 
-      # st.header("Top Mutual Funds")
-      # st.dataframe(si.si.get_mutual_fund().set_index('Symbol'))
+  for r in range(1):
+    try:
+      st.header("Top Mutual Funds")
+      st.dataframe(si.si.get_mutual_fund().set_index('Symbol'))
+    except Exception:
+      pass
 
+  for r in range(1):
+    try:
       st.header("Crypto")
       st.dataframe(si.get_top_crypto().set_index('Symbol'))
+    except Exception:
+      pass
 
+  for r in range(1):
+    try:
       st.header("Futures")
       st.dataframe(si.get_futures().set_index('Symbol'))            
-
     except Exception:
       pass
 
@@ -231,7 +257,6 @@ if(systemStage == '2-Fundamental-Analysis'):
   st.write(' *'*25)
 
   st.header('Model Results Below:')
-
   st.sidebar.subheader('> Step #2')
   ticker = st.sidebar.text_input('Enter Stock Ticker IN ALL CAPS')
 
@@ -246,7 +271,6 @@ if(systemStage == '2-Fundamental-Analysis'):
             if x['symbol'] == symbol:
                 return x['name']
     fundamental_company = get_fundamental_symbol(ticker)
-
     st.sidebar.subheader('> Step #3')
     st.sidebar.markdown(f"Hit 'Run' For Fundamental Analysis On:\n {fundamental_company} ({ticker})")
     run_button = st.sidebar.button("RUN")
@@ -289,7 +313,6 @@ if(systemStage == '2-Fundamental-Analysis'):
       st.markdown('** Market **: ' + info['market'])
       st.markdown('** Exchange **: ' + info['exchange'])
       st.markdown('** Quote Type **: ' + info['quoteType'])
-      
       start = datetime.today()-timedelta(2 * 365)
       end = datetime.today()
       df = yf.download(ticker,start,end)
@@ -321,7 +344,6 @@ if(systemStage == '2-Fundamental-Analysis'):
       marketDF = pd.DataFrame(data=marketInfo, index=[0])
       st.table(marketDF)
       st.write(' *'*25)
-
       for i in range(1):
           try:
               st.write(f"live_price = $ {si.get_live_price(ticker)}")
@@ -370,7 +392,7 @@ if(systemStage == '2-Fundamental-Analysis'):
               stats.set_index('Attribute',inplace=True)
               st.dataframe(stats)
           except Exception:
-              pass        
+              pass     
 
       for i in range(1):
           st.subheader('stats_n_valuation')
@@ -390,12 +412,11 @@ if(systemStage == '2-Fundamental-Analysis'):
               st.dataframe(qt)
           except Exception:
               pass          
-              
+
       for i in range(1):
           st.subheader('Key Statistics')
           try:
               st.dataframe(si.get_stats(ticker))      
-              
           except Exception:
               pass
 
@@ -463,7 +484,6 @@ else:
       df['ema'] = df['Adj Close'].ewm(span=size, min_periods=size).mean()
       df.dropna(inplace=True)
       return df
-  
   def calc_macd(data):
       df = data.copy()
       df['ema12'] = df['Adj Close'].ewm(span=12, min_periods=12).mean()
@@ -472,7 +492,6 @@ else:
       df['signal'] = df['macd'].ewm(span=9, min_periods=9).mean()
       df.dropna(inplace=True)
       return df
-
   def calcBollinger(data, size):
       df = data.copy()
       df["sma"] = df['Adj Close'].rolling(size).mean()
@@ -482,7 +501,6 @@ else:
       df.dropna(inplace=True)
       return df
 
-
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -491,9 +509,11 @@ else:
 if(systemStage == '3-Technical-Analysis'):
   st.title('Technical Analysis Home Page')
   st.write(' *'*25)
+
   st.header('General Analysis Notes')
   st.write("https://www.investopedia.com/terms/t/technicalanalysis.asp")
   st.write(' *'*25)
+
   st.subheader('Definition:')
   st.write('* Technical analysis is a trading discipline employed to evaluate investments and identify trading opportunities by analyzing statistical \
     trends gathered from trading activity, such as price movement and volume. ... Technical analysis can be used on any security with historical trading data.')
@@ -502,6 +522,7 @@ if(systemStage == '3-Technical-Analysis'):
   st.write("* Technical analysis is concerned with price action, which gives clues as to the stock's supply and demand dynamics\
      – which is what ultimately determines the stock price.")
   st.write(' *'*25)
+
   st.subheader('Examples of technical analysis tools include:')
   st.write('* All of the tools have the same purpose: to make understanding chart movements and identifying trends easier for technical traders.')
   st.write('* moving averages')
@@ -510,14 +531,15 @@ if(systemStage == '3-Technical-Analysis'):
   st.write('* and more')
   st.write("https://www.investopedia.com/top-7-technical-analysis-tools-4773275")
   st.write(' *'*25)
+
   st.subheader('KEY TAKEAWAYS')
   st.write("* Technical analysis, or using charts to identify trading signals and price patterns, may seem overwhelming or esoteric at first.")
   st.write("* Beginners should first understand why technical analysis works as a window into market psychology to identify opportunities to profit.")
   st.write("* Focus on a particular trading approach and develop a disciplined strategy that you can follow without letting emotions or second-guessing get in the way.")
   st.write("* Find a broker that can help you execute your plan affordably while also providing a trading platform with the right suite of tools you'll need.")
   st.write(' *'*25)
-  st.header('Model Results Below:')
 
+  st.header('Model Results Below:')
   st.sidebar.subheader('> Step #2')
   ticker = st.sidebar.text_input('Enter Stock Ticker IN ALL CAPS')
 
@@ -547,7 +569,6 @@ if(systemStage == '3-Technical-Analysis'):
         
         start = datetime.today()-timedelta(numYearMA * 365)
         end = datetime.today()
-
         dataMA = yf.download(ticker,start,end)
         df_ma = calcMovingAverage(dataMA, windowSizeMA)
         df_ma = df_ma.reset_index()
@@ -622,9 +643,8 @@ if(systemStage=='4-Portfolio_Construction'):
   st.subheader('~ To Use Other Models Within This Same Analysis Category:')
   st.write('* Go To Step #2')
   st.write(' *'*25)
-  
-  st.title('> General Analysis Definitions')
 
+  st.title('> General Analysis Definitions')
   st.header('1) Principal Component Analysis (PCA)')
   st.write('* Principal Component Analysis, or PCA, is a dimensionality-reduction method that is often used to reduce the dimensionality of \
     large data sets, by transforming a large set of variables into a smaller one that still contains most of the information in the large set.')
@@ -792,11 +812,8 @@ if(systemStage == '5-Financial_Forecasting'):
   st.title('Forecasting Price Points - Home Page')
   st.subheader("Use The Side Bar via the Arrow ('>') on the upper left corner of the screen")
 
-  models = [
-    '-Select-A-Model-', 'Prophet Model', 'Stocker Analysis', 'S.A.R.I.M.A', 
-    'Monte Carlo Simulation', 'Univariate Analysis'
-      # 'A.R.I.M.A',
-    ]
+  models = ['-Select-A-Model-', 'Prophet Model', 'Stocker Analysis', 'Regression', 'S.A.R.I.M.A', 'Monte Carlo Simulation', 'Univariate Analysis']
+      # 'A.R.I.M.A'
   
   st.sidebar.header('[Step # 2]')
   st.sidebar.subheader('Select Model To Run')
@@ -869,15 +886,29 @@ if(systemStage == '5-Financial_Forecasting'):
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-  # if(model=='A.R.I.M.A'):
-  #   st.title('(A.R.I.M.A)')
-  #   st.header('Auto Regression Integrated Moving Average')
+  if(model=='Regression'):
+    st.title('Regression Modeling')
+    st.header('> Linear Regression')
+    st.header('> Quadratic 2 Regression')
+    st.header('> Quadratic 3 Regression')
+    st.header('> KNN Regression')
 
-  #   if stock_ticker:
-  #     run_strategy_arima = st.button("Run ARIMA")
-  #     if run_strategy_arima:
-  #       f1.Web_Arima(stock_ticker).full_build()
-  #       f1.The_Arima_Model(stock_ticker).arima_model()
+    if stock_ticker:
+      run_strategy_Regression = st.sidebar.button("Run Regression")
+
+      if run_strategy_Regression:
+        dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, modName = f1.Regression_Model(stock_ticker).preprocessing()
+
+        if modName == 'linear_regression':
+            Regression_Model(stock_ticker).linear_regression(dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days)
+        if modName == 'quadratic_regression_2':
+            Regression_Model(stock_ticker).quadratic_regression_2(dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days)
+        if modName == 'quadratic_regression_3':
+            Regression_Model(stock_ticker).quadratic_regression_3(dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days)
+        if modName == 'knn':
+            Regression_Model(stock_ticker).knn(dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days)        
+
+      st.title('Model Render Complete')        
 
 
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -968,6 +999,21 @@ if(systemStage == '5-Financial_Forecasting'):
           st.title('Model Render Complete')
 
 
+#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+  # if(model=='A.R.I.M.A'):
+  #   st.title('(A.R.I.M.A)')
+  #   st.header('Auto Regression Integrated Moving Average')
+
+  #   if stock_ticker:
+  #     run_strategy_arima = st.button("Run ARIMA")
+  #     if run_strategy_arima:
+  #       f1.Web_Arima(stock_ticker).full_build()
+  #       f1.The_Arima_Model(stock_ticker).arima_model()          
+
+
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1017,10 +1063,8 @@ if(systemStage=='6-Trading_Strategies'):
   st.write('* xgboost sim/backtesting')
   st.write('* backtrader backtesting')
   
-  models = [
-    '-Select-Model-','Moving Averages - SMA & EMA','Strategy II','Support & Resistance Lines', 'overBought_overSold'
-    # 'Moving Averages - B'
-  ]
+  models = ['-Select-Model-','Moving Averages - SMA & EMA','Strategy II','Support & Resistance Lines', 'overBought_overSold']
+  # 'Moving Averages - B'
 
   st.sidebar.subheader('> Step #2')
   model = st.sidebar.selectbox('Choose A Model', models)
@@ -1096,7 +1140,6 @@ if(systemStage=='6-Trading_Strategies'):
       st.title('Model Render Complete')      
 
 
-
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -1114,24 +1157,6 @@ if(systemStage=='6-Trading_Strategies'):
     if fin:
       st.write(' *'*25)
       st.title('Model Render Complete')        
-
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-  # if(model=='Moving Averages - B'):
-  #   st.title('Moving Average 0')
-  #   fin = False
-
-  #   if stock_ticker:
-  #     run_strategy_movAvg_B = st.sidebar.button("Run Moving Average-B (Double)")
-  #     if run_strategy_movAvg_B:
-  #       f2.ST_Trading_signals(stock_ticker)
-  #       fin = True
-
-  #   if fin:
-  #     st.write(' *'*25)
-  #     st.title('Model Render Complete')        
 
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1170,6 +1195,25 @@ if(systemStage=='6-Trading_Strategies'):
     if fin:
       st.write(' *'*25)
       st.title('Model Render Complete')      
+
+
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+  # if(model=='Moving Averages - B'):
+  #   st.title('Moving Average 0')
+  #   fin = False
+
+  #   if stock_ticker:
+  #     run_strategy_movAvg_B = st.sidebar.button("Run Moving Average-B (Double)")
+  #     if run_strategy_movAvg_B:
+  #       f2.ST_Trading_signals(stock_ticker)
+  #       fin = True
+
+  #   if fin:
+  #     st.write(' *'*25)
+  #     st.title('Model Render Complete')              
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1371,6 +1415,7 @@ if(systemStage=='7-Backtesting_Returns'):
 
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
 
   for r in range(1):
     try:
