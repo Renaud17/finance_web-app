@@ -1326,7 +1326,10 @@ if(systemStage=='6-Trading_Strategies'):
                     return x['name']
 
         company_longName = get_symbol_longName(stock_ticker)
-        S, L  = f2.The_Strategy_2(stock_ticker, company_longName).grab_data()
+        if company_longName:
+          S, L  = f2.The_Strategy_2(stock_ticker, company_longName).grab_data()
+        else:
+          S, L  = f2.The_Strategy_2(stock_ticker, stock_ticker).grab_data()
 
         f2.MovingAverageCrossStrategy(
           stock_symbol = stock_ticker, 

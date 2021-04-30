@@ -158,7 +158,7 @@ class The_OverBought_OverSold(object):
 
 
 if __name__ == '__main__':
-    The_OverBought_OverSold(ticker='IKE.NZ', period='1y').generate()
+    The_OverBought_OverSold(ticker='MATIC-USD', period='1y').generate()
 
 
 #* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

@@ -137,7 +137,7 @@ def MovingAverageCrossStrategy(
 
 if __name__ == '__main__':
 
-  stock_ticker = 'BA'
+  stock_ticker = 'MATIC-USD'
 
   def get_symbol_longName(symbol):
       url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
