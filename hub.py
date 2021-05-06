@@ -956,7 +956,7 @@ if(systemStage=='4-Portfolio_Construction'):
       st.sidebar.markdown("Hit The 'Run PCA' Button To Run Model")
       run_strategy_pca = st.sidebar.button("Run PCA")
       if run_strategy_pca:
-        f3.The_Random_Forest(new_tickers, lst_name)
+        f3.The_Random_Forest(new_tickers, lst_name).plot_plot_roc()
         fin = True
 
     if fin:
