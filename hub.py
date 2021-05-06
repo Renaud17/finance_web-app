@@ -878,7 +878,7 @@ if(systemStage=='4-Portfolio_Construction'):
   st.write('* https://www.investopedia.com/terms/m/modernportfoliotheory.asp')
   st.write(' *'*25)
 
-  models = ['-Select-Model-', 'Principal Component Analysis', 'Efficient Frontier', 'Portfolio Optimizer']
+  models = ['-Select-Model-', 'Principal Component Analysis', 'Random Forest', 'Efficient Frontier', 'Portfolio Optimizer']
   st.sidebar.subheader('> Step # 2')
   model = st.sidebar.selectbox('Choose A Model', models)
   st.sidebar.write(' *'*25)
@@ -933,11 +933,43 @@ if(systemStage=='4-Portfolio_Construction'):
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+#               *               *               *                                       > model: [ RANDOM FOREST (RF) ]
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+  if(model=='Random Forest'):
+    st.title('(2) Random Forest (RF)')
+    st.header('Model Results Below:')
+    fin = False
+
+    st.sidebar.subheader('> Step #3')
+    tickers = st.sidebar.selectbox('Choose Stock List', index_ticker_lists_B)
+    if tickers:
+      for idx, num in enumerate(index_ticker_lists_B):
+        if num == tickers:
+          new_tickers = index_ticker_lists_A[idx]
+          lst_name = num
+      
+      st.sidebar.subheader("This Ticker List Contains The Following Stock Tickers:")
+      st.sidebar.markdown(new_tickers)
+      st.sidebar.write(' *'*25)
+      st.sidebar.subheader('> Step #4')
+      st.sidebar.markdown("Hit The 'Run PCA' Button To Run Model")
+      run_strategy_pca = st.sidebar.button("Run PCA")
+      if run_strategy_pca:
+        f3.The_Random_Forest(new_tickers, lst_name)
+        fin = True
+
+    if fin:
+      st.write(' *'*25)
+      st.title('Model Render Complete')      
+
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 #               *               *               *                                       > model: [ EFFICIENT FRONTIER ]
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
   if(model=='Efficient Frontier'):
-    st.title('(2) Efficient Frontier')
+    st.title('(3) Efficient Frontier')
     st.header('Model Results Below:')
     fin = False
 
