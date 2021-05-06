@@ -19,7 +19,25 @@ from sklearn.tree import export_graphviz
 import streamlit as st
 st.set_option('deprecation.showPyplotGlobalUse', False)
 from datetime import datetime
-from .web_plotRoc import plot_roc
+# from .web_plotRoc import plot_roc
+
+from sklearn.metrics import roc_curve, auc
+from scipy import interp
+from sklearn.model_selection import KFold
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+plt.style.use('seaborn') 
+sm, med, lg = 10, 15, 25
+plt.rc('font', size = sm)         # controls default text sizes
+plt.rc('axes', titlesize = med)   # fontsize of the axes title
+plt.rc('axes', labelsize = med)   # fontsize of the x & y labels
+plt.rc('xtick', labelsize = sm)   # fontsize of the tick labels
+plt.rc('ytick', labelsize = sm)   # fontsize of the tick labels
+plt.rc('legend', fontsize = sm)   # legend fontsize
+plt.rc('figure', titlesize = lg)  # fontsize of the figure title
+plt.rc('axes', linewidth=2)       # linewidth of plot lines
+plt.rcParams['figure.figsize'] = [15, 6.5]
+plt.rcParams['figure.dpi'] = 134
     
 
 class The_Random_Forest(object):
@@ -175,14 +193,58 @@ class The_Random_Forest(object):
         st.write(f"    Naive Bayes: {nB}\n")
 
 
+    def plot_roc(self, file, X, y, clf_class, plot_name, **kwargs):
+        scaler = StandardScaler()
+        X = scaler.fit_transform(X)
+        n_splits=5
+        kf = KFold(n_splits=n_splits, shuffle=True)
+        y_prob = np.zeros((len(y),2))
+        mean_tpr = 0.0
+        mean_fpr = np.linspace(0, 1, 100)
+        all_tpr = []
+        for i, (train_index, test_index) in enumerate(kf.split(X)):
+            X_train, X_test = X[train_index], X[test_index]
+            y_train = y[train_index]
+            clf = clf_class(**kwargs)
+            clf.fit(X_train,y_train)
+            # Predict probabilities, not classes
+            y_prob[test_index] = clf.predict_proba(X_test)
+            fpr, tpr, thresholds = roc_curve(y[test_index], y_prob[test_index, 1])
+            mean_tpr += interp(mean_fpr, fpr, tpr)
+            mean_tpr[0] = 0.0
+            roc_auc = auc(fpr, tpr)
+            plt.plot(fpr, tpr, lw=1, label='ROC fold %d (area = %0.2f)' % (i, roc_auc))
+        mean_tpr /= n_splits
+        mean_tpr[-1] = 1.0
+        mean_auc = auc(mean_fpr, mean_tpr)
+
+        fig, ax = plt.subplots()
+        plt.plot(mean_fpr, mean_tpr, 'k--',label='Mean ROC (area = %0.2f)' % mean_auc, lw=2)
+        plt.plot([0, 1], [0, 1], '--', color=(0.6, 0.6, 0.6), label='Random', lw=1.5)
+        plt.axvline(x=0.15, color='r', ls='--', lw=2)
+        plt.xlim([-0.05, 1.05])
+        plt.ylim([-0.05, 1.05])
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        plt.title(f'{plot_name} - Receiver operating characteristic')
+        plt.legend(loc="lower right")
+        plt.tight_layout()
+        st.pyplot(fig)
+
     def plot_plot_roc(self):
         self.report_scores()
         st.write("* * * visualize the roc curve of each model * * * \n")
-        plot_roc(self.file, self.X, self.y, LogisticRegression, 'Logistic_Regression')
-        plot_roc(self.file, self.X, self.y, DecisionTreeClassifier, 'Decision_Tree')
-        plot_roc(self.file, self.X, self.y, RandomForestClassifier, 'Random_Forest', n_estimators=45, max_features=5)        
+        self.plot_roc(self.file, self.X, self.y, LogisticRegression, 'Logistic_Regression')
+        self.plot_roc(self.file, self.X, self.y, DecisionTreeClassifier, 'Decision_Tree')
+        self.plot_roc(self.file, self.X, self.y, RandomForestClassifier, 'Random_Forest', n_estimators=45, max_features=5)        
 
 
 if __name__ == '__main__':
-    # RF = The_Random_Forest(sp100, 'sp100').plot_plot_roc()
-    RF = The_Random_Forest(my_positions, 'chuck_merged').plot_plot_roc()
+    dow = [
+      'AAPL', 'AMGN', 'AXP', 'BA', 'CAT', 'CRM', 'CSCO', 'CVX', 'DIS', 'DOW', 
+      'GS', 'HD', 'HON', 'IBM', 'INTC', 'JNJ', 'JPM', 'KO', 'MCD', 'MMM', 
+      'MRK', 'MSFT', 'NKE', 'PG', 'TRV', 'UNH', 'V', 'VZ', 'WBA', 'WMT'
+      ]
+
+
+    The_Random_Forest(dow, 'dow').plot_plot_roc()
