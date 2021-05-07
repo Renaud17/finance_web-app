@@ -4,7 +4,6 @@ from sklearn.metrics import roc_curve, auc
 from scipy import interp
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import StandardScaler
-
 import matplotlib.pyplot as plt
 plt.style.use('seaborn') 
 sm, med, lg = 10, 15, 25
