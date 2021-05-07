@@ -240,10 +240,6 @@ class The_Random_Forest(object):
 
 
 if __name__ == '__main__':
-<<<<<<< HEAD
-    # RF = The_Random_Forest(sp100, 'sp100').plot_plot_roc()
-=======
->>>>>>> 93935cfc86a9ef88df2bf9334753d688f78a51fc
     dow = [
       'AAPL', 'AMGN', 'AXP', 'BA', 'CAT', 'CRM', 'CSCO', 'CVX', 'DIS', 'DOW', 
       'GS', 'HD', 'HON', 'IBM', 'INTC', 'JNJ', 'JPM', 'KO', 'MCD', 'MMM', 
