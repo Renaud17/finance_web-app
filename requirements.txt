@@ -27,6 +27,7 @@ cufflinks==0.17.3
 cycler==0.10.0
 Cython==0.29.22
 dask==2021.3.0
+dask[distributed]
 decorator==5.0.3
 defusedxml==0.7.1
 empyrical==0.5.5
