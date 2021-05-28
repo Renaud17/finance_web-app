@@ -49,11 +49,11 @@ from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 
-from pages import f_forecast as f1
-from pages import g_strategy as f2
-from pages import e_portfolio as f3
-from pages import h_backtest as f4
-from pages import a_recommendation as f5
+from .pages import a_recommendation as f5
+from .pages import e_portfolio as f3
+from .pages import f_forecast as f1
+from .pages import g_strategy as f2
+from .pages import h_backtest as f4
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -114,7 +114,8 @@ systemStage = st.sidebar.selectbox('Select Analysis Category:',
 
 st.sidebar.write(' *'*25)
 if(systemStage=='-Home-'):
-  st.title("Welcome To The \n'Asset Analysis & Allocation \n Web Application'")
+  st.title("Welcome To The")
+  st.title("Asset Analysis & Allocation Web Application")
   st.subheader("Created By,")
   st.header('Gordon D. Pisciotta')
   st.write(
