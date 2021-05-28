@@ -49,11 +49,11 @@ from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 
-from pages import forecast as f1
-from pages import strategy as f2
-from pages import portfolio as f3
-from pages import backtest as f4
-from pages import recommendation as f5
+from pages import f_forecast as f1
+from pages import g_strategy as f2
+from pages import e_portfolio as f3
+from pages import h_backtest as f4
+from pages import a_recommendation as f5
 
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
