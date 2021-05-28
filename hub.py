@@ -114,7 +114,9 @@ systemStage = st.sidebar.selectbox('Select Analysis Category:',
 
 st.sidebar.write(' *'*25)
 if(systemStage=='-Home-'):
-  st.title("Welcome To The 'Fin-Web-App'")
+  st.title("Welcome To The \n'Asset Analysis & Allocation \n Web Application'")
+  st.subheader("Created By,")
+  st.header('Gordon D. Pisciotta')
   st.write(
     "* A web application designed specifically with the goal to bring the benefit of complex machine learning \
     models & techniques to the average individual. This program provides a wide range of analytical data analysis tools \
