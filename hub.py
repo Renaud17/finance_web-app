@@ -115,7 +115,8 @@ systemStage = st.sidebar.selectbox('Select Analysis Category:',
 st.sidebar.write(' *'*25)
 if(systemStage=='-Home-'):
   st.title("Welcome To The")
-  st.title("Asset Analysis & Allocation Web Application")
+  st.title("Asset Analysis & Allocation") 
+  st.title("Web Application")
   st.subheader("Created By,")
   st.header('Gordon D. Pisciotta')
   st.write(
