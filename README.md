@@ -1,5 +1,8 @@
 # Asset Analysis & Allocation Web Application
 ![1](files/images/1.png)
+![2](files/images/2.png)
+![3](files/images/3.png)
+![4](files/images/4.png)
 
 ## Forecasting
 
