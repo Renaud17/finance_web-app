@@ -119,6 +119,7 @@ if(systemStage=='-Home-'):
   st.title("Web Application")
   st.subheader("Created By,")
   st.header('Gordon D. Pisciotta')
+  st.subheader('Git Hub: https://github.com/ramraider011235/finance_web-app')
   st.write(
     "* A web application designed specifically with the goal to bring the benefit of complex machine learning \
     models & techniques to the average individual. This program provides a wide range of analytical data analysis tools \
