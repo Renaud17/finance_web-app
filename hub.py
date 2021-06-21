@@ -365,12 +365,12 @@ if(systemStage == '1-Wide_Market_Scope'):
     except Exception:
       pass
 
-  for r in range(1):
-    try:
-      st.header("Top Trending Tickers")
-      st.dataframe(si.si.get_trending_tickers().set_index('Symbol'))      
-    except Exception:
-      pass
+#   for r in range(1):
+#     try:
+#       st.header("Top Trending Tickers")
+#       st.dataframe(si.si.get_trending_tickers().set_index('Symbol'))      
+#     except Exception:
+#       pass
 
   for r in range(1):
     try:
