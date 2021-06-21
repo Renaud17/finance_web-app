@@ -379,12 +379,12 @@ if(systemStage == '1-Wide_Market_Scope'):
     except Exception:
       pass
 
-  for r in range(1):
-    try:
-      st.header("Top Mutual Funds")
-      st.dataframe(si.si.get_mutual_fund().set_index('Symbol'))
-    except Exception:
-      pass
+#   for r in range(1):
+#     try:
+#       st.header("Top Mutual Funds")
+#       st.dataframe(si.si.get_mutual_fund().set_index('Symbol'))
+#     except Exception:
+#       pass
 
   for r in range(1):
     try:
